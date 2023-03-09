@@ -1,7 +1,7 @@
 <template>
     <v-card class="tarjeta" variant="tonal">
         <div class="izquierda">
-            <img src="../photo/evento-2.jpg">
+            <img src="../photo/R.jpeg">
         </div>
         <div class="derecha">
             <v-card-title>

@@ -40,6 +40,7 @@
     <v-main>
       <!-- <HelloWorld/> -->
       <CardComponent/>
+      <footerComponent/>
     </v-main>
   </v-app>
 </template>
@@ -47,13 +48,15 @@
 <script>
 // import HelloWorld from './components/HelloWorld';
 import CardComponent from './components/CardComponent';
+import footerComponent from './components/footerComponent';
 
 export default {
   name: 'App',
 
   components: {
     // HelloWorld,
-    CardComponent
+    CardComponent,
+    footerComponent
 },
 
   data: () => ({
