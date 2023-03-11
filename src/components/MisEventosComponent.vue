@@ -47,7 +47,6 @@ export default {
 }
 
 .filtros {
-    /* border: 1px solid red; */
     height: 250px;
     margin-bottom: 60px;
 }
