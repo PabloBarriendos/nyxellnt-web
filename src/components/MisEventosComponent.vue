@@ -8,6 +8,9 @@
                 <v-select class="precioFilter" label="Ordenar por fehca"
                     :items="['Fecha más reciente', 'Fecha más antigua']"></v-select>
             </v-card-title>
+            <v-card-actions class="btn-filtrar">
+                <v-btn>Filtrar</v-btn>
+            </v-card-actions>
         </v-card>
 
         <MisEventosCardComponent />
