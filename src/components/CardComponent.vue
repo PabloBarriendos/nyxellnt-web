@@ -39,13 +39,12 @@
 }
 
 .izquierda{
+    height: 250px;
     width: 200px;
-    margin-left: 50px;
-    margin-top: 30px;
 }
 
 img{
-    height: 250px;
-    width: 200px;
+    height: 100%;
+    width: 100%;
 }
 </style>
