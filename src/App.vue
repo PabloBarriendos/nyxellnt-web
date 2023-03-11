@@ -39,24 +39,29 @@
 
     <v-main>
       <!-- <HelloWorld/> -->
-      <CardComponent/>
-      <footerComponent/>
+      <!-- <CardComponent/>
+      <footerComponent/> -->
+      <EventComponent/>
     </v-main>
   </v-app>
+
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld';
-import CardComponent from './components/CardComponent';
-import footerComponent from './components/footerComponent';
+// import CardComponent from './components/CardComponent';
+// import footerComponent from './components/footerComponent';
+import EventComponent from './components/EventComponent';
 
 export default {
   name: 'App',
 
   components: {
     // HelloWorld,
-    CardComponent,
-    footerComponent
+    // CardComponent,
+    // footerComponent
+    EventComponent
+
 },
 
   data: () => ({
