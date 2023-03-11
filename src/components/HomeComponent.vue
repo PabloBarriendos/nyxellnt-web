@@ -28,7 +28,6 @@
           class="precioFilter"
           label="Ordenar por precio"
           :items="[
-            'Ordenar por precio',
             'Precio ascendente',
             'Precio descendente',
           ]"
