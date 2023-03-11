@@ -1,11 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import HomeComponent from '../components/HomeComponent';
+import EventComponent from '../components/EventComponent';
+import MisEventosComponent from '../components/MisEventosComponent'
 
 Vue.use(VueRouter)
 
 const routes = [
-//   { path: '/', component: Home },
-//   { path: '/about', component: About }
+  { path: '/', component: HomeComponent },
+  { path: '/evento', component: EventComponent },
+  { path: '/mis-eventos', component: MisEventosComponent }
 ]
 
 const router = new VueRouter({
