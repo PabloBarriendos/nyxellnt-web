@@ -16,9 +16,15 @@
             <v-card-text>
                 Fecha del evento: 2023-03-11
             </v-card-text>
-            <v-card-actions>
-                <v-btn>Comprar</v-btn>
-            </v-card-actions>
+            <v-card-text>
+                Fecha de compra: 
+            </v-card-text>
+            <v-card-text>
+                Entradas compradas: 
+            </v-card-text>
+            <v-card-text>
+                Precio total: 
+            </v-card-text>
         </div>
     </v-card>
 </template>
