@@ -14,13 +14,28 @@
         <v-select
           class="categoriasFilter"
           label="Categorías"
-          :items="['Rock', 'Pop', 'Flamenco', 'Jazz', 'Musical', 'Opera']"
+          :items="[
+            'Todas las categorías',
+            'Rock',
+            'Pop',
+            'Flamenco',
+            'Jazz',
+            'Musical',
+            'Opera',
+          ]"
         ></v-select>
         <v-select
           class="precioFilter"
           label="Ordenar por precio"
-          :items="['Precio ascendente', 'Precio descendente']"
+          :items="[
+            'Ordenar por precio',
+            'Precio ascendente',
+            'Precio descendente',
+          ]"
         ></v-select>
+        <v-card-actions class="btn-filtrar">
+            <v-btn>Filtrar</v-btn>
+        </v-card-actions>
       </v-card-title>
     </v-card>
 
@@ -42,6 +57,8 @@ export default {
   data() {
     return {
       search: "",
+      checkbox1: true,
+      checkbox2: false,
     };
   },
 };
@@ -58,7 +75,7 @@ export default {
 }
 .filtros {
   /* border: 1px solid red; */
-  height: 200px;
+  height: 250px;
   margin-bottom: 60px;
 }
 .filtros .buscador {
@@ -73,5 +90,9 @@ export default {
 .filtros .precioFilter {
   width: 200px;
   margin-right: 40px;
+}
+.btn-filtrar{
+  padding: 0;
+  margin-right: 100%;
 }
 </style>
