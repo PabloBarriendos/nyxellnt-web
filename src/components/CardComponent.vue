@@ -26,7 +26,6 @@
 <style scoped>
 .tarjeta {
     display: flex;
-    width: 1000px;
     padding: 20px;
 }
 
