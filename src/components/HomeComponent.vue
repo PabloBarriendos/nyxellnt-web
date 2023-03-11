@@ -3,21 +3,37 @@
     <v-card class="filtros">
       <v-card-title>
         Filtros
-        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
-          class="buscador"></v-text-field>
-        <v-select class="categoriasFilter" label="Categorías" :items="[
-          'Todas las categorías',
-          'Rock',
-          'Pop',
-          'Flamenco',
-          'Jazz',
-          'Musical',
-          'Opera',
-        ]"></v-select>
-        <v-select class="precioFilter" label="Ordenar por precio" :items="[
-          'Precio ascendente',
-          'Precio descendente',
-        ]"></v-select>
+        <div class="buscador-container">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Buscar"
+            single-line
+            hide-details
+            class="buscador"
+          ></v-text-field>
+          <v-card-actions class="btn-buscar">
+            <v-btn>Buscar</v-btn>
+          </v-card-actions>
+        </div>
+        <v-select
+          class="categoriasFilter"
+          label="Categorías"
+          :items="[
+            'Todas las categorías',
+            'Rock',
+            'Pop',
+            'Flamenco',
+            'Jazz',
+            'Musical',
+            'Opera',
+          ]"
+        ></v-select>
+        <v-select
+          class="precioFilter"
+          label="Ordenar por precio"
+          :items="['Precio ascendente', 'Precio descendente']"
+        ></v-select>
         <v-card-actions class="btn-filtrar">
           <v-btn>Filtrar</v-btn>
         </v-card-actions>
@@ -66,10 +82,14 @@ export default {
   margin-bottom: 60px;
 }
 
+.filtros .buscador-container {
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+}
 .filtros .buscador {
   width: 100%;
-  margin-right: 40px;
-  margin-bottom: 10px;
+  margin-right: 20px
 }
 
 .filtros .categoriasFilter {
@@ -82,6 +102,10 @@ export default {
   margin-right: 40px;
 }
 
+.btn-buscar {
+  width: 78px;
+  padding: 0;
+}
 .btn-filtrar {
   padding: 0;
   margin-right: 100%;
