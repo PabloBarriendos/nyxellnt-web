@@ -1,20 +1,32 @@
 <template>
-  <v-app>
+  <v-app id="app">
     <HeaderComponent/>
-    <HomeComponent/>
-    <footerComponent/>
 
-    <EventComponent/>
-    <footerComponent/>
-
-    <MisEventosComponent/>
-    <footerComponent/>
-
-    <v-main>
+    <div v-if="showHome">
+      <HomeComponent/>
+    </div>
+    <div v-if="showEvent">
+      <EventComponent/>
+    </div>
+    <div v-if="showMisEventos">
+      <MisEventosComponent/>
+    </div>
+    <div v-if="showHome">
+      <MisEventosCardComponent/>
+    </div>
+    <div v-if="showHome">
+      <PersonalInformationComponent/>
+    </div>
+    <!-- <v-main>
       <MisEventosCardComponent/>
       <PersonalInformationComponent/>
-      
-    </v-main>
+    </v-main> -->
+    
+    <!-- <router-link to="/">Go to Home</router-link>
+    <router-link to="/evento">Go to Evento</router-link>
+    <router-view /> -->
+
+    <footerComponent/>
   </v-app>
 
 </template>
@@ -41,6 +53,9 @@ export default {
     MisEventosComponent
   },
   data: () => ({
+    showHome: false,
+    showEvent: false,
+    showMisEventos: false,
   }),
 };
 </script>
