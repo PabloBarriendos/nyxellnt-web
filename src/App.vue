@@ -44,6 +44,7 @@
       <CardComponent/>
       <footerComponent/>
       <EventComponent/>
+      <PersonalInformationComponent/>
     </v-main>
   </v-app>
 
@@ -55,6 +56,7 @@ import HeaderComponent from './components/HeaderComponent';
 import CardComponent from './components/CardComponent';
 import footerComponent from './components/footerComponent';
 import EventComponent from './components/EventComponent';
+import PersonalInformationComponent from './components/PersonalInformationComponent';
 
 export default {
   name: 'App',
@@ -64,7 +66,8 @@ export default {
     CardComponent,
     footerComponent,
     HeaderComponent,
-    EventComponent
+    EventComponent,
+    PersonalInformationComponent,
   },
   data: () => ({
     //

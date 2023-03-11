@@ -51,7 +51,7 @@
                     <v-text-field label="Nombre*" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field label="Apellidos*" required></v-text-field>
+                    <v-text-field label="Apellido*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field label="Email*" required></v-text-field>
