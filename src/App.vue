@@ -53,7 +53,7 @@ export default {
     MisEventosComponent
   },
   data: () => ({
-    showHome: false,
+    showHome: true,
     showEvent: false,
     showMisEventos: false,
   }),
