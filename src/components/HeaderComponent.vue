@@ -14,11 +14,7 @@
                     <v-text-field label="Email*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Contraseña*"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field label="Contraseña*" type="password" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -26,15 +22,11 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="showLoginPopUp = false"
-              >
+              <v-btn color="blue-darken-1" variant="text" @click="showLoginPopUp = false">
                 Cerrar
               </v-btn>
               <v-btn color="blue-darken-1" variant="text" @click="login">
-                Iniciar sesión  
+                Iniciar sesión
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -57,18 +49,10 @@
                     <v-text-field label="Email*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Contraseña*"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field label="Contraseña*" type="password" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Repetir contraseña*"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field label="Repetir contraseña*" type="password" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -76,11 +60,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="showRegisterPopUp = false"
-              >
+              <v-btn color="blue-darken-1" variant="text" @click="showRegisterPopUp = false">
                 Cerrar
               </v-btn>
               <v-btn color="blue-darken-1" variant="text" @click="register">
@@ -167,16 +147,19 @@ export default {
 .header-container {
   height: 84px;
 }
+
 .v-app-bar {
   height: 84px !important;
   display: flex;
   align-items: center;
 }
+
 .btn-container {
   position: fixed;
   right: 10px;
   height: 36px;
 }
+
 .avatar-container {
   position: fixed;
   right: 10px;
@@ -185,21 +168,25 @@ export default {
   display: flex;
   align-items: center;
 }
+
 .avatar-container p {
   margin-bottom: 0;
   margin-left: 20px;
 }
+
 header {
   display: flex;
   justify-content: center;
 }
+
 .v-btn {
-  border: 1px solid black;
   margin: 0 10px;
 }
+
 .menu-icon {
   margin-left: 16px;
 }
+
 .user-dropdown {
   width: 240px;
   height: 154px;
@@ -208,9 +195,11 @@ header {
   right: 0;
   top: 84px;
 }
+
 .user-dropdown p {
   margin: 20px 20px;
 }
+
 .user-dropdown p:hover {
   cursor: pointer;
 }

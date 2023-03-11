@@ -17,7 +17,8 @@
                             <v-card-text label="Email"><strong>Email: </strong> </v-card-text>
                         </v-col>
                         <v-col cols="12">
-                            <v-card-text label="Contraseña" type="password"><strong>Contraseña: </strong> ***********</v-card-text>
+                            <v-card-text label="Contraseña" type="password"><strong>Contraseña: </strong>
+                                ***********</v-card-text>
                         </v-col>
                     </v-row>
                 </v-container>

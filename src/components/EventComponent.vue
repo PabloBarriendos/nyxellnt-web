@@ -43,6 +43,8 @@
   
 <script>
 export default {
+    name: "EventComponent",
+
     data: () => ({
         firstName: '',
         firstNameRules: [
@@ -109,14 +111,16 @@ img {
     align-items: center;
     width: 800px;
 }
-.container{
+
+.container {
     display: flex;
     justify-content: space-between;
     margin-left: 300px;
     margin-top: 100px;
+    margin-bottom: 50px;
 }
 
-.v-sheet{
+.v-sheet {
     margin-left: 100px !important;
 }
 </style>

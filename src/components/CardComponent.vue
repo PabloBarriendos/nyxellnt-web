@@ -11,7 +11,9 @@
                 Miguel Ríos - Wizink Center de Madrid - Rock
             </v-card-subtitle>
             <v-card-text>
-                Cuarenta años, en apariencia, no son nada, pero cuando se celebran ha de hacerse a lo grande, y esta ocasión lo merece, pues han pasado cuatro décadas de las dos veladas del Rock & Ríos en el Pabellón de la Ciudad Deportiva del Real Madrid los días 5 y 6 de marzo de 1982.
+                Cuarenta años, en apariencia, no son nada, pero cuando se celebran ha de hacerse a lo grande, y esta ocasión
+                lo merece, pues han pasado cuatro décadas de las dos veladas del Rock & Ríos en el Pabellón de la Ciudad
+                Deportiva del Real Madrid los días 5 y 6 de marzo de 1982.
             </v-card-text>
             <v-card-text>
                 Fecha del evento: 2023-03-11
@@ -29,7 +31,7 @@
     padding: 20px;
 }
 
-.derecha{
+.derecha {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -37,12 +39,12 @@
     margin-left: 70px;
 }
 
-.izquierda{
+.izquierda {
     height: 250px;
     width: 200px;
 }
 
-img{
+img {
     height: 100%;
     width: 100%;
 }

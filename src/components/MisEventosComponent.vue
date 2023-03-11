@@ -4,23 +4,14 @@
       <v-card-title>
         Filtros
         <div class="buscador-container">
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Buscar"
-            single-line
-            hide-details
-            class="buscador"
-          ></v-text-field>
+          <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
+            class="buscador"></v-text-field>
           <v-card-actions class="btn-buscar">
             <v-btn>Buscar</v-btn>
           </v-card-actions>
         </div>
-        <v-select
-          class="precioFilter"
-          label="Ordenar por fehca"
-          :items="['Fecha más reciente', 'Fecha más antigua']"
-        ></v-select>
+        <v-select class="precioFilter" label="Ordenar por fehca"
+          :items="['Fecha más reciente', 'Fecha más antigua']"></v-select>
       </v-card-title>
       <v-card-actions class="btn-filtrar">
         <v-btn>Filtrar</v-btn>
@@ -70,6 +61,7 @@ export default {
   display: flex;
   margin-bottom: 10px;
 }
+
 .filtros .buscador {
   width: 100%;
   margin-right: 20px

@@ -5,7 +5,8 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn v-for="icon in icons" :key="icon" class="mx-4 icono" :icon="icon" variant="plain" size="small" color="black"></v-btn>
+            <v-btn v-for="icon in icons" :key="icon" class="mx-4 icono" :icon="icon" variant="plain" size="small"
+                color="black"></v-btn>
         </div>
 
         <div class="px-4 py-2 bg-black text-center w-100">
@@ -16,6 +17,8 @@
   
 <script>
 export default {
+    name: "footerComponent",
+
     data: () => ({
         icons: [
             'mdi-facebook',
@@ -26,7 +29,12 @@ export default {
 }
 </script>
 <style scoped>
-    .icono{
-        background-color:grey;
-    }
+.icono {
+    background-color: white;
+}
+
+.v-footer {
+    background-color: #1976d2;
+    color: white;
+}
 </style>
