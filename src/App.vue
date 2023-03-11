@@ -43,15 +43,18 @@
       <!-- <HelloWorld/> -->
       <CardComponent/>
       <footerComponent/>
+      <EventComponent/>
     </v-main>
   </v-app>
+
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld';
+import HeaderComponent from './components/HeaderComponent';
 import CardComponent from './components/CardComponent';
 import footerComponent from './components/footerComponent';
-import HeaderComponent from './components/HeaderComponent';
+import EventComponent from './components/EventComponent';
 
 export default {
   name: 'App',
@@ -60,9 +63,9 @@ export default {
     // HelloWorld,
     CardComponent,
     footerComponent,
-    HeaderComponent
+    HeaderComponent,
+    EventComponent
   },
-
   data: () => ({
     //
   }),
