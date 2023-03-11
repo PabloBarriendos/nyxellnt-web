@@ -41,7 +41,7 @@
 
     <v-main>
       <!-- <HelloWorld/> -->
-      <CardComponent/>
+      <HomeComponent/>
       <footerComponent/>
     </v-main>
   </v-app>
@@ -49,7 +49,7 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld';
-import CardComponent from './components/CardComponent';
+import HomeComponent from './components/HomeComponent';
 import footerComponent from './components/footerComponent';
 import HeaderComponent from './components/HeaderComponent';
 
@@ -58,7 +58,7 @@ export default {
 
   components: {
     // HelloWorld,
-    CardComponent,
+    HomeComponent,
     footerComponent,
     HeaderComponent
   },
@@ -68,3 +68,9 @@ export default {
   }),
 };
 </script>
+
+<style scoped>
+  .v-main{
+    padding: 0 !important;
+  }
+</style>
