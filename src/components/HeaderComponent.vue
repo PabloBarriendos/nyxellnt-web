@@ -91,23 +91,32 @@
       </div>
 
       <div class="user-dropdown" v-if="showUserDropdown">
-        <p>Información personal</p>
+        <p @click="showPersonalInformation = true">Información personal</p>
         <p>Mis compras</p>
         <p v-on:click="logout">Cerrar sesión</p>
+      </div>
+      <div v-if="showPersonalInformation">
+        <PersonalInformationComponent/>
       </div>
     </v-app-bar>
   </v-container>
 </template>
 
 <script>
+import PersonalInformationComponent from './PersonalInformationComponent';
+
 export default {
   name: "HeaderComponent",
 
+  components: {
+    PersonalInformationComponent
+  },
   data: () => ({
     showLoginPopUp: false,
     showRegisterPopUp: false,
     showUserDropdown: false,
     showUser: false,
+    showPersoanlInformation: false
   }),
   methods: {
     loginPopUp() {
