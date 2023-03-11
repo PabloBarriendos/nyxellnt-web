@@ -3,6 +3,7 @@
     <v-card class="filtros">
       <v-card-title>
         Filtros
+<<<<<<< HEAD
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -35,6 +36,14 @@
         <v-card-actions class="btn-filtrar">
             <v-btn>Filtrar</v-btn>
         </v-card-actions>
+=======
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
+          class="buscador"></v-text-field>
+        <v-select class="categoriasFilter" label="Categorías"
+          :items="['Rock', 'Pop', 'Flamenco', 'Jazz', 'Musical', 'Opera']"></v-select>
+        <v-select class="precioFilter" label="Ordenar por precio"
+          :items="['Precio ascendente', 'Precio descendente']"></v-select>
+>>>>>>> feature/misEventosComponent
       </v-card-title>
     </v-card>
 
@@ -69,28 +78,38 @@ export default {
   padding: 0;
   max-width: 100%;
 }
+
 .home-container .tarjeta {
   margin: 40px;
 }
+
 .filtros {
   /* border: 1px solid red; */
   height: 250px;
   margin-bottom: 60px;
 }
+
 .filtros .buscador {
   width: 100%;
   margin-right: 40px;
   margin-bottom: 10px;
 }
+
 .filtros .categoriasFilter {
   width: 200px;
   margin-right: 40px;
 }
+
 .filtros .precioFilter {
   width: 200px;
   margin-right: 40px;
 }
+<<<<<<< HEAD
 .btn-filtrar{
+=======
+
+.btn-filtrar {
+>>>>>>> feature/misEventosComponent
   padding: 0;
   margin-right: 100%;
 }

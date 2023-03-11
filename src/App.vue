@@ -46,6 +46,7 @@
       <EventComponent/>
       <PersonalInformationComponent/>
       <MisEventosCardComponent/>
+      <MisEventosComponent/>
     </v-main>
   </v-app>
 
@@ -59,6 +60,7 @@ import footerComponent from './components/footerComponent';
 import EventComponent from './components/EventComponent';
 import PersonalInformationComponent from './components/PersonalInformationComponent';
 import MisEventosCardComponent from './components/MisEventosCardComponent';
+import MisEventosComponent from './components/MisEventosComponent'
 
 export default {
   name: 'App',
@@ -71,6 +73,7 @@ export default {
     EventComponent,
     PersonalInformationComponent,
     MisEventosCardComponent,
+    MisEventosComponent
   },
   data: () => ({
     //
