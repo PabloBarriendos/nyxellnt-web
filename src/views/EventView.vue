@@ -18,7 +18,6 @@
                     2023-03-11
                 </v-card-text>
             </div>
-            <button></button>
         </div>
 
         <v-sheet width="300" class="mx-auto">
@@ -35,7 +34,7 @@
 
                 <v-text-field v-model="ticket" label="Número de entradas" type="number"></v-text-field>
 
-                <v-btn type="submit" block class="mt-2">Aceptar</v-btn>
+                <v-btn type="submit" block class="mt-2" to="/mis-eventos">Aceptar</v-btn>
             </v-form>
         </v-sheet>
     </v-container>

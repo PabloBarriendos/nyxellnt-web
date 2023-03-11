@@ -10,7 +10,7 @@
         </div>
 
         <div class="px-4 py-2 bg-black text-center w-100">
-            {{ new Date().getFullYear() }} — <strong>Nyxelln`t</strong>
+            {{ new Date().getFullYear() }} — <router-link to="/"><strong>Nyxelln`t</strong></router-link>
         </div>
     </v-footer>
 </template>
@@ -36,5 +36,10 @@ export default {
 .v-footer {
     background-color: #1976d2;
     color: white;
+}
+
+.v-application a {
+    color: white;
+    text-decoration: none;
 }
 </style>

@@ -18,11 +18,10 @@
                   </v-col>
                 </v-row>
               </v-container>
-              <small>*indicates required field</small>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="showLoginPopUp = false">
+              <v-btn color="blue-darken-1" variant="text" @click="() => showLoginPopUp = false">
                 Cerrar
               </v-btn>
               <v-btn color="blue-darken-1" variant="text" @click="login">
@@ -56,11 +55,10 @@
                   </v-col>
                 </v-row>
               </v-container>
-              <small>*indicates required field</small>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="showRegisterPopUp = false">
+              <v-btn color="blue-darken-1" variant="text" @click="() => showRegisterPopUp = false">
                 Cerrar
               </v-btn>
               <v-btn color="blue-darken-1" variant="text" @click="register">
@@ -103,7 +101,9 @@
         </v-dialog>
       </v-row>
 
-      <div class="text-h4 title">Nyxellnt</div>
+      <div class="text-h4 title">
+        <router-link to="/">Nyxellnt</router-link>
+      </div>
 
       <div class="btn-container" v-if="!showUser">
         <v-btn href target="_blank" v-on:click="loginPopUp" text>
@@ -124,7 +124,7 @@
 
       <div class="user-dropdown" v-if="showUserDropdown">
         <p v-on:click="() => showPersonalInfoPopUp = true">Información personal</p>
-        <p>Mis compras</p>
+        <router-link to="/mis-eventos"><p>Mis compras</p></router-link> 
         <p v-on:click="logout">Cerrar sesión</p>
       </div>
     </v-app-bar>
@@ -239,5 +239,10 @@ header {
 
 .user-dropdown p:hover {
   cursor: pointer;
+}
+
+.v-application a {
+  color: white;
+  text-decoration: none;
 }
 </style>

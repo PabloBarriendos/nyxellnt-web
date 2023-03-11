@@ -19,7 +19,9 @@
                 Fecha del evento: 2023-03-11
             </v-card-text>
             <v-card-actions>
-                <v-btn>Comprar</v-btn>
+                <v-btn class="mx-4 white--text" elevation="2" x-large rounded color="blue" to="/evento">
+                    Comprar
+                </v-btn>
             </v-card-actions>
         </div>
     </v-card>
