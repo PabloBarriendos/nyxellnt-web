@@ -51,7 +51,6 @@
 // import HelloWorld from './components/HelloWorld';
 import CardComponent from './components/CardComponent';
 import footerComponent from './components/footerComponent';
-import HelloWorld from './components/HelloWorld';
 import HeaderComponent from './components/HeaderComponent';
 
 export default {
