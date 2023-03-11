@@ -118,6 +118,7 @@ img {
     margin-left: 300px;
     margin-top: 100px;
     margin-bottom: 50px;
+    height: 100%;
 }
 
 .v-sheet {

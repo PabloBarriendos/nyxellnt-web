@@ -25,7 +25,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="showPersonalInfoPopUp = false">
+                <v-btn color="blue-darken-1" variant="text" @click="()=>showPersonalInfoPopUp = false">
                     Cerrar
                 </v-btn>
             </v-card-actions>

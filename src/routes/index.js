@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeComponent from '../components/HomeComponent';
-import EventComponent from '../components/EventComponent';
-import MisEventosComponent from '../components/MisEventosComponent'
+import HomeComponent from '../views/HomeView.vue'
+import EventComponent from '../views/EventView.vue';
+import MisEventosComponent from '../views/MisEventosView.vue'
 
 Vue.use(VueRouter)
 
@@ -16,6 +16,4 @@ const router = new VueRouter({
   routes
 })
 
-new Vue({
-  router
-}).$mount('#app')
+export default router;

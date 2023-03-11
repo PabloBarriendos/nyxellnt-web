@@ -10,36 +10,48 @@
             <v-btn>Buscar</v-btn>
           </v-card-actions>
         </div>
-        <v-select class="precioFilter" label="Ordenar por fehca"
-          :items="['Fecha más reciente', 'Fecha más antigua']"></v-select>
+        <v-select class="categoriasFilter" label="Categorías" :items="[
+          'Todas las categorías',
+          'Rock',
+          'Pop',
+          'Flamenco',
+          'Jazz',
+          'Musical',
+          'Opera',
+        ]"></v-select>
+        <v-select class="precioFilter" label="Ordenar por precio"
+          :items="['Precio ascendente', 'Precio descendente']"></v-select>
+        <v-card-actions class="btn-filtrar">
+          <v-btn>Filtrar</v-btn>
+        </v-card-actions>
       </v-card-title>
-      <v-card-actions class="btn-filtrar">
-        <v-btn>Filtrar</v-btn>
-      </v-card-actions>
     </v-card>
 
-    <MisEventosCardComponent />
-    <MisEventosCardComponent />
-    <MisEventosCardComponent />
+    <CardComponent />
+    <CardComponent />
+    <CardComponent />
+    <CardComponent />
   </v-container>
 </template>
-  
+
 <script>
-import MisEventosCardComponent from "./MisEventosCardComponent";
+import CardComponent from "../components/CardComponent.vue";
 
 export default {
-  name: "MisEventosComponent",
+  name: "HomeComponent",
   components: {
-    MisEventosCardComponent,
+    CardComponent,
   },
   data() {
     return {
       search: "",
+      checkbox1: true,
+      checkbox2: false,
     };
   },
 };
 </script>
-  
+
 <style scoped>
 .home-container {
   margin: 0;
@@ -52,6 +64,7 @@ export default {
 }
 
 .filtros {
+  /* border: 1px solid red; */
   height: 250px;
   margin-bottom: 60px;
 }
@@ -67,8 +80,23 @@ export default {
   margin-right: 20px
 }
 
+.filtros .categoriasFilter {
+  width: 200px;
+  margin-right: 40px;
+}
+
 .filtros .precioFilter {
   width: 200px;
   margin-right: 40px;
+}
+
+.btn-buscar {
+  width: 78px;
+  padding: 0;
+}
+
+.btn-filtrar {
+  padding: 0;
+  margin-right: 100%;
 }
 </style>
