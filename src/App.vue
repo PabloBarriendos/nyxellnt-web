@@ -36,6 +36,8 @@
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar> -->
+    
+    <HeaderComponent/>
 
     <v-main>
       <!-- <HelloWorld/> -->
@@ -49,6 +51,8 @@
 // import HelloWorld from './components/HelloWorld';
 import CardComponent from './components/CardComponent';
 import footerComponent from './components/footerComponent';
+import HelloWorld from './components/HelloWorld';
+import HeaderComponent from './components/HeaderComponent';
 
 export default {
   name: 'App',
@@ -56,8 +60,9 @@ export default {
   components: {
     // HelloWorld,
     CardComponent,
-    footerComponent
-},
+    footerComponent,
+    HeaderComponent
+  },
 
   data: () => ({
     //

@@ -1,0 +1,217 @@
+<template>
+  <v-container class="header-container">
+    <v-app-bar app color="primary" dark>
+      <v-row justify="center">
+        <v-dialog v-model="showLoginPopUp" persistent width="1024">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Iniciar sesión</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field label="Email*" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="Contraseña*"
+                      type="password"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="showLoginPopUp = false"
+              >
+                Cerrar
+              </v-btn>
+              <v-btn color="blue-darken-1" variant="text" @click="login">
+                Iniciar sesión  
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="showRegisterPopUp" persistent width="1024">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Registrarse</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field label="Nombre*" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field label="Apellidos*" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field label="Email*" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="Contraseña*"
+                      type="password"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="Repetir contraseña*"
+                      type="password"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="showRegisterPopUp = false"
+              >
+                Cerrar
+              </v-btn>
+              <v-btn color="blue-darken-1" variant="text" @click="register">
+                Registrarse
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+
+      <div class="text-h4 title">Nyxellnt</div>
+
+      <div class="btn-container" v-if="!showUser">
+        <v-btn href target="_blank" v-on:click="loginPopUp" text>
+          <span class="mr-2">Iniciar sesión</span>
+        </v-btn>
+        <v-btn href="" target="_blank" v-on:click="registerPopUp" text>
+          <span class="mr-2">Registrarse</span>
+        </v-btn>
+      </div>
+
+      <div class="avatar-container" v-if="showUser">
+        <v-avatar color="info">
+          <v-icon size="x-large">mdi-account</v-icon>
+        </v-avatar>
+        <p>Usuario X</p>
+        <v-icon class="menu-icon" v-on:click="userDropdown">mdi-menu</v-icon>
+      </div>
+
+      <div class="user-dropdown" v-if="showUserDropdown">
+        <p>Información personal</p>
+        <p>Mis compras</p>
+        <p v-on:click="logout">Cerrar sesión</p>
+      </div>
+    </v-app-bar>
+  </v-container>
+</template>
+
+<script>
+export default {
+  name: "HeaderComponent",
+
+  data: () => ({
+    showLoginPopUp: false,
+    showRegisterPopUp: false,
+    showUserDropdown: false,
+    showUser: false,
+  }),
+  methods: {
+    loginPopUp() {
+      this.showLoginPopUp = !this.showLoginPopUp;
+    },
+    login() {
+      // TODO
+      // hacer comprobaciones de que los datos sean correctos
+
+      this.showLoginPopUp = false;
+      this.showUser = true;
+    },
+    registerPopUp() {
+      this.showRegisterPopUp = !this.showRegisterPopUp;
+    },
+    register() {
+      // TODO
+      // hacer comprobaciones de que los datos sean correctos
+      // añadir el usuario a la base de datos
+
+      this.showRegisterPopUp = false;
+      this.showUser = true;
+    },
+    logout() {
+      this.showUserDropdown = false;
+      this.showUser = false;
+    },
+    userDropdown() {
+      this.showUserDropdown = !this.showUserDropdown;
+    },
+  },
+};
+</script>
+
+
+<style scoped>
+.header-container {
+  height: 84px;
+}
+.v-app-bar {
+  height: 84px !important;
+  display: flex;
+  align-items: center;
+}
+.btn-container {
+  position: fixed;
+  right: 10px;
+  height: 36px;
+}
+.avatar-container {
+  position: fixed;
+  right: 10px;
+  height: 48px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+}
+.avatar-container p {
+  margin-bottom: 0;
+  margin-left: 20px;
+}
+header {
+  display: flex;
+  justify-content: center;
+}
+.v-btn {
+  border: 1px solid black;
+  margin: 0 10px;
+}
+.menu-icon {
+  margin-left: 16px;
+}
+.user-dropdown {
+  width: 240px;
+  height: 154px;
+  background-color: #1976d2;
+  position: fixed;
+  right: 0;
+  top: 84px;
+}
+.user-dropdown p {
+  margin: 20px 20px;
+}
+.user-dropdown p:hover {
+  cursor: pointer;
+}
+</style>
