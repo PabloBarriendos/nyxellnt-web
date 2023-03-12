@@ -98,7 +98,7 @@ export default {
       console.log(this.ordenFecha);
       if (this.ordenFecha != null) {
         await fetch(
-          `https://nyxellnt-api-2.azurewebsites.net/evento/ordenarFecha/${this.ordenFecha}`
+          `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}/ordenarFecha/${this.ordenFecha}`
         )
           .then((response) => response.json())
           .then((data) => (this.resultados = data))

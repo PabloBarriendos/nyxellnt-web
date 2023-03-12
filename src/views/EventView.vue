@@ -67,6 +67,8 @@
           v-model="ticket"
           label="Número de entradas"
           type="number"
+          min="1"
+          :max="this.resultados.stock"
         ></v-text-field>
 
         <v-btn
