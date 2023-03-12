@@ -210,7 +210,6 @@ export default {
       .then((response) => response.json())
       .then((data) => (this.resultados = data))
       .catch((error) => console.error(error));
-    console.log(this.resultados);
   },
 };
 </script>

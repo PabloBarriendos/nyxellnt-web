@@ -64,17 +64,22 @@ export default {
       .then(response => response.json())
       .then(data => this.resultados = data)
       .catch(error => console.error(error));
-      console.log(this.resultados)
   },
   methods: {
-    buscar(){
-      this.resultados
+    async buscar(){
+      await fetch('https://nyxellnt-api-2.azurewebsites.net/evento')
+      .then(response => response.json())
+      .then(data => this.resultados = data)
+      .catch(error => console.error(error));
+
+      this.resultados = this.resultados.filter(item => {
+        if(item.nombre.toLowerCase().includes(this.search) || item.cantante.toLowerCase().includes(this.search)){
+          return item
+        }
+      });
 
     },
     async requestFiltro(){
-      console.log(this.genero);
-      console.log(this.ordenPrecio);
-
       if(this.genero == 'Todas las categorías' && this.ordenPrecio==null){
         await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/`)
         .then(response => response.json())
@@ -99,8 +104,6 @@ export default {
         .then(data => this.resultados = data)
         .catch(error => console.error(error));
       }
-
-      console.log(this.resultados);
 
     }
   }

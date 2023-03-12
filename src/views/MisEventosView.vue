@@ -12,7 +12,7 @@
             hide-details
             class="buscador"
           ></v-text-field>
-          <v-card-actions class="btn-buscar">
+          <v-card-actions v-on:click="buscar" class="btn-buscar">
             <v-btn>Buscar</v-btn>
           </v-card-actions>
         </div>
@@ -74,13 +74,12 @@ export default {
       .then((response) => response.json())
       .then((data) => (this.listaOperaciones = data))
       .catch((error) => console.error(error));
-    console.log(this.listaOperaciones);
 
     await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
       .then((response) => response.json())
       .then((data) => (this.listaEventos = data))
       .catch((error) => console.error(error));
-    console.log(this.listaEventos);
+    this.resultados = [];
 
     this.listaOperaciones.forEach((operacion) => {
       this.listaEventos.forEach((evento) => {
@@ -89,20 +88,67 @@ export default {
         }
       });
     });
-    console.log(this.resultados);
-    console.log(this.resultados[0].evento.idEvento);
-
   },
   methods: {
+    async buscar(){
+      await fetch(
+      `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
+    )
+      .then((response) => response.json())
+      .then((data) => (this.listaOperaciones = data))
+      .catch((error) => console.error(error));
+
+    await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
+      .then((response) => response.json())
+      .then((data) => (this.listaEventos = data))
+      .catch((error) => console.error(error));
+    this.resultados = [];
+
+    this.listaOperaciones.forEach((operacion) => {
+      this.listaEventos.forEach((evento) => {
+        if (operacion.idEvento == evento.idEvento) {
+          this.resultados.push({ operacion, evento });
+        }
+      });
+    });
+
+      this.resultados = this.resultados.filter(item => {
+        if(item.evento.nombre.toLowerCase().includes(this.search) || item.evento.cantante.toLowerCase().includes(this.search)){
+          return item
+        }
+      });
+
+    },
     async requestFiltro() {
-      console.log(this.ordenFecha);
       if (this.ordenFecha != null) {
         await fetch(
-          `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}/ordenarFecha/${this.ordenFecha}`
+          `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
         )
           .then((response) => response.json())
-          .then((data) => (this.resultados = data))
+          .then((data) => (this.listaOperaciones = data))
           .catch((error) => console.error(error));
+
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
+          .then((response) => response.json())
+          .then((data) => (this.listaEventos = data))
+          .catch((error) => console.error(error));
+
+        if(this.ordenFecha == true){
+          this.listaOperaciones.sort((a, b) => new Date(a.fechaCompra) - new Date(b.fechaCompra));
+        }else{
+          this.listaOperaciones.sort((a, b) => new Date(b.fechaCompra) - new Date(a.fechaCompra));
+        }
+        this.resultados = [];
+
+        this.listaOperaciones.forEach((operacion) => {
+          this.listaEventos.forEach((evento) => {
+            if (operacion.idEvento == evento.idEvento) {
+              this.resultados.push({ operacion, evento });
+            }
+          });
+        });
+
+
       }
     },
   },

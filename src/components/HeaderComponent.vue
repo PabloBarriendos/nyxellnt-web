@@ -239,15 +239,12 @@ export default {
         .catch((error) => console.error(error));
 
       this.resultados.forEach((element) => {
-        console.log(element);
         if (
           element.email == document.getElementById("emailLogin")?.value &&
           element.password == document.getElementById("passwordLogin")?.value
         ) {
           this.usuario = element;
           document.cookie = `idUsuario=${element.idUsuario}`;
-          console.log(document.cookie["idUsuario"]);
-          console.log(document.cookie);
           this.showUser = true;
         }
       });
