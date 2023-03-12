@@ -183,7 +183,7 @@
       </div>
 
       <div class="user-dropdown" v-if="showUserDropdown">
-        <p v-on:click="() => showInfo">Información personal</p>
+        <p v-on:click="showInfo">Información personal</p>
         <p v-on:click="misCompras">Mis compras</p>
         <p v-on:click="logout">Cerrar sesión</p>
       </div>
