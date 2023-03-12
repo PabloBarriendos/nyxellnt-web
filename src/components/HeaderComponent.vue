@@ -11,30 +11,17 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field
-                      id="emailLogin"
-                      label="Email*"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="emailLogin" label="Email*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="passwordLogin"
-                      label="Contraseña*"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="() => (showLoginPopUp = false)"
-              >
+              <v-btn color="blue-darken-1" variant="text" @click="() => (showLoginPopUp = false)">
                 Cerrar
               </v-btn>
               <v-btn color="blue-darken-1" variant="text" @click="login">
@@ -52,65 +39,31 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      id="nombre"
-                      label="Nombre*"
-                      @change="checkRegister"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="nombre" label="Nombre*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      id="apellido"
-                      label="Apellido*"
-                      @change="checkRegister"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="apellido" label="Apellido*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="email"
-                      label="Email*"
-                      @change="checkRegister"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="email" label="Email*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="password"
-                      label="Contraseña*"
-                      @change="checkRegister"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="password" label="Contraseña*" @change="checkRegister" type="password"
+                      required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="password2"
-                      label="Repetir contraseña*"
-                      @change="checkRegister"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="password2" label="Repetir contraseña*" @change="checkRegister" type="password"
+                      required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="() => (showRegisterPopUp = false)"
-              >
+              <v-btn color="blue-darken-1" variant="text" @click="() => (showRegisterPopUp = false)">
                 Cerrar
               </v-btn>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="register"
-                :disabled="registerDisabled"
-              >
+              <v-btn color="blue-darken-1" variant="text" @click="register" :disabled="registerDisabled">
                 Registrarse
               </v-btn>
             </v-card-actions>
@@ -125,35 +78,27 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Nombre"
-                      ><strong>Nombre: {{ this.usuario.nombre }}</strong>
+                    <v-card-text label="Nombre"><strong>Nombre: {{ this.usuario.nombre }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Apellidos"
-                      ><strong>Apellido: {{ this.usuario.apellido }}</strong>
+                    <v-card-text label="Apellidos"><strong>Apellido: {{ this.usuario.apellido }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Email"
-                      ><strong>Email: {{ this.usuario.email }}</strong>
+                    <v-card-text label="Email"><strong>Email: {{ this.usuario.email }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Contraseña" type="password"
-                      ><strong>Contraseña: </strong> ***********</v-card-text
-                    >
+                    <v-card-text label="Contraseña" type="password"><strong>Contraseña: </strong>
+                      ***********</v-card-text>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="() => (showPersonalInfoPopUp = false)"
-              >
+              <v-btn color="blue-darken-1" variant="text" @click="() => (showPersonalInfoPopUp = false)">
                 Cerrar
               </v-btn>
             </v-card-actions>
@@ -218,7 +163,7 @@ export default {
         document.getElementById("email")?.value &&
         document.getElementById("password")?.value &&
         document.getElementById("password")?.value ==
-          document.getElementById("password2")?.value
+        document.getElementById("password2")?.value
       ) {
         this.registerDisabled = false;
       } else {

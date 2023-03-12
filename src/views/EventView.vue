@@ -22,63 +22,24 @@
 
     <v-sheet width="300" class="mx-auto">
       <v-form fast-fail @submit.prevent>
-        <v-text-field
-          id="firstName"
-          @change="checkCompra"
-          v-model="firstName"
-          label="Nombre"
-          :rules="firstNameRules"
-        ></v-text-field>
+        <v-text-field id="firstName" @change="checkCompra" v-model="firstName" label="Nombre"
+          :rules="firstNameRules"></v-text-field>
 
-        <v-text-field
-          id="lastName"
-          @change="checkCompra"
-          v-model="lastName"
-          label="Apellidos"
-          :rules="lastNameRules"
-        ></v-text-field>
+        <v-text-field id="lastName" @change="checkCompra" v-model="lastName" label="Apellidos"
+          :rules="lastNameRules"></v-text-field>
 
-        <v-text-field
-          id="phone"
-          @change="checkCompra"
-          v-model="phone"
-          :rules="phoneRules"
-          label="Teléfono"
-        ></v-text-field>
+        <v-text-field id="phone" @change="checkCompra" v-model="phone" :rules="phoneRules"
+          label="Teléfono"></v-text-field>
 
-        <v-text-field
-          id="creditCard"
-          @change="checkCompra"
-          v-model="creditCard"
-          label="Tarjeta de Crédito"
-        ></v-text-field>
+        <v-text-field id="creditCard" @change="checkCompra" v-model="creditCard"
+          label="Tarjeta de Crédito"></v-text-field>
 
-        <v-text-field
-          id="email"
-          @change="checkCompra"
-          v-model="email"
-          label="Email"
-          :rules="emailRules"
-        ></v-text-field>
+        <v-text-field id="email" @change="checkCompra" v-model="email" label="Email" :rules="emailRules"></v-text-field>
 
-        <v-text-field
-          id="ticket"
-          @change="checkCompra"
-          v-model="ticket"
-          label="Número de entradas"
-          type="number"
-          min="1"
-          :max="this.resultados.stock"
-        ></v-text-field>
+        <v-text-field id="ticket" @change="checkCompra" v-model="ticket" label="Número de entradas" type="number" min="1"
+          :max="this.resultados.stock"></v-text-field>
 
-        <v-btn
-          type="submit"
-          block
-          class="mt-2"
-          v-on:click="comprarEvento"
-          :disabled="comprarDisabled"
-          >Aceptar</v-btn
-        >
+        <v-btn type="submit" block class="mt-2" v-on:click="comprarEvento" :disabled="comprarDisabled">Aceptar</v-btn>
       </v-form>
     </v-sheet>
   </v-container>

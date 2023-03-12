@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     id: null,
     user: null,
     counter: 0,
-    userList: []
+    userList: [],
   },
   mutations: {
     setId(state, id) {
@@ -18,31 +18,31 @@ export default new Vuex.Store({
       state.user = user;
     },
     increment(state, value) {
-      state.counter += value
+      state.counter += value;
     },
     decrement(state) {
-      state.counter--
+      state.counter--;
     },
     initUsers(state, users) {
-      state.userList = users
-    }
+      state.userList = users;
+    },
   },
   actions: {
     setId(context, id) {
-      context.commit('setId', id);
+      context.commit("setId", id);
     },
     setUser(context, user) {
-      context.commit('setUser', user);
+      context.commit("setUser", user);
     },
     fetchUsers({ commit }) {
-      fetch('https://dummy.restapiexample.com/api/v1/employees')
-        .then(response => response.json())
-        .then(response => {
-          console.log(`data ${response.data}`)
+      fetch("https://dummy.restapiexample.com/api/v1/employees")
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(`data ${response.data}`);
 
-          commit('initUsers', response.data)
-        })
-    }
+          commit("initUsers", response.data);
+        });
+    },
   },
   getters: {
     getId(state) {
@@ -50,8 +50,7 @@ export default new Vuex.Store({
     },
     getUser(state) {
       return state.user;
-    }
+    },
   },
-  modules: {
-  }
-})
+  modules: {},
+});

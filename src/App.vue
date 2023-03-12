@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <HeaderComponent/>
+    <HeaderComponent />
     <router-view><v-content></v-content></router-view>
-    <footerComponent/>
+    <footerComponent />
   </v-app>
 </template>
 

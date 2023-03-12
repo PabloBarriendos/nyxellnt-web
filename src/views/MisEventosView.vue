@@ -4,49 +4,27 @@
       <v-card-title>
         Filtros
         <div class="buscador-container">
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Buscar"
-            single-line
-            hide-details
-            class="buscador"
-          ></v-text-field>
+          <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
+            class="buscador"></v-text-field>
           <v-card-actions v-on:click="buscar" class="btn-buscar">
             <v-btn>Buscar</v-btn>
           </v-card-actions>
         </div>
-        <v-select
-          v-model="ordenFecha"
-          class="fechaFilter"
-          label="Ordenar por fecha"
-          item-text="orden"
-          :items="[
-            { value: true, orden: 'Fecha más reciente' },
-            { value: false, orden: 'Fecha más antigua' },
-          ]"
-        ></v-select>
+        <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
+          { value: true, orden: 'Fecha más reciente' },
+          { value: false, orden: 'Fecha más antigua' },
+        ]"></v-select>
       </v-card-title>
       <v-card-actions class="btn-filtrar" v-on:click="requestFiltro">
         <v-btn>Filtrar</v-btn>
       </v-card-actions>
     </v-card>
 
-    <MisEventosCardComponent
-      v-for="item in this.resultados"
-      :key="item.operacion.idOperacion"
-      :id="item.operacion.idOperacion"
-      :titulo="item.evento.nombre"
-      :cantante="item.evento.cantante"
-      :descripcion="item.evento.descripcion"
-      :localidad="item.evento.localidad"
-      :genero="item.evento.categoria"
-      :precioEntrada="item.evento.precioEntrada"
-      :fecha="item.evento.fecha"
-      :fechaCompra="item.operacion.fechaCompra"
-      :precioTotal="item.operacion.precioTotal"
-      :numEntradas="item.operacion.numEntradasCompradas"
-    />
+    <MisEventosCardComponent v-for="item in this.resultados" :key="item.operacion.idOperacion"
+      :id="item.operacion.idOperacion" :titulo="item.evento.nombre" :cantante="item.evento.cantante"
+      :descripcion="item.evento.descripcion" :localidad="item.evento.localidad" :genero="item.evento.categoria"
+      :precioEntrada="item.evento.precioEntrada" :fecha="item.evento.fecha" :fechaCompra="item.operacion.fechaCompra"
+      :precioTotal="item.operacion.precioTotal" :numEntradas="item.operacion.numEntradasCompradas" />
   </v-container>
 </template>
   
@@ -90,30 +68,30 @@ export default {
     });
   },
   methods: {
-    async buscar(){
+    async buscar() {
       await fetch(
-      `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
-    )
-      .then((response) => response.json())
-      .then((data) => (this.listaOperaciones = data))
-      .catch((error) => console.error(error));
+        `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
+      )
+        .then((response) => response.json())
+        .then((data) => (this.listaOperaciones = data))
+        .catch((error) => console.error(error));
 
-    await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
-      .then((response) => response.json())
-      .then((data) => (this.listaEventos = data))
-      .catch((error) => console.error(error));
-    this.resultados = [];
+      await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
+        .then((response) => response.json())
+        .then((data) => (this.listaEventos = data))
+        .catch((error) => console.error(error));
+      this.resultados = [];
 
-    this.listaOperaciones.forEach((operacion) => {
-      this.listaEventos.forEach((evento) => {
-        if (operacion.idEvento == evento.idEvento) {
-          this.resultados.push({ operacion, evento });
-        }
+      this.listaOperaciones.forEach((operacion) => {
+        this.listaEventos.forEach((evento) => {
+          if (operacion.idEvento == evento.idEvento) {
+            this.resultados.push({ operacion, evento });
+          }
+        });
       });
-    });
 
       this.resultados = this.resultados.filter(item => {
-        if(item.evento.nombre.toLowerCase().includes(this.search) || item.evento.cantante.toLowerCase().includes(this.search)){
+        if (item.evento.nombre.toLowerCase().includes(this.search) || item.evento.cantante.toLowerCase().includes(this.search)) {
           return item
         }
       });
@@ -133,9 +111,9 @@ export default {
           .then((data) => (this.listaEventos = data))
           .catch((error) => console.error(error));
 
-        if(this.ordenFecha == true){
+        if (this.ordenFecha == true) {
           this.listaOperaciones.sort((a, b) => new Date(a.fechaCompra) - new Date(b.fechaCompra));
-        }else{
+        } else {
           this.listaOperaciones.sort((a, b) => new Date(b.fechaCompra) - new Date(a.fechaCompra));
         }
         this.resultados = [];
