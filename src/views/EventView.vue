@@ -4,7 +4,7 @@
             <img src="../photo/R.jpeg">
             <div>
                 <v-card-title>
-                    40 Aniversario Rock&Rios
+                    40 Aniversario Rock&Rios - {{this.getId}}
                 </v-card-title>
                 <v-card-subtitle>
                     Miguel Ríos - Wizink Center de Madrid - Rock
@@ -49,11 +49,13 @@ export default {
     computed: {
       ...mapGetters(['getId']),
       id() {
+        console.log("id:"+this.getId)
         return this.getId;
       }
     },
     data: () => ({
         firstName: '',
+        // getId: null,
         firstNameRules: [
             value => {
                 if (value?.length > 3) return true
@@ -83,6 +85,7 @@ export default {
                 return 'Debe ser un Email valido.'
             }
         ],
+        creditCard: '',
         creditCardRules: [
             value => {
                 if (/^[0-9]{4}-?[0-9]{4}-?[0-9]{4}-?[0-9]{4}$/i.test(value)) {
@@ -101,15 +104,16 @@ export default {
                     return 'Debe ser un número de tajeta de crédito válido.';
                 }
             }
-        ]
+        ],
+        ticket: 0
     }),
-    mounted() {
-        fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/${this.getId}`)
+    async mounted() {
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/${this.getId}`)
         .then(response => response.json())
         .then(data => this.resultados = data)
         .catch(error => console.error(error));
         console.log(this.resultados)
-  },
+    },
 }
 </script>
 

@@ -132,7 +132,7 @@
 </template>
 
 <script>
-
+import { mapActions } from 'vuex';
 export default {
   name: "HeaderComponent",
 
@@ -154,11 +154,11 @@ export default {
     loginPopUp() {
       this.showLoginPopUp = !this.showLoginPopUp;
     },
-    login() {
+    async login() {
       // TODO
       // hacer comprobaciones de que los datos sean correctos
 
-      fetch('https://nyxellnt-api-2.azurewebsites.net/usuario')
+      await fetch('https://nyxellnt-api-2.azurewebsites.net/usuario')
       .then(response => response.json())
       .then(data => this.resultados = data)
       .catch(error => console.error(error));
@@ -167,7 +167,7 @@ export default {
 
       for(let i; i<this.resultados.length; i++){
         if(this.resultados[i].email == document.getElementById("emailLogin")?.value && this.resultados[i].password == document.getElementById("passwordLogin")?.value){
-          setUser(this.resultados[i]);
+          this.setUser(this.resultados[i]);
           this.showUser = true;
         }
         this.showLoginPopUp = false;

@@ -6,21 +6,18 @@
         <div class="derecha">
             <v-card-title>
                 {{titulo}}
-                <!-- 40 Aniversario Rock&Rios -->
             </v-card-title>
             <v-card-subtitle>
-                {{cantante}} - {{localidad}} -{{genero}}
-                <!-- Miguel Ríos - Wizink Center de Madrid - Rock -->
+                {{cantante}} - {{localidad}} - {{genero}}
             </v-card-subtitle>
             <v-card-text>
                 {{descripcion}}
-                <!-- Cuarenta años, en apariencia, no son nada, pero cuando se celebran ha de hacerse a lo grande, y esta ocasión
-                lo merece, pues han pasado cuatro décadas de las dos veladas del Rock & Ríos en el Pabellón de la Ciudad
-                Deportiva del Real Madrid los días 5 y 6 de marzo de 1982. -->
             </v-card-text>
             <v-card-text>
                 Fecha del evento: {{fecha}}
-                <!-- Fecha del evento: 2023-03-11 -->
+            </v-card-text>
+            <v-card-text>
+                Precio: {{precio}} €
             </v-card-text>
             <v-card-actions>
                 <v-btn class="mx-4 white--text" @click="setId" elevation="2" x-large rounded color="blue" to="/evento">
@@ -35,13 +32,13 @@
   import { mapActions } from 'vuex';
   export default {
     props: {
-        id: String,
+        id: Number,
         titulo: String,
         cantante: String,
         descripcion: String,
         localidad: String,
         genero: String,
-        precio: String,
+        precio: Number,
         fecha: String,
     },
     methods: {

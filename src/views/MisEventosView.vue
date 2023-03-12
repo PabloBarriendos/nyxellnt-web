@@ -41,18 +41,18 @@ export default {
       ordenFecha: null
     };
   },
-  mounted() {
-    fetch('https://nyxellnt-api-2.azurewebsites.net/operacion')
+  async mounted() {
+    await fetch('https://nyxellnt-api-2.azurewebsites.net/operacion')
       .then(response => response.json())
       .then(data => this.resultados = data)
       .catch(error => console.error(error));
       console.log(this.resultados)
   },
   methods: {
-    requestFiltro(){
+    async requestFiltro(){
       console.log(this.ordenFecha);
       if(this.ordenFecha!=null){
-        fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/ordenarFecha/${this.ordenFecha}`)
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/ordenarFecha/${this.ordenFecha}`)
         .then(response => response.json())
         .then(data => this.resultados = data)
         .catch(error => console.error(error));
