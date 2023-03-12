@@ -44,12 +44,24 @@ export default {
   },
   data() {
     return {
+      resultados: [],
       search: "",
       checkbox1: true,
       checkbox2: false,
     };
   },
+
+  mounted() {
+    fetch('https://nyxellnt-api-2.azurewebsites.net/evento')
+      .then(response => response.json())
+      .then(data => this.resultados = data)
+      .catch(error => console.error(error));
+    console.log(this.resultados)
+  },
+
 };
+
+
 </script>
 
 <style scoped>
