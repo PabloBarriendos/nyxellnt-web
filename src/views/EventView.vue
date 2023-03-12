@@ -15,7 +15,7 @@
         </v-card-text>
         <v-card-text> Fecha evento: {{ this.resultados.fecha }} </v-card-text>
         <v-card-text>
-          Precio entrada: {{ this.resultados.precioEntrada }}
+          Precio entrada: {{ this.resultados.precioEntrada }} €
         </v-card-text>
       </div>
     </div>
