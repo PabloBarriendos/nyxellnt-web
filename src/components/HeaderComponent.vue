@@ -261,7 +261,7 @@ export default {
       // hacer comprobaciones de que los datos sean correctos
       // añadir el usuario a la base de datos
 
-      let res = await fetch(
+      await fetch(
         "https://nyxellnt-api-2.azurewebsites.net/usuario",
         {
           method: "POST",
@@ -277,20 +277,13 @@ export default {
           }),
         }
       );
-      await res.json().then(() => {
-        this.usuario = {
-          nombre: document.getElementById("nombre")?.value,
-          apellido: document.getElementById("apellido")?.value,
-          email: document.getElementById("email")?.value,
-          password: document.getElementById("password")?.value,
-        };
-      });
 
       await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
         .then((response) => response.json())
         .then((data) =>
           data.forEach((usuario) => {
             if (usuario.email == document.getElementById("email")?.value) {
+              this.usuario = usuario;
               document.cookie = `idUsuario=${usuario.idUsuario}`;
             }
           })
