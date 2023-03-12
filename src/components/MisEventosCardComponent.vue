@@ -5,31 +5,44 @@
         </div>
         <div class="derecha">
             <v-card-title>
-                40 Aniversario Rock&Rios
+                {{ titulo }}
             </v-card-title>
             <v-card-subtitle>
-                Miguel Ríos - Wizink Center de Madrid - Rock
+                {{ cantante }} - {{ localidad }} - {{ genero }}
             </v-card-subtitle>
             <v-card-text>
-                Cuarenta años, en apariencia, no son nada, pero cuando se celebran ha de hacerse a lo grande, y esta ocasión
-                lo merece, pues han pasado cuatro décadas de las dos veladas del Rock & Ríos en el Pabellón de la Ciudad
-                Deportiva del Real Madrid los días 5 y 6 de marzo de 1982.
+                {{ descripcion }}
+            </v-card-text>
+            <v-card-text> Fecha del evento: {{ fecha }} </v-card-text>
+            <v-card-text> Precio entrada: {{ precioEntrada }} € </v-card-text>
+            <v-card-text>
+                Entradas compradas: {{ numEntradas }}
             </v-card-text>
             <v-card-text>
-                Fecha del evento: 2023-03-11
+                Precio total: {{ precioTotal }} €
             </v-card-text>
-            <v-card-text>
-                Fecha de compra:
-            </v-card-text>
-            <v-card-text>
-                Entradas compradas:
-            </v-card-text>
-            <v-card-text>
-                Precio total:
-            </v-card-text>
+            <v-card-text> Fecha de compra: {{ fechaCompra }} </v-card-text>
         </div>
     </v-card>
 </template>
+
+<script>
+export default {
+  props: {
+    id: Number,
+    titulo: String,
+    cantante: String,
+    descripcion: String,
+    localidad: String,
+    genero: String,
+    numEntradas: Number,
+    precioEntrada: Number,
+    precioTotal: Number,
+    fecha: String,
+    fechaCompra: String,
+  }
+};
+</script>
 
 <style scoped>
 .tarjeta {

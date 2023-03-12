@@ -6,7 +6,7 @@
         <div class="buscador-container">
           <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
             class="buscador"></v-text-field>
-          <v-card-actions class="btn-buscar">
+          <v-card-actions v-on:click="buscar" class="btn-buscar">
             <v-btn>Buscar</v-btn>
           </v-card-actions>
         </div>
@@ -30,7 +30,7 @@
       </v-card-title>
     </v-card>
 
-    <CardComponent v-for="evento in this.resultados" :key="evento.id"  :id="evento.idEvento"
+    <CardComponent v-for="evento in this.resultados" :key="evento.idEvento"  :id="evento.idEvento"
         :titulo="evento.nombre"
         :cantante="evento.cantante"
         :descripcion="evento.descripcion"
@@ -66,6 +66,10 @@ export default {
       console.log(this.resultados)
   },
   methods: {
+    buscar(){
+      this.resultados
+
+    },
     async requestFiltro(){
       console.log(this.genero);
       console.log(this.ordenPrecio);
