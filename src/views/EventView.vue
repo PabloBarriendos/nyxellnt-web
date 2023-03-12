@@ -141,8 +141,6 @@ export default {
     selectUsuario() {
       var cookies = document.cookie;
       var cookiesArray = cookies.split(";");
-
-      // Buscar la cookie deseada por su nombre
       var miCookieValue = "";
       for (var i = 0; i < cookiesArray.length; i++) {
         var cookie = cookiesArray[i];
@@ -154,8 +152,6 @@ export default {
           break;
         }
       }
-
-      // Usar el valor de la cookie deseada
       return miCookieValue;
     },
     async comprarEvento() {

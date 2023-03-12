@@ -254,10 +254,6 @@ export default {
       this.showRegisterPopUp = !this.showRegisterPopUp;
     },
     async register() {
-      // TODO
-      // hacer comprobaciones de que los datos sean correctos
-      // añadir el usuario a la base de datos
-
       await fetch(
         "https://nyxellnt-api-2.azurewebsites.net/usuario",
         {
