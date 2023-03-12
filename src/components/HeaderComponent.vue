@@ -245,7 +245,7 @@ export default {
           element.password == document.getElementById("passwordLogin")?.value
         ) {
           this.usuario = element;
-          document.cookie = `${element.idUsuario}`;
+          document.cookie = `idUsuario=${element.idUsuario}`;
           console.log(document.cookie["idUsuario"]);
           console.log(document.cookie);
           this.showUser = true;
@@ -291,7 +291,7 @@ export default {
         .then((data) =>
           data.forEach((usuario) => {
             if (usuario.email == document.getElementById("email")?.value) {
-              document.cookie = `${usuario.idUsuario}`;
+              document.cookie = `idUsuario=${usuario.idUsuario}`;
             }
           })
         )
@@ -303,6 +303,7 @@ export default {
     logout() {
       this.showUserDropdown = false;
       this.showUser = false;
+      this.$router.push(`/`);
     },
     misCompras() {
       this.showUserDropdown = false;

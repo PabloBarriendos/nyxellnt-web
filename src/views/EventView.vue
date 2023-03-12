@@ -91,7 +91,7 @@ export default {
     firstName: "",
     firstNameRules: [
       (value) => {
-        if (value?.length > 3) return true;
+        if (value?.length > 2) return true;
 
         return "El nombre debe contener al menos 3 carácteres.";
       },

@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       resultados: [],
+      resultadosBuscador: [],
       search: "",
       genero: null,
       ordenPrecio: null
