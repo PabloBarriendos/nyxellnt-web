@@ -10,7 +10,7 @@
             <v-btn>Buscar</v-btn>
           </v-card-actions>
         </div>
-        <v-select class="categoriasFilter" label="Categorías" :items="[
+        <v-select v-model="genero" class="categoriasFilter" label="Categorías" :items="[
           'Todas las categorías',
           'Rock',
           'Pop',
@@ -19,15 +19,26 @@
           'Musical',
           'Opera',
         ]"></v-select>
-        <v-select class="precioFilter" label="Ordenar por precio"
-          :items="['Precio ascendente', 'Precio descendente']"></v-select>
-        <v-card-actions class="btn-filtrar">
+        <v-select v-model="ordenPrecio" class="precioFilter" label="Ordenar por precio" item-text="orden"
+          :items="[
+          {value: true, orden: 'Precio ascendente'},
+          {value: false, orden: 'Precio descendente'},
+          ]"></v-select>
+        <v-card-actions class="btn-filtrar" v-on:click="requestFiltro">
           <v-btn>Filtrar</v-btn>
         </v-card-actions>
       </v-card-title>
     </v-card>
 
-    <CardComponent />
+    <CardComponent   id= "String"
+        titulo="String"
+        cantante="String"
+        descripcion="String"
+        localidad="String"
+        genero="String"
+        precio="String"
+        fecha="String"
+        />
     <CardComponent />
     <CardComponent />
     <CardComponent />
@@ -46,18 +57,43 @@ export default {
     return {
       resultados: [],
       search: "",
-      checkbox1: true,
-      checkbox2: false,
+      genero: null,
+      ordenPrecio: null
     };
   },
-
   mounted() {
     fetch('https://nyxellnt-api-2.azurewebsites.net/evento')
       .then(response => response.json())
       .then(data => this.resultados = data)
       .catch(error => console.error(error));
-    console.log(this.resultados)
+      console.log(this.resultados)
   },
+  methods: {
+    requestFiltro(){
+      console.log(this.genero);
+      console.log(this.ordenPrecio);
+
+      if(this.genero != null && this.genero != 'Todas las categorías' && this.ordenPrecio==null){
+        fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/genero/${this.genero}`)
+        .then(response => response.json())
+        .then(data => this.resultados = data)
+        .catch(error => console.error(error));
+      }
+      if((this.genero == null || this.genero == 'Todas las categorías') && this.ordenPrecio!=null){
+        fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/ordenarPrecio/${this.ordenPrecio}`)
+        .then(response => response.json())
+        .then(data => this.resultados = data)
+        .catch(error => console.error(error));
+      }
+      if(this.genero != null && this.genero != 'Todas las categorías' && this.ordenPrecio!=null){
+        fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/genero/${this.genero}/precio/${this.ordenPrecio}`)
+        .then(response => response.json())
+        .then(data => this.resultados = data)
+        .catch(error => console.error(error));
+      }
+
+    }
+  }
 
 };
 

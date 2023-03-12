@@ -10,10 +10,13 @@
             <v-btn>Buscar</v-btn>
           </v-card-actions>
         </div>
-        <v-select class="precioFilter" label="Ordenar por fehca"
-          :items="['Fecha más reciente', 'Fecha más antigua']"></v-select>
+        <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden"
+          :items="[
+          {value: true, orden: 'Fecha más reciente'},
+          {value: false, orden: 'Fecha más antigua'},
+          ]"></v-select>
       </v-card-title>
-      <v-card-actions class="btn-filtrar">
+      <v-card-actions class="btn-filtrar" v-on:click="requestFiltro">
         <v-btn>Filtrar</v-btn>
       </v-card-actions>
     </v-card>
@@ -35,8 +38,28 @@ export default {
   data() {
     return {
       search: "",
+      ordenFecha: null
     };
   },
+  mounted() {
+    fetch('https://nyxellnt-api-2.azurewebsites.net/operacion')
+      .then(response => response.json())
+      .then(data => this.resultados = data)
+      .catch(error => console.error(error));
+      console.log(this.resultados)
+  },
+  methods: {
+    requestFiltro(){
+      console.log(this.ordenFecha);
+      if(this.ordenFecha!=null){
+        fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/ordenarFecha/${this.ordenFecha}`)
+        .then(response => response.json())
+        .then(data => this.resultados = data)
+        .catch(error => console.error(error));
+      }
+
+    }
+  }
 };
 </script>
   
@@ -67,7 +90,7 @@ export default {
   margin-right: 20px
 }
 
-.filtros .precioFilter {
+.filtros .fechaFilter {
   width: 200px;
   margin-right: 40px;
 }

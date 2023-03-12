@@ -41,9 +41,17 @@
 </template>
   
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     name: "EventComponent",
 
+    computed: {
+      ...mapGetters(['getId']),
+      id() {
+        return this.getId;
+      }
+    },
     data: () => ({
         firstName: '',
         firstNameRules: [
@@ -95,6 +103,13 @@ export default {
             }
         ]
     }),
+    mounted() {
+        fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/${this.getId}`)
+        .then(response => response.json())
+        .then(data => this.resultados = data)
+        .catch(error => console.error(error));
+        console.log(this.resultados)
+  },
 }
 </script>
 

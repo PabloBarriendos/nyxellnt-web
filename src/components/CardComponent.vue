@@ -5,27 +5,53 @@
         </div>
         <div class="derecha">
             <v-card-title>
-                40 Aniversario Rock&Rios
+                {{titulo}}
+                <!-- 40 Aniversario Rock&Rios -->
             </v-card-title>
             <v-card-subtitle>
-                Miguel Ríos - Wizink Center de Madrid - Rock
+                {{cantante}} - {{localidad}} -{{genero}}
+                <!-- Miguel Ríos - Wizink Center de Madrid - Rock -->
             </v-card-subtitle>
             <v-card-text>
-                Cuarenta años, en apariencia, no son nada, pero cuando se celebran ha de hacerse a lo grande, y esta ocasión
+                {{descripcion}}
+                <!-- Cuarenta años, en apariencia, no son nada, pero cuando se celebran ha de hacerse a lo grande, y esta ocasión
                 lo merece, pues han pasado cuatro décadas de las dos veladas del Rock & Ríos en el Pabellón de la Ciudad
-                Deportiva del Real Madrid los días 5 y 6 de marzo de 1982.
+                Deportiva del Real Madrid los días 5 y 6 de marzo de 1982. -->
             </v-card-text>
             <v-card-text>
-                Fecha del evento: 2023-03-11
+                Fecha del evento: {{fecha}}
+                <!-- Fecha del evento: 2023-03-11 -->
             </v-card-text>
             <v-card-actions>
-                <v-btn class="mx-4 white--text" elevation="2" x-large rounded color="blue" to="/evento">
+                <v-btn class="mx-4 white--text" @click="setId" elevation="2" x-large rounded color="blue" to="/evento">
                     Comprar
                 </v-btn>
             </v-card-actions>
         </div>
     </v-card>
 </template>
+
+<script>
+  import { mapActions } from 'vuex';
+  export default {
+    props: {
+        id: String,
+        titulo: String,
+        cantante: String,
+        descripcion: String,
+        localidad: String,
+        genero: String,
+        precio: String,
+        fecha: String,
+    },
+    methods: {
+      ...mapActions(['setId']),
+      setId() {
+        this.setId(this.id);
+      }
+    }
+  }
+</script>
 
 <style scoped>
 .tarjeta {

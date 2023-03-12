@@ -11,10 +11,10 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field label="Email*" required></v-text-field>
+                    <v-text-field id="emailLogin" label="Email*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Contraseña*" type="password" required></v-text-field>
+                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -39,16 +39,16 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field label="Nombre*" required></v-text-field>
+                    <v-text-field id="nombre" label="Nombre*" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field label="Apellido*" required></v-text-field>
+                    <v-text-field id="apellido" label="Apellido*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Email*" required></v-text-field>
+                    <v-text-field id="email" label="Email*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Contraseña*" type="password" required></v-text-field>
+                    <v-text-field id="password" label="Contraseña*" type="password" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field label="Repetir contraseña*" type="password" required></v-text-field>
@@ -147,6 +147,10 @@ export default {
     showPersonalInfoPopUp: false
   }),
   methods: {
+    ...mapActions(['setUser']),
+    setUser(user) {
+      this.setUser(user);
+    },
     loginPopUp() {
       this.showLoginPopUp = !this.showLoginPopUp;
     },
@@ -154,16 +158,46 @@ export default {
       // TODO
       // hacer comprobaciones de que los datos sean correctos
 
-      this.showLoginPopUp = false;
-      this.showUser = true;
+      fetch('https://nyxellnt-api-2.azurewebsites.net/usuario')
+      .then(response => response.json())
+      .then(data => this.resultados = data)
+      .catch(error => console.error(error));
+      console.log(this.resultados);
+
+
+      for(let i; i<this.resultados.length; i++){
+        if(this.resultados[i].email == document.getElementById("emailLogin")?.value && this.resultados[i].password == document.getElementById("passwordLogin")?.value){
+          setUser(this.resultados[i]);
+          this.showUser = true;
+        }
+        this.showLoginPopUp = false;
+      }
+
     },
     registerPopUp() {
       this.showRegisterPopUp = !this.showRegisterPopUp;
     },
-    register() {
+    async register() {
       // TODO
       // hacer comprobaciones de que los datos sean correctos
       // añadir el usuario a la base de datos
+      
+      let res = await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          id: 0,
+          nombre: document.getElementById("nombre")?.value,
+          apellido: document.getElementById("apellido")?.value,
+          email: document.getElementById("email")?.value,
+          password: document.getElementById("password")?.value,
+        }),
+      });
+      await res.json().then(() => {
+        location.href = location.origin;
+      });
 
       this.showRegisterPopUp = false;
       this.showUser = true;
