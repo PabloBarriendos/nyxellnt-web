@@ -4,18 +4,19 @@
             <img src="../photo/R.jpeg">
             <div>
                 <v-card-title>
-                    40 Aniversario Rock&Rios - {{this.getId}}
+                    {{this.resultados.nombre}}
                 </v-card-title>
                 <v-card-subtitle>
-                    Miguel Ríos - Wizink Center de Madrid - Rock
+                    {{this.resultados.cantante}} - {{this.resultados.localidad}} - {{this.resultados.categoria}}
                 </v-card-subtitle>
                 <v-card-text>
-                    Cuarenta años, en apariencia, no son nada, pero cuando se celebran ha de hacerse a lo grande, y esta
-                    ocasión lo merece, pues han pasado cuatro décadas de las dos veladas del Rock & Ríos en el Pabellón de
-                    la Ciudad Deportiva del Real Madrid los días 5 y 6 de marzo de 1982.
+                    {{this.resultados.descripcion}}
                 </v-card-text>
                 <v-card-text>
-                    2023-03-11
+                    {{this.resultados.fecha}}
+                </v-card-text>
+                <v-card-text>
+                    {{this.resultados.precioEntrada}}
                 </v-card-text>
             </div>
         </div>
@@ -41,21 +42,12 @@
 </template>
   
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
     name: "EventComponent",
-
-    computed: {
-      ...mapGetters(['getId']),
-      id() {
-        console.log("id:"+this.getId)
-        return this.getId;
-      }
-    },
     data: () => ({
+        resultados: [],
         firstName: '',
-        // getId: null,
         firstNameRules: [
             value => {
                 if (value?.length > 3) return true
@@ -108,7 +100,8 @@ export default {
         ticket: 0
     }),
     async mounted() {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/${this.getId}`)
+        
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/${this.$route.query.id}`)
         .then(response => response.json())
         .then(data => this.resultados = data)
         .catch(error => console.error(error));

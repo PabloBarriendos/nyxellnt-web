@@ -22,8 +22,16 @@
     </v-card>
 
     <MisEventosCardComponent />
-    <MisEventosCardComponent />
-    <MisEventosCardComponent />
+
+    <!-- <MisEventosCardComponent v-for="operacion in this.resultados" :key="operacion.id"  :id="operacion.idEvento"
+        :titulo="operacion.nombre"
+        :cantante="operacion.cantante"
+        :descripcion="operacion.descripcion"
+        :localidad="operacion.localidad"
+        :genero="operacion.categoria"
+        :precio="operacion.precioEntrada"
+        :fecha="operacion.fecha"
+        /> -->
   </v-container>
 </template>
   
@@ -37,16 +45,17 @@ export default {
   },
   data() {
     return {
+      resultados: [],
       search: "",
       ordenFecha: null
     };
   },
   async mounted() {
-    await fetch('https://nyxellnt-api-2.azurewebsites.net/operacion')
-      .then(response => response.json())
-      .then(data => this.resultados = data)
-      .catch(error => console.error(error));
-      console.log(this.resultados)
+    await fetch(`https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`)
+        .then(response => response.json())
+        .then(data => this.resultados = data)
+        .catch(error => console.error(error));
+        console.log(this.resultados)
   },
   methods: {
     async requestFiltro(){

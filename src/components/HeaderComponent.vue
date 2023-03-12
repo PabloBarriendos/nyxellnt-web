@@ -39,19 +39,19 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field id="nombre" label="Nombre*" required></v-text-field>
+                    <v-text-field id="nombre" label="Nombre*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field id="apellido" label="Apellido*" required></v-text-field>
+                    <v-text-field id="apellido" label="Apellido*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="email" label="Email*" required></v-text-field>
+                    <v-text-field id="email" label="Email*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="password" label="Contraseña*" type="password" required></v-text-field>
+                    <v-text-field id="password" label="Contraseña*" @change="checkRegister" type="password" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Repetir contraseña*" type="password" required></v-text-field>
+                    <v-text-field id="password2" label="Repetir contraseña*" @change="checkRegister" type="password" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -61,7 +61,7 @@
               <v-btn color="blue-darken-1" variant="text" @click="() => showRegisterPopUp = false">
                 Cerrar
               </v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="register">
+              <v-btn color="blue-darken-1" variant="text" @click="register" :disabled="registerDisabled">
                 Registrarse
               </v-btn>
             </v-card-actions>
@@ -76,13 +76,13 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Nombre"><strong>Nombre: </strong> </v-card-text>
+                    <v-card-text label="Nombre"><strong>Nombre: {{this.usuario.nombre}}</strong> </v-card-text>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Apellidos"><strong>Apellido: </strong> </v-card-text>
+                    <v-card-text label="Apellidos"><strong>Apellido: {{this.usuario.apellido}}</strong> </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Email"><strong>Email: </strong> </v-card-text>
+                    <v-card-text label="Email"><strong>Email: {{this.usuario.email}}</strong> </v-card-text>
                   </v-col>
                   <v-col cols="12">
                     <v-card-text label="Contraseña" type="password"><strong>Contraseña: </strong>
@@ -118,13 +118,13 @@
         <v-avatar color="info">
           <v-icon size="x-large">mdi-account</v-icon>
         </v-avatar>
-        <p>Usuario X</p>
+        <p>{{this.usuario.nombre}}</p>
         <v-icon class="menu-icon" v-on:click="userDropdown">mdi-menu</v-icon>
       </div>
 
       <div class="user-dropdown" v-if="showUserDropdown">
-        <p v-on:click="() => showPersonalInfoPopUp = true">Información personal</p>
-        <router-link to="/mis-eventos"><p>Mis compras</p></router-link> 
+        <p v-on:click="() => showInfo">Información personal</p>
+        <p v-on:click="misCompras">Mis compras</p>
         <p v-on:click="logout">Cerrar sesión</p>
       </div>
     </v-app-bar>
@@ -132,46 +132,55 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 export default {
   name: "HeaderComponent",
 
   components: {
   },
   data: () => ({
+    registerDisabled: true,
+    usuario: {
+      nombre: '',
+      apellido: '',
+      email: '',
+      password: ''
+    },
     showLoginPopUp: false,
     showRegisterPopUp: false,
     showUserDropdown: false,
     showUser: false,
-    showPersonalInformation: false,
     showPersonalInfoPopUp: false
   }),
   methods: {
-    ...mapActions(['setUser']),
-    setUser(user) {
-      this.setUser(user);
+    checkRegister(){
+      if(document.getElementById("nombre")?.value && document.getElementById("apellido")?.value && document.getElementById("email")?.value && document.getElementById("password")?.value && document.getElementById("password")?.value == document.getElementById("password2")?.value){
+        this.registerDisabled = false;
+      }else{
+        this.registerDisabled = true;
+      }
     },
     loginPopUp() {
       this.showLoginPopUp = !this.showLoginPopUp;
     },
+    showInfo(){
+      this.showPersonalInfoPopUp = true;
+      this.showUserDropdown = false;
+    },
     async login() {
-      // TODO
-      // hacer comprobaciones de que los datos sean correctos
-
       await fetch('https://nyxellnt-api-2.azurewebsites.net/usuario')
       .then(response => response.json())
       .then(data => this.resultados = data)
       .catch(error => console.error(error));
-      console.log(this.resultados);
 
-
-      for(let i; i<this.resultados.length; i++){
-        if(this.resultados[i].email == document.getElementById("emailLogin")?.value && this.resultados[i].password == document.getElementById("passwordLogin")?.value){
-          this.setUser(this.resultados[i]);
+      this.resultados.forEach(element => {
+        console.log(element)
+        if(element.email == document.getElementById("emailLogin")?.value && element.password == document.getElementById("passwordLogin")?.value){
+          this.usuario = element;
+          console.log(this.usuario)
           this.showUser = true;
         }
-        this.showLoginPopUp = false;
-      }
+      });
+      this.showLoginPopUp = false;
 
     },
     registerPopUp() {
@@ -196,7 +205,12 @@ export default {
         }),
       });
       await res.json().then(() => {
-        location.href = location.origin;
+        this.usuario = {
+          nombre: document.getElementById("nombre")?.value,
+          apellido: document.getElementById("apellido")?.value,
+          email: document.getElementById("email")?.value,
+          password: document.getElementById("password")?.value,
+        }
       });
 
       this.showRegisterPopUp = false;
@@ -205,6 +219,10 @@ export default {
     logout() {
       this.showUserDropdown = false;
       this.showUser = false;
+    },
+    misCompras(){
+      this.showUserDropdown = false;
+      this.$router.push(`/mis-eventos?id=${this.usuario.idUsuario}`);
     },
     userDropdown() {
       this.showUserDropdown = !this.showUserDropdown;
