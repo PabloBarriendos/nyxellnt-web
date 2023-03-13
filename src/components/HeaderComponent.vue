@@ -78,15 +78,15 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Nombre"><strong>Nombre: {{ this.usuario.nombre }}</strong>
+                    <v-card-text label="Nombre"><strong>Nombre: {{ $store.state.user.nombre }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Apellidos"><strong>Apellido: {{ this.usuario.apellido }}</strong>
+                    <v-card-text label="Apellidos"><strong>Apellido: {{ $store.state.user.apellido }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Email"><strong>Email: {{ this.usuario.email }}</strong>
+                    <v-card-text label="Email"><strong>Email: {{ $store.state.user.email }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
@@ -123,7 +123,7 @@
         <v-avatar color="info">
           <v-icon size="x-large">mdi-account</v-icon>
         </v-avatar>
-        <p>{{ this.usuario.nombre }}</p>
+        <p>{{ $store.state.user.nombre }}</p>
         <v-icon class="menu-icon" v-on:click="userDropdown">mdi-menu</v-icon>
       </div>
 
@@ -139,7 +139,6 @@
 <script>
 export default {
   name: "HeaderComponent",
-
   components: {},
   data: () => ({
     registerDisabled: true,
@@ -178,21 +177,11 @@ export default {
       this.showUserDropdown = false;
     },
     async login() {
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
-        .then((response) => response.json())
-        .then((data) => (this.resultados = data))
-        .catch((error) => console.error(error));
+      let email = document.getElementById("emailLogin")?.value;
+      let password = document.getElementById("passwordLogin")?.value;
 
-      this.resultados.forEach((element) => {
-        if (
-          element.email == document.getElementById("emailLogin")?.value &&
-          element.password == document.getElementById("passwordLogin")?.value
-        ) {
-          this.usuario = element;
-          document.cookie = `idUsuario=${element.idUsuario}`;
-          this.showUser = true;
-        }
-      });
+      this.$store.dispatch("buscar", {email: email, password: password});
+
       this.showLoginPopUp = false;
     },
     registerPopUp() {
