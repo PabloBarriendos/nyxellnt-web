@@ -38,7 +38,8 @@ export default {
   },
   methods: {
     setId() {
-      this.$router.push(`/evento?id=${this.id}`)
+      this.$store.dispatch("setIdEventoCompra", this.id);
+      this.$router.push(`/evento`)
     },
   },
 };

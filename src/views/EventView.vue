@@ -4,18 +4,18 @@
       <img src="../photo/R.jpeg" />
       <div>
         <v-card-title>
-          {{ this.resultados.nombre }}
+          {{ this.$store.state.eventoCompra.nombre }}
         </v-card-title>
         <v-card-subtitle>
-          {{ this.resultados.cantante }} - {{ this.resultados.localidad }} -
-          {{ this.resultados.categoria }}
+          {{ this.$store.state.eventoCompra.cantante }} - {{ this.$store.state.eventoCompra.localidad }} -
+          {{ this.$store.state.eventoCompra.categoria }}
         </v-card-subtitle>
         <v-card-text>
-          {{ this.resultados.descripcion }}
+          {{ this.$store.state.eventoCompra.descripcion }}
         </v-card-text>
-        <v-card-text> Fecha evento: {{ this.resultados.fecha }} </v-card-text>
+        <v-card-text> Fecha evento: {{ this.$store.state.eventoCompra.fecha }} </v-card-text>
         <v-card-text>
-          Precio entrada: {{ this.resultados.precioEntrada }} €
+          Precio entrada: {{ this.$store.state.eventoCompra.precioEntrada }} €
         </v-card-text>
       </div>
     </div>
@@ -44,7 +44,7 @@
     </v-sheet>
   </v-container>
 </template>
-  
+
 <script>
 export default {
   name: "EventComponent",
@@ -99,74 +99,12 @@ export default {
         this.comprarDisabled = true;
       }
     },
-    selectUsuario() {
-      var cookies = document.cookie;
-      var cookiesArray = cookies.split(";");
-      var miCookieValue = "";
-      for (var i = 0; i < cookiesArray.length; i++) {
-        var cookie = cookiesArray[i];
-        while (cookie.charAt(0) == " ") {
-          cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf("idUsuario=") == 0) {
-          miCookieValue = cookie.substring("idUsuario=".length, cookie.length);
-          break;
-        }
-      }
-      return miCookieValue;
-    },
     async comprarEvento() {
-      let idUsuario = this.selectUsuario();
-
-      // POST operacion
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/operacion", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          idOperacion: 0,
-          idEvento: this.resultados.idEvento,
-          idUsuario: idUsuario,
-          numEntradasCompradas: document.getElementById("ticket")?.value,
-          precioTotal: this.resultados.precioEntrada * document.getElementById("ticket")?.value,
-          fechaCompra: "string",
-        }),
-      });
-
-      // PUT evento
-      await fetch(
-        `https://nyxellnt-api-2.azurewebsites.net/evento/${this.resultados.idEvento}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            idEvento: this.resultados.idEvento,
-            nombre: this.resultados.nombre,
-            cantante: this.resultados.cantante,
-            descripcion: this.resultados.descripcion,
-            localidad: this.resultados.localidad,
-            fecha: this.resultados.fecha,
-            precioEntrada: this.resultados.precioEntrada,
-            stock:
-              this.resultados.stock - document.getElementById("ticket")?.value,
-            categoria: this.resultados.categoria,
-          }),
-        }
-      );
-
-      this.$router.push(`/`);
+      this.$store.dispatch("comprarEvento", document.getElementById("ticket")?.value);
     },
   },
   async mounted() {
-    await fetch(
-      `https://nyxellnt-api-2.azurewebsites.net/evento/${this.$route.query.id}`
-    )
-      .then((response) => response.json())
-      .then((data) => (this.resultados = data))
-      .catch((error) => console.error(error));
+    this.$store.dispatch("fetchEvento", this.$store.state.idEvento);
   },
 };
 </script>

@@ -21,12 +21,12 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="() => (showLoginPopUp = false)">
-                Cerrar
-              </v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="login">
-                Iniciar sesión
-              </v-btn>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="() => (showLoginPopUp = false)"
+              >Cerrar</v-btn>
+              <v-btn color="blue-darken-1" variant="text" @click="login">Iniciar sesión</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -48,24 +48,39 @@
                     <v-text-field id="email" label="Email*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="password" label="Contraseña*" @change="checkRegister" type="password"
-                      required></v-text-field>
+                    <v-text-field
+                      id="password"
+                      label="Contraseña*"
+                      @change="checkRegister"
+                      type="password"
+                      required
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="password2" label="Repetir contraseña*" @change="checkRegister" type="password"
-                      required></v-text-field>
+                    <v-text-field
+                      id="password2"
+                      label="Repetir contraseña*"
+                      @change="checkRegister"
+                      type="password"
+                      required
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="() => (showRegisterPopUp = false)">
-                Cerrar
-              </v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="register" :disabled="registerDisabled">
-                Registrarse
-              </v-btn>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="() => (showRegisterPopUp = false)"
+              >Cerrar</v-btn>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="register"
+                :disabled="registerDisabled"
+              >Registrarse</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -78,29 +93,36 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Nombre"><strong>Nombre: {{ $store.state.user.nombre }}</strong>
+                    <v-card-text label="Nombre">
+                      <strong>Nombre: {{ $store.state.user.nombre }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Apellidos"><strong>Apellido: {{ $store.state.user.apellido }}</strong>
+                    <v-card-text label="Apellidos">
+                      <strong>Apellido: {{ $store.state.user.apellido }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Email"><strong>Email: {{ $store.state.user.email }}</strong>
+                    <v-card-text label="Email">
+                      <strong>Email: {{ $store.state.user.email }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Contraseña" type="password"><strong>Contraseña: </strong>
-                      ***********</v-card-text>
+                    <v-card-text label="Contraseña" type="password">
+                      <strong>Contraseña:</strong>
+                      ***********
+                    </v-card-text>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="() => (showPersonalInfoPopUp = false)">
-                Cerrar
-              </v-btn>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="() => (showPersonalInfoPopUp = false)"
+              >Cerrar</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -110,20 +132,20 @@
         <router-link to="/">Nyxellnt</router-link>
       </div>
 
-      <div class="btn-container" v-if="!showUser">
+      <div class="btn-container" v-if="!$store.state.userLogged">
         <v-btn href target="_blank" v-on:click="loginPopUp" text>
-          <span class="mr-2">Iniciar sesión</span>
+          <span class="mr-2">Iniciar sesión{{ $store.state.user.userLogged }}</span>
         </v-btn>
-        <v-btn href="" target="_blank" v-on:click="registerPopUp" text>
+        <v-btn href target="_blank" v-on:click="registerPopUp" text>
           <span class="mr-2">Registrarse</span>
         </v-btn>
       </div>
 
-      <div class="avatar-container" v-if="showUser">
+      <div class="avatar-container" v-if="$store.state.userLogged">
         <v-avatar color="info">
           <v-icon size="x-large">mdi-account</v-icon>
         </v-avatar>
-        <p>{{ $store.state.user.nombre }}</p>
+        <p>{{ this.$store.state.user.nombre }}</p>
         <v-icon class="menu-icon" v-on:click="userDropdown">mdi-menu</v-icon>
       </div>
 
@@ -154,6 +176,9 @@ export default {
     showUser: false,
     showPersonalInfoPopUp: false,
   }),
+  created() {
+    // this.$store.dispatch("cargarCookiesUsuario");
+  },
   methods: {
     checkRegister() {
       if (
@@ -162,7 +187,7 @@ export default {
         document.getElementById("email")?.value &&
         document.getElementById("password")?.value &&
         document.getElementById("password")?.value ==
-        document.getElementById("password2")?.value
+          document.getElementById("password2")?.value
       ) {
         this.registerDisabled = false;
       } else {
@@ -180,7 +205,7 @@ export default {
       let email = document.getElementById("emailLogin")?.value;
       let password = document.getElementById("passwordLogin")?.value;
 
-      this.$store.dispatch("buscar", {email: email, password: password});
+      this.$store.dispatch("login", { email: email, password: password });
 
       this.showLoginPopUp = false;
     },
@@ -188,41 +213,18 @@ export default {
       this.showRegisterPopUp = !this.showRegisterPopUp;
     },
     async register() {
-      await fetch(
-        "https://nyxellnt-api-2.azurewebsites.net/usuario",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            id: 0,
-            nombre: document.getElementById("nombre")?.value,
-            apellido: document.getElementById("apellido")?.value,
-            email: document.getElementById("email")?.value,
-            password: document.getElementById("password")?.value,
-          }),
-        }
-      );
-
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
-        .then((response) => response.json())
-        .then((data) =>
-          data.forEach((usuario) => {
-            if (usuario.email == document.getElementById("email")?.value) {
-              this.usuario = usuario;
-              document.cookie = `idUsuario=${usuario.idUsuario}`;
-            }
-          })
-        )
-        .catch((error) => console.error(error));
-
+      this.$store.dispatch("register", {
+        nombre: document.getElementById("nombre")?.value,
+        apellido: document.getElementById("apellido")?.value,
+        email: document.getElementById("email")?.value,
+        password: document.getElementById("password")?.value,
+      });
       this.showRegisterPopUp = false;
       this.showUser = true;
     },
     logout() {
+      this.$store.dispatch("logout");
       this.showUserDropdown = false;
-      this.showUser = false;
       this.$router.push(`/`);
     },
     misCompras() {

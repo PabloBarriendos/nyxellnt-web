@@ -20,11 +20,16 @@
       </v-card-actions>
     </v-card>
 
-    <MisEventosCardComponent v-for="item in this.resultados" :key="item.operacion.idOperacion"
+    <MisEventosCardComponent v-for="item in $store.state.misComprasList" :key="item.operacion.idOperacion"
       :id="item.operacion.idOperacion" :titulo="item.evento.nombre" :cantante="item.evento.cantante"
       :descripcion="item.evento.descripcion" :localidad="item.evento.localidad" :genero="item.evento.categoria"
       :precioEntrada="item.evento.precioEntrada" :fecha="item.evento.fecha" :fechaCompra="item.operacion.fechaCompra"
       :precioTotal="item.operacion.precioTotal" :numEntradas="item.operacion.numEntradasCompradas" />
+    <!-- <MisEventosCardComponent v-for="item in this.resultados" :key="item.operacion.idOperacion"
+      :id="item.operacion.idOperacion" :titulo="item.evento.nombre" :cantante="item.evento.cantante"
+      :descripcion="item.evento.descripcion" :localidad="item.evento.localidad" :genero="item.evento.categoria"
+      :precioEntrada="item.evento.precioEntrada" :fecha="item.evento.fecha" :fechaCompra="item.operacion.fechaCompra"
+      :precioTotal="item.operacion.precioTotal" :numEntradas="item.operacion.numEntradasCompradas" /> -->
   </v-container>
 </template>
   
@@ -45,27 +50,8 @@ export default {
       ordenFecha: null,
     };
   },
-  async mounted() {
-    await fetch(
-      `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
-    )
-      .then((response) => response.json())
-      .then((data) => (this.listaOperaciones = data))
-      .catch((error) => console.error(error));
-
-    await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
-      .then((response) => response.json())
-      .then((data) => (this.listaEventos = data))
-      .catch((error) => console.error(error));
-    this.resultados = [];
-
-    this.listaOperaciones.forEach((operacion) => {
-      this.listaEventos.forEach((evento) => {
-        if (operacion.idEvento == evento.idEvento) {
-          this.resultados.push({ operacion, evento });
-        }
-      });
-    });
+  async created() {
+    this.$store.dispatch("getOperaciones");
   },
   methods: {
     async buscar() {
