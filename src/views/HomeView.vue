@@ -58,7 +58,7 @@ export default {
       this.$store.dispatch("buscar", this.search);
     },
     async requestFiltro() {
-      this.$store.dispatch("requestFiltro", {genero: this.genero, ordenPrecio: this.ordenPrecio});
+      this.$store.dispatch("requestFiltroHome", {genero: this.genero, ordenPrecio: this.ordenPrecio});
     }
   }
 

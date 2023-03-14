@@ -2,7 +2,7 @@
   <v-container class="header-container">
     <v-app-bar app color="primary" dark>
       <v-row justify="center">
-        <v-dialog v-model="showLoginPopUp" persistent width="1024">
+        <v-dialog v-model="this.$store.state.showLoginPopUp" persistent width="1024">
           <v-card>
             <v-card-title>
               <span class="text-h5">Iniciar sesión</span>
@@ -21,11 +21,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="() => (showLoginPopUp = false)"
-              >Cerrar</v-btn>
+              <v-btn color="blue-darken-1" variant="text" v-on:click="cerrarLoginPopUp">Cerrar</v-btn>
               <v-btn color="blue-darken-1" variant="text" @click="login">Iniciar sesión</v-btn>
             </v-card-actions>
           </v-card>
@@ -170,14 +166,12 @@ export default {
       email: "",
       password: "",
     },
-    showLoginPopUp: false,
     showRegisterPopUp: false,
     showUserDropdown: false,
-    showUser: false,
     showPersonalInfoPopUp: false,
   }),
   created() {
-    // this.$store.dispatch("cargarCookiesUsuario");
+    this.$store.dispatch("cargarCookiesUsuario");
   },
   methods: {
     checkRegister() {
@@ -195,7 +189,10 @@ export default {
       }
     },
     loginPopUp() {
-      this.showLoginPopUp = !this.showLoginPopUp;
+      this.$store.dispatch("setLoginPopUp", true);
+    },
+    cerrarLoginPopUp() {
+      this.$store.dispatch("setLoginPopUp", false);
     },
     showInfo() {
       this.showPersonalInfoPopUp = true;
@@ -206,8 +203,7 @@ export default {
       let password = document.getElementById("passwordLogin")?.value;
 
       this.$store.dispatch("login", { email: email, password: password });
-
-      this.showLoginPopUp = false;
+      this.cerrarLoginPopUp();
     },
     registerPopUp() {
       this.showRegisterPopUp = !this.showRegisterPopUp;
@@ -220,7 +216,6 @@ export default {
         password: document.getElementById("password")?.value,
       });
       this.showRegisterPopUp = false;
-      this.showUser = true;
     },
     logout() {
       this.$store.dispatch("logout");

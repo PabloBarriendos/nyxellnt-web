@@ -16,7 +16,7 @@
       <v-card-text> Fecha del evento: {{ fecha }} </v-card-text>
       <v-card-text> Precio: {{ precio }} € </v-card-text>
       <v-card-actions>
-        <v-btn class="mx-4 white--text" v-on:click="setId" elevation="2" x-large rounded color="blue">
+        <v-btn class="mx-4 white--text" v-on:click="goToCompra" elevation="2" x-large rounded color="blue">
           Comprar
         </v-btn>
       </v-card-actions>
@@ -37,9 +37,13 @@ export default {
     fecha: String,
   },
   methods: {
-    setId() {
-      this.$store.dispatch("setIdEventoCompra", this.id);
-      this.$router.push(`/evento`)
+    goToCompra() {
+      if(this.$store.state.userLogged == false){
+        this.$store.dispatch("setLoginPopUp", true);
+      }else{
+        this.$store.dispatch("setIdEventoCompra", this.id);
+        this.$router.push(`/evento`)
+      }
     },
   },
 };

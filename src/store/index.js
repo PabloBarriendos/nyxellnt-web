@@ -5,17 +5,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    datoInutil: null,
     idEvento: null,
     eventoCompra: {},
     user: {},
+    showLoginPopUp: false,
     userLogged: false,
     counter: 1,
     eventList: [],
     showEventList: [],
     userList: [],
     misComprasList: [],
+    showMisComprasList: [],
   },
   mutations: {
+    setDatoInutil(state, datoInutil) {
+      state.datoInutil = datoInutil;
+    },
     setEventoCompra(state, eventoCompra) {
       state.eventoCompra = eventoCompra;
     },
@@ -24,6 +30,9 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    setLoginPopUp(state, showLoginPopUp) {
+      state.showLoginPopUp = showLoginPopUp;
     },
     setUserLogged(state, userLogged) {
       state.userLogged = userLogged;
@@ -40,8 +49,11 @@ export default new Vuex.Store({
     cambiarShowEventos(state, events) {
       state.showEventList = events;
     },
-    setMisComprasList(state, list){
+    setMisComprasList(state, list) {
       state.misComprasList = list;
+    },
+    setShowMisComprasList(state, list) {
+      state.showMisComprasList = list;
     },
     initUsers(state, users) {
       state.userList = users;
@@ -50,6 +62,9 @@ export default new Vuex.Store({
   actions: {
     setUser(context, user) {
       context.commit("setUser", user);
+    },
+    setLoginPopUp(context, showLoginPopUp) {
+      context.commit("setLoginPopUp", showLoginPopUp);
     },
     setShowEventList(context, events) {
       context.commit("cambiarShowEventos", events);
@@ -61,6 +76,14 @@ export default new Vuex.Store({
         }
       });
       commit("cambiarShowEventos", resultados);
+    },
+    buscarOperacion({ commit }, search) {
+      let resultados = this.state.misComprasList.filter(item => {
+        if (item.evento.nombre.toLowerCase().includes(search) || item.evento.cantante.toLowerCase().includes(search)) {
+          return item
+        }
+      });
+      commit("setShowMisComprasList", resultados);
     },
     async login({ commit }, datos) {
       let email = datos.email;
@@ -110,24 +133,29 @@ export default new Vuex.Store({
       );
 
       await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
-      .then((response) => response.json())
-      .then((data) => {
-        data.forEach((element) => {
-          if (
-            element.email == email &&
-            element.password == password
-          ) {
-            commit("setUser", element);
-            commit("setUserLogged", true);
-            document.cookie = `user=${element}`;
-          } else {
-            commit("setUserLogged", false);
-          }
-        });
-      })
-      .catch((error) => console.error(error));
+        .then((response) => response.json())
+        .then((data) => {
+          data.forEach((element) => {
+            if (
+              element.email == email &&
+              element.password == password
+            ) {
+              commit("setUser", element);
+              commit("setUserLogged", true);
+              document.cookie = `user=${element}`;
+            } else {
+              commit("setUserLogged", false);
+            }
+          });
+        })
+        .catch((error) => console.error(error));
     },
-    logout({ commit }){
+    logout({ commit }) {
+      document.cookie = `userId=`;
+      document.cookie = `userNombre=`;
+      document.cookie = `userApellido=`;
+      document.cookie = `userEmail=`;
+      document.cookie = `userPassword=`;
       commit("setUser", {});
       commit("setUserLogged", false);
     },
@@ -140,7 +168,7 @@ export default new Vuex.Store({
           commit("cambiarShowEventos", data);
         })
     },
-    async requestFiltro({ commit }, datos) {
+    async requestFiltroHome({ commit }, datos) {
       let genero = datos.genero;
       let ordenPrecio = datos.ordenPrecio;
 
@@ -173,38 +201,85 @@ export default new Vuex.Store({
           .catch(error => console.error(error));
       }
     },
-    async getOperaciones({commit}){
-      let listaOperaciones = [];
-      let listaEventos = [];
-      let resultados = [];
+    async getOperaciones({ commit, dispatch }) {
+      await dispatch("cargarCookiesUsuario");
 
-      await fetch(
-        `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.state.user.idUsuario}`
-      )
-        .then((response) => response.json())
-        .then((data) => (listaOperaciones = data))
-        .catch((error) => console.error(error));
-  
-      await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
-        .then((response) => response.json())
-        .then((data) => (listaEventos = data))
-        .catch((error) => console.error(error));
-  
-      listaOperaciones.forEach((operacion) => {
-        listaEventos.forEach((evento) => {
-          if (operacion.idEvento == evento.idEvento) {
-            resultados.push({ operacion, evento });
-          }
+      if (this.state.user.idUsuario) {
+        let listaOperaciones = [];
+        let listaEventos = [];
+        let resultados = [];
+
+        await fetch(
+          `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.state.user.idUsuario}`
+        )
+          .then((response) => response.json())
+          .then((data) => (listaOperaciones = data))
+          .catch((error) => console.error(error));
+
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
+          .then((response) => response.json())
+          .then((data) => (listaEventos = data))
+          .catch((error) => console.error(error));
+
+        listaOperaciones.forEach((operacion) => {
+          listaEventos.forEach((evento) => {
+            if (operacion.idEvento == evento.idEvento) {
+              resultados.push({ operacion, evento });
+            }
+          });
         });
-      });
 
-      commit("setMisComprasList", resultados);
+        commit("setMisComprasList", resultados);
+        commit("setShowMisComprasList", resultados);
 
+      }
     },
-    async setIdEventoCompra({commit}, idEvento){
+    async requestFiltroOperaciones({ commit }, ordenFecha) {
+      console.log(ordenFecha)
+      console.log("Antes: ");
+      console.log(this.state.showMisComprasList);
+      console.log(this.state.showMisComprasList[0].operacion.fechaCompra)
+      console.log(Date.parse(this.state.showMisComprasList[0].operacion.fechaCompra))
+      if (ordenFecha != null) {
+        if (ordenFecha == true) {
+          this.state.showMisComprasList.sort((a, b) => {
+            let dateA = a.operacion.fechaCompra.split("-");
+            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0])
+            let dateB = b.operacion.fechaCompra.split("-");
+            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0])
+
+            console.log(finalDateA)
+
+            return (finalDateB - finalDateA)
+          });
+        } else {
+          this.state.showMisComprasList.sort((a, b) => {
+            let dateA = a.operacion.fechaCompra.split("-");
+            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0])
+            let dateB = b.operacion.fechaCompra.split("-");
+            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0])
+
+            return (finalDateA - finalDateB)
+          });
+        }
+
+        console.log("Despues: ");
+        console.log(this.state.showMisComprasList);
+
+        commit("setDatoInutil", null);
+
+      }
+    },
+    async setIdEventoCompra({ commit }, idEvento) {
+      document.cookie = `idEventoCompra=${idEvento}`;
       commit("setIdEvento", idEvento);
     },
-    async comprarEvento(ticket) {
+    async comprarEvento({ commit }, ticket) {
+
+      console.log(this.state.idEvento);
+      console.log(this.state.user.idUsuario);
+      console.log(ticket);
+      console.log(this.state.eventoCompra.precioEntrada * ticket);
 
       // POST operacion
       await fetch("https://nyxellnt-api-2.azurewebsites.net/operacion", {
@@ -217,8 +292,7 @@ export default new Vuex.Store({
           idEvento: this.state.idEvento,
           idUsuario: this.state.user.idUsuario,
           numEntradasCompradas: ticket,
-          precioTotal: this.state.eventoCompra.precioEntrada * ticket,
-          fechaCompra: "string",
+          precioTotal: this.state.eventoCompra.precioEntrada * ticket
         }),
       });
 
@@ -245,11 +319,15 @@ export default new Vuex.Store({
         }
       );
 
-      this.$router.push(`/`);
+      commit("setDatoInutil", null);
     },
-    async fetchEvento({commit}, idEvento){
+    async fetchEvento({ commit, dispatch }) {
+      let idEventoCookie = await dispatch("getCookie", "idEventoCompra");
+      if(idEventoCookie){
+        commit("setIdEvento", idEventoCookie);
+      }
       await fetch(
-        `https://nyxellnt-api-2.azurewebsites.net/evento/${idEvento}`
+        `https://nyxellnt-api-2.azurewebsites.net/evento/${this.state.idEvento}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -257,44 +335,37 @@ export default new Vuex.Store({
         })
         .catch((error) => console.error(error));
 
-    }
-    // getCookie(payload) {
-    //   const { var1 } = payload;
-    //   console.log("var1 "+var1)
-    //   var cookies = document.cookie;
-    //   var cookiesArray = cookies.split(";");
-    //   var miCookieValue = "";
-    //   console.log(`${var1}=`)
-    //   for (var i = 0; i < cookiesArray.length; i++) {
-    //     var cookie = cookiesArray[i];
-    //     while (cookie.charAt(0) == " ") {
-    //       cookie = cookie.substring(1);
-    //     }
-    //     if (cookie.indexOf(`${var1}=`) == 0) {
-    //       miCookieValue = cookie.substring(`${var1}=`.length, cookie.length);
-    //       break;
-    //     }
-    //   }
-    //   console.log(miCookieValue)
-    //   return miCookieValue;
-    // },
-    // async cargarCookiesUsuario({ commit, dispatch }){
-    //   console.log("ey2");
-    //   console.log(dispatch("getCookie", {var1: "userId"}));
-    //   const idUsuario = dispatch("getCookie", {var1: "userId"});
-    //   const nombre = dispatch("getCookie", {var1: "userNombre"});
-    //   const apellido = dispatch("getCookie", {var1: "userApellido"});
-    //   const email = dispatch("getCookie", {var1: "userEmail"});
-    //   const password = dispatch("getCookie", {var1: "userPassword"});
+    },
+    getCookie({ commit }, stringCookie) {
+      var cookies = document.cookie;
+      var cookiesArray = cookies.split(";");
+      var miCookieValue = "";
+      for (var i = 0; i < cookiesArray.length; i++) {
+        var cookie = cookiesArray[i];
+        while (cookie.charAt(0) == " ") {
+          cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(`${stringCookie}=`) == 0) {
+          miCookieValue = cookie.substring(`${stringCookie}=`.length, cookie.length);
+          break;
+        }
+      }
+      commit("setDatoInutil", null);
+      return miCookieValue;
+    },
+    async cargarCookiesUsuario({ commit, dispatch }) {
+      let idUsuario = await dispatch("getCookie", "userId");
+      let nombre = await dispatch("getCookie", "userNombre");
+      let apellido = await dispatch("getCookie", "userApellido");
+      let email = await dispatch("getCookie", "userEmail");
+      let password = await dispatch("getCookie", "userPassword");
 
-    //   console.log("nombre "+nombre)
+      if (idUsuario && nombre && apellido && email && password) {
+        commit("setUser", { idUsuario: idUsuario, nombre: nombre, apellido: apellido, email: email, password: password });
+        commit("setUserLogged", true);
+      }
 
-    //   if(idUsuario && nombre && apellido && email && password){
-    //     commit("setUser", {idUsuario: idUsuario, nombre: nombre, apellido: apellido, email: email, password: password});
-    //     commit("setUserLogged", true);
-    //   }
-
-    // },
+    },
   },
   getters: {
     getId(state) {

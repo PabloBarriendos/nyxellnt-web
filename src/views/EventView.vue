@@ -37,7 +37,7 @@
         <v-text-field id="email" @change="checkCompra" v-model="email" label="Email" :rules="emailRules"></v-text-field>
 
         <v-text-field id="ticket" @change="checkCompra" v-model="ticket" label="Número de entradas" type="number" min="1"
-          :max="this.resultados.stock"></v-text-field>
+          :max="this.$store.state.eventoCompra.stock"></v-text-field>
 
         <v-btn type="submit" block class="mt-2" v-on:click="comprarEvento" :disabled="comprarDisabled">Aceptar</v-btn>
       </v-form>
@@ -50,7 +50,6 @@ export default {
   name: "EventComponent",
   data: () => ({
     comprarDisabled: true,
-    resultados: [],
     firstName: "",
     firstNameRules: [
       (value) => {
@@ -70,7 +69,7 @@ export default {
     phone: "",
     phoneRules: [
       (value) => {
-        if (value?.length > 8 && /[0-9-]+/.test(value)) return true;
+        if (value?.length == 9 && /[0-9-]+/.test(value)) return true;
         return "El número de teléfono necesita tener al menos 9 digitos.";
       },
     ],
@@ -91,8 +90,7 @@ export default {
         document.getElementById("lastName")?.value &&
         document.getElementById("phone")?.value &&
         document.getElementById("creditCard")?.value &&
-        document.getElementById("email")?.value &&
-        document.getElementById("ticket")?.value
+        document.getElementById("email")?.value && document.getElementById("ticket")?.value > 0 && document.getElementById("ticket")?.value <= this.$store.state.eventoCompra.stock
       ) {
         this.comprarDisabled = false;
       } else {
@@ -100,11 +98,15 @@ export default {
       }
     },
     async comprarEvento() {
-      this.$store.dispatch("comprarEvento", document.getElementById("ticket")?.value);
+      this.checkCompra();
+      if(this.comprarDisabled == false){
+        this.$store.dispatch("comprarEvento", document.getElementById("ticket")?.value);
+        this.$router.push(`/`);
+      }
     },
   },
-  async mounted() {
-    this.$store.dispatch("fetchEvento", this.$store.state.idEvento);
+  async created() {
+    this.$store.dispatch("fetchEvento");
   },
 };
 </script>
