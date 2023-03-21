@@ -22,9 +22,9 @@
           label="Ordenar por fecha"
           item-text="orden"
           :items="[
-            { value: true, orden: 'Fecha más reciente' },
-            { value: false, orden: 'Fecha más antigua' },
-          ]"
+          { value: true, orden: 'Fecha más reciente' },
+          { value: false, orden: 'Fecha más antigua' },
+        ]"
         ></v-select>
       </v-card-title>
       <v-card-actions class="btn-filtrar" v-on:click="requestFiltro">
@@ -33,7 +33,7 @@
     </v-card>
 
     <MisEventosCardComponent
-      v-for="item in this.resultados"
+      v-for="item in $store.state.showMisComprasList"
       :key="item.operacion.idOperacion"
       :id="item.operacion.idOperacion"
       :titulo="item.evento.nombre"
@@ -60,96 +60,19 @@ export default {
   },
   data() {
     return {
-      listaEventos: [],
-      listaOperaciones: [],
-      resultados: [],
       search: "",
       ordenFecha: null,
     };
   },
-  async mounted() {
-    await fetch(
-      `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
-    )
-      .then((response) => response.json())
-      .then((data) => (this.listaOperaciones = data))
-      .catch((error) => console.error(error));
-
-    await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
-      .then((response) => response.json())
-      .then((data) => (this.listaEventos = data))
-      .catch((error) => console.error(error));
-    this.resultados = [];
-
-    this.listaOperaciones.forEach((operacion) => {
-      this.listaEventos.forEach((evento) => {
-        if (operacion.idEvento == evento.idEvento) {
-          this.resultados.push({ operacion, evento });
-        }
-      });
-    });
+  async created() {
+    this.$store.dispatch("getOperaciones");
   },
   methods: {
-    async buscar(){
-      await fetch(
-      `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
-    )
-      .then((response) => response.json())
-      .then((data) => (this.listaOperaciones = data))
-      .catch((error) => console.error(error));
-
-    await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
-      .then((response) => response.json())
-      .then((data) => (this.listaEventos = data))
-      .catch((error) => console.error(error));
-    this.resultados = [];
-
-    this.listaOperaciones.forEach((operacion) => {
-      this.listaEventos.forEach((evento) => {
-        if (operacion.idEvento == evento.idEvento) {
-          this.resultados.push({ operacion, evento });
-        }
-      });
-    });
-
-      this.resultados = this.resultados.filter(item => {
-        if(item.evento.nombre.toLowerCase().includes(this.search) || item.evento.cantante.toLowerCase().includes(this.search)){
-          return item
-        }
-      });
-
+    async buscar() {
+      this.$store.dispatch("buscarOperacion", this.search);
     },
     async requestFiltro() {
-      if (this.ordenFecha != null) {
-        await fetch(
-          `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.$route.query.id}`
-        )
-          .then((response) => response.json())
-          .then((data) => (this.listaOperaciones = data))
-          .catch((error) => console.error(error));
-
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
-          .then((response) => response.json())
-          .then((data) => (this.listaEventos = data))
-          .catch((error) => console.error(error));
-
-        if(this.ordenFecha == true){
-          this.listaOperaciones.sort((a, b) => new Date(a.fechaCompra) - new Date(b.fechaCompra));
-        }else{
-          this.listaOperaciones.sort((a, b) => new Date(b.fechaCompra) - new Date(a.fechaCompra));
-        }
-        this.resultados = [];
-
-        this.listaOperaciones.forEach((operacion) => {
-          this.listaEventos.forEach((evento) => {
-            if (operacion.idEvento == evento.idEvento) {
-              this.resultados.push({ operacion, evento });
-            }
-          });
-        });
-
-
-      }
+      this.$store.dispatch("requestFiltroOperaciones", this.ordenFecha);
     },
   },
 };

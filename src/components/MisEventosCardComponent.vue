@@ -28,19 +28,19 @@
 
 <script>
 export default {
-  props: {
-    id: Number,
-    titulo: String,
-    cantante: String,
-    descripcion: String,
-    localidad: String,
-    genero: String,
-    numEntradas: Number,
-    precioEntrada: Number,
-    precioTotal: Number,
-    fecha: String,
-    fechaCompra: String,
-  }
+    props: {
+        id: Number,
+        titulo: String,
+        cantante: String,
+        descripcion: String,
+        localidad: String,
+        genero: String,
+        numEntradas: Number,
+        precioEntrada: Number,
+        precioTotal: Number,
+        fecha: String,
+        fechaCompra: String,
+    }
 };
 </script>
 

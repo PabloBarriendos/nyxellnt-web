@@ -2,7 +2,7 @@
   <v-container class="header-container">
     <v-app-bar app color="primary" dark>
       <v-row justify="center">
-        <v-dialog v-model="showLoginPopUp" persistent width="1024">
+        <v-dialog v-model="this.$store.state.showLoginPopUp" persistent width="1024">
           <v-card>
             <v-card-title>
               <span class="text-h5">Iniciar sesión</span>
@@ -11,35 +11,18 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field
-                      id="emailLogin"
-                      label="Email*"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="emailLogin" label="Email*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="passwordLogin"
-                      label="Contraseña*"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="() => (showLoginPopUp = false)"
-              >
-                Cerrar
-              </v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="login">
-                Iniciar sesión
-              </v-btn>
+              <v-btn color="blue-darken-1" variant="text" v-on:click="cerrarLoginPopUp">Cerrar</v-btn>
+              <v-btn color="blue-darken-1" variant="text" @click="login">Iniciar sesión</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -52,28 +35,13 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      id="nombre"
-                      label="Nombre*"
-                      @change="checkRegister"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="nombre" label="Nombre*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      id="apellido"
-                      label="Apellido*"
-                      @change="checkRegister"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="apellido" label="Apellido*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="email"
-                      label="Email*"
-                      @change="checkRegister"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="email" label="Email*" @change="checkRegister" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
@@ -102,17 +70,13 @@
                 color="blue-darken-1"
                 variant="text"
                 @click="() => (showRegisterPopUp = false)"
-              >
-                Cerrar
-              </v-btn>
+              >Cerrar</v-btn>
               <v-btn
                 color="blue-darken-1"
                 variant="text"
                 @click="register"
                 :disabled="registerDisabled"
-              >
-                Registrarse
-              </v-btn>
+              >Registrarse</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -125,24 +89,25 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Nombre"
-                      ><strong>Nombre: {{ this.usuario.nombre }}</strong>
+                    <v-card-text label="Nombre">
+                      <strong>Nombre: {{ $store.state.user.nombre }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Apellidos"
-                      ><strong>Apellido: {{ this.usuario.apellido }}</strong>
+                    <v-card-text label="Apellidos">
+                      <strong>Apellido: {{ $store.state.user.apellido }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Email"
-                      ><strong>Email: {{ this.usuario.email }}</strong>
+                    <v-card-text label="Email">
+                      <strong>Email: {{ $store.state.user.email }}</strong>
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
-                    <v-card-text label="Contraseña" type="password"
-                      ><strong>Contraseña: </strong> ***********</v-card-text
-                    >
+                    <v-card-text label="Contraseña" type="password">
+                      <strong>Contraseña:</strong>
+                      ***********
+                    </v-card-text>
                   </v-col>
                 </v-row>
               </v-container>
@@ -153,9 +118,7 @@
                 color="blue-darken-1"
                 variant="text"
                 @click="() => (showPersonalInfoPopUp = false)"
-              >
-                Cerrar
-              </v-btn>
+              >Cerrar</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -165,20 +128,20 @@
         <router-link to="/">Nyxellnt</router-link>
       </div>
 
-      <div class="btn-container" v-if="!showUser">
+      <div class="btn-container" v-if="!$store.state.userLogged">
         <v-btn href target="_blank" v-on:click="loginPopUp" text>
-          <span class="mr-2">Iniciar sesión</span>
+          <span class="mr-2">Iniciar sesión{{ $store.state.user.userLogged }}</span>
         </v-btn>
-        <v-btn href="" target="_blank" v-on:click="registerPopUp" text>
+        <v-btn href target="_blank" v-on:click="registerPopUp" text>
           <span class="mr-2">Registrarse</span>
         </v-btn>
       </div>
 
-      <div class="avatar-container" v-if="showUser">
+      <div class="avatar-container" v-if="$store.state.userLogged">
         <v-avatar color="info">
           <v-icon size="x-large">mdi-account</v-icon>
         </v-avatar>
-        <p>{{ this.usuario.nombre }}</p>
+        <p>{{ this.$store.state.user.nombre }}</p>
         <v-icon class="menu-icon" v-on:click="userDropdown">mdi-menu</v-icon>
       </div>
 
@@ -194,7 +157,6 @@
 <script>
 export default {
   name: "HeaderComponent",
-
   components: {},
   data: () => ({
     registerDisabled: true,
@@ -204,12 +166,13 @@ export default {
       email: "",
       password: "",
     },
-    showLoginPopUp: false,
     showRegisterPopUp: false,
     showUserDropdown: false,
-    showUser: false,
     showPersonalInfoPopUp: false,
   }),
+  created() {
+    this.$store.dispatch("cargarCookiesUsuario");
+  },
   methods: {
     checkRegister() {
       if (
@@ -226,69 +189,37 @@ export default {
       }
     },
     loginPopUp() {
-      this.showLoginPopUp = !this.showLoginPopUp;
+      this.$store.dispatch("setLoginPopUp", true);
+    },
+    cerrarLoginPopUp() {
+      this.$store.dispatch("setLoginPopUp", false);
     },
     showInfo() {
       this.showPersonalInfoPopUp = true;
       this.showUserDropdown = false;
     },
     async login() {
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
-        .then((response) => response.json())
-        .then((data) => (this.resultados = data))
-        .catch((error) => console.error(error));
+      let email = document.getElementById("emailLogin")?.value;
+      let password = document.getElementById("passwordLogin")?.value;
 
-      this.resultados.forEach((element) => {
-        if (
-          element.email == document.getElementById("emailLogin")?.value &&
-          element.password == document.getElementById("passwordLogin")?.value
-        ) {
-          this.usuario = element;
-          document.cookie = `idUsuario=${element.idUsuario}`;
-          this.showUser = true;
-        }
-      });
-      this.showLoginPopUp = false;
+      this.$store.dispatch("login", { email: email, password: password });
+      this.cerrarLoginPopUp();
     },
     registerPopUp() {
       this.showRegisterPopUp = !this.showRegisterPopUp;
     },
     async register() {
-      await fetch(
-        "https://nyxellnt-api-2.azurewebsites.net/usuario",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            id: 0,
-            nombre: document.getElementById("nombre")?.value,
-            apellido: document.getElementById("apellido")?.value,
-            email: document.getElementById("email")?.value,
-            password: document.getElementById("password")?.value,
-          }),
-        }
-      );
-
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
-        .then((response) => response.json())
-        .then((data) =>
-          data.forEach((usuario) => {
-            if (usuario.email == document.getElementById("email")?.value) {
-              this.usuario = usuario;
-              document.cookie = `idUsuario=${usuario.idUsuario}`;
-            }
-          })
-        )
-        .catch((error) => console.error(error));
-
+      this.$store.dispatch("register", {
+        nombre: document.getElementById("nombre")?.value,
+        apellido: document.getElementById("apellido")?.value,
+        email: document.getElementById("email")?.value,
+        password: document.getElementById("password")?.value,
+      });
       this.showRegisterPopUp = false;
-      this.showUser = true;
     },
     logout() {
+      this.$store.dispatch("logout");
       this.showUserDropdown = false;
-      this.showUser = false;
       this.$router.push(`/`);
     },
     misCompras() {
