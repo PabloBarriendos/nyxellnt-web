@@ -20,8 +20,8 @@
           'Opera',
         ]"></v-select>
         <v-select v-model="ordenPrecio" class="precioFilter" label="Ordenar por precio" item-text="orden" :items="[
-          { value: true, orden: 'Precio ascendente' },
-          { value: false, orden: 'Precio descendente' },
+          { value: 'asc', orden: 'Precio ascendente' },
+          { value: 'des', orden: 'Precio descendente' },
         ]"></v-select>
         <v-card-actions class="btn-filtrar" v-on:click="requestFiltro">
           <v-btn>Filtrar</v-btn>

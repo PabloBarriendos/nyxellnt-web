@@ -176,7 +176,7 @@ export default new Vuex.Store({
         commit("cambiarShowEventos", this.state.eventList);
       }
       if (genero != null && genero != 'Todas las categorías' && ordenPrecio == null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/genero/${genero}`)
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento?genero=${genero}`)
           .then(response => response.json())
           .then(data => {
             commit("cambiarShowEventos", data);
@@ -184,7 +184,7 @@ export default new Vuex.Store({
           .catch(error => console.error(error));
       }
       if ((genero == null || genero == 'Todas las categorías') && ordenPrecio != null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/ordenarPrecio/${ordenPrecio}`)
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento?ordenarPrecio=${ordenPrecio}`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
@@ -193,7 +193,7 @@ export default new Vuex.Store({
           .catch(error => console.error(error));
       }
       if (genero != null && genero != 'Todas las categorías' && ordenPrecio != null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento/genero/${genero}/precio/${ordenPrecio}`)
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento?genero=${genero}&ordenarPrecio=${ordenPrecio}`)
           .then(response => response.json())
           .then(data => {
             commit("cambiarShowEventos", data);
@@ -210,7 +210,7 @@ export default new Vuex.Store({
         let resultados = [];
 
         await fetch(
-          `https://nyxellnt-api-2.azurewebsites.net/operacion/idUsuario/${this.state.user.idUsuario}`
+          `https://nyxellnt-api-2.azurewebsites.net/operacion/usuario/${this.state.user.idUsuario}`
         )
           .then((response) => response.json())
           .then((data) => (listaOperaciones = data))
