@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <HeaderComponent />
+    <HeaderComponent v-show="showHeader"/>
     <router-view><v-content></v-content></router-view>
     <footerComponent />
   </v-app>
@@ -16,12 +16,39 @@ export default {
     HeaderComponent,
     footerComponent,
   },
-  data: () => ({
-  }),
+  data () {
+    return {
+      showHeader: false,
+    };
+  },
+  created() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  methods: {
+    handleScroll() {
+      // Si la posición del desplazamiento es mayor a 0, ocultar el encabezado
+      if (window.scrollY > 0) {
+        this.showHeader = true;
+      } else {
+        // Si la posición del desplazamiento es 0, mostrar el encabezado
+        this.showHeader = false;
+      }
+    },
+  },
+
 };
 </script>
 
 <style scoped>
+
+/* .header-container{
+  display: none;
+} */
+
+
 .v-main {
   padding: 0 !important;
 }

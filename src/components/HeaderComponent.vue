@@ -165,6 +165,7 @@ export default {
       apellido: "",
       email: "",
       password: "",
+      rol: ""
     },
     showRegisterPopUp: false,
     showUserDropdown: false,
@@ -214,6 +215,7 @@ export default {
         apellido: document.getElementById("apellido")?.value,
         email: document.getElementById("email")?.value,
         password: document.getElementById("password")?.value,
+        rol: "user"
       });
       this.showRegisterPopUp = false;
     },
