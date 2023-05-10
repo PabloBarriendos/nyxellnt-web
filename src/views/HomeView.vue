@@ -135,10 +135,6 @@ export default {
   margin-top: 80px;
 }
 
-.right-section p{
- 
-}
-
 .carousel-section button p {
   padding-left: 10px;
   padding-right: 10px;
