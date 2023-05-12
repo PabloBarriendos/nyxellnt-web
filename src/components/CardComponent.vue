@@ -53,6 +53,7 @@ export default {
 .tarjeta {
   display: flex;
   padding: 20px;
+  background-color: aliceblue;
 }
 
 .derecha {

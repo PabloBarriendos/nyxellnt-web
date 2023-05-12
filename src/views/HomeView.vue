@@ -4,11 +4,15 @@
       <v-carousel height="auto">
         <v-carousel-item
           src="../photo/mejores-eventos-festivales-musica-electronica-mundo-primavera-verano-defqon-1-festival.jpg"
-          cover></v-carousel-item>
+          cover
+        ></v-carousel-item>
 
         <v-carousel-item src="../photo/R.jpeg" cover></v-carousel-item>
 
-        <v-carousel-item src="../photo/TURISMOFESTIVALESESPAÑA1.jpg" cover></v-carousel-item>
+        <v-carousel-item
+          src="../photo/TURISMOFESTIVALESESPAÑA1.jpg"
+          cover
+        ></v-carousel-item>
       </v-carousel>
 
       <button>
@@ -25,9 +29,18 @@
         </div>
 
         <div class="right-section">
-          <p>¡Entra en nuestra tienda y consigue el Merchandising oficial de tus festivales favoritos!</p>
-          <p>Encontrarás una amplia variedad de productos que harán que tu experiencia sea una verdadera EXPERIENCIA FEST.</p>
-          <p>¡Ofertas exclusivas, rebajas y regalos que no encontrarás en otras webs!</p>
+          <p>
+            ¡Entra en nuestra tienda y consigue el Merchandising oficial de tus
+            festivales favoritos!
+          </p>
+          <p>
+            Encontrarás una amplia variedad de productos que harán que tu
+            experiencia sea una verdadera EXPERIENCIA FEST.
+          </p>
+          <p>
+            ¡Ofertas exclusivas, rebajas y regalos que no encontrarás en otras
+            webs!
+          </p>
           <p>No lo pienses y consíguelos antes de que se agoten.</p>
           <p>¡Stock limitado!</p>
 
@@ -39,31 +52,60 @@
     <div class="festival-section">
       <h3>Festivales</h3>
 
-      <div class="buscador-container">
-        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
-          class="buscador"></v-text-field>
+      <div class="filtro-section">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Buscar"
+          single-line
+          hide-details
+          class="buscador"
+        ></v-text-field>
+
+        <v-select
+          v-model="genero"
+          class="categoriasFilter"
+          label="Categorías"
+          :items="[
+            'Todas las categorías',
+            'Rock',
+            'Pop',
+            'Flamenco',
+            'Jazz',
+            'Musical',
+            'Opera',
+          ]"
+          multiple
+        ></v-select>
+        <v-select
+          v-model="ordenPrecio"
+          class="precioFilter"
+          label="Ordenar por precio"
+          item-text="orden"
+          :items="[
+            { value: 'asc', orden: 'Precio ascendente' },
+            { value: 'des', orden: 'Precio descendente' },
+          ]"
+        ></v-select>
+
+        <v-btn> Resetear </v-btn>
       </div>
 
-      <v-select v-model="genero" class="categoriasFilter" label="Categorías" :items="[
-        'Todas las categorías',
-        'Rock',
-        'Pop',
-        'Flamenco',
-        'Jazz',
-        'Musical',
-        'Opera',
-      ]" multiple></v-select>
-      <v-select v-model="ordenPrecio" class="precioFilter" label="Ordenar por precio" item-text="orden" :items="[
-        { value: 'asc', orden: 'Precio ascendente' },
-        { value: 'des', orden: 'Precio descendente' },
-      ]"></v-select>
-
-      <v-btn> Resetear </v-btn>
+      <div class="cards-section">
+        <CardComponent
+          v-for="evento in $store.state.showEventList"
+          :key="evento.idEvento"
+          :id="evento.idEvento"
+          :titulo="evento.nombre"
+          :cantante="evento.cantante"
+          :descripcion="evento.descripcion"
+          :localidad="evento.localidad"
+          :genero="evento.categoria"
+          :precio="evento.precioEntrada"
+          :fecha="evento.fecha"
+        />
+      </div>
     </div>
-
-    <CardComponent v-for="evento in $store.state.showEventList" :key="evento.idEvento" :id="evento.idEvento"
-      :titulo="evento.nombre" :cantante="evento.cantante" :descripcion="evento.descripcion" :localidad="evento.localidad"
-      :genero="evento.categoria" :precio="evento.precioEntrada" :fecha="evento.fecha" />
   </v-container>
 </template>
 
@@ -117,13 +159,18 @@ export default {
   position: absolute;
   top: 77%;
   color: black;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 50px;
   font-weight: bold;
   background-color: yellow;
   border: 5px solid black;
   border-radius: 20px;
-  background: linear-gradient(180deg, rgb(217, 255, 0) 0%, rgb(247, 255, 128) 35%, rgb(255, 251, 215) 100%);
+  background: linear-gradient(
+    180deg,
+    rgb(217, 255, 0) 0%,
+    rgb(247, 255, 128) 35%,
+    rgb(255, 251, 215) 100%
+  );
 }
 
 .left-section img {
@@ -131,7 +178,7 @@ export default {
   width: 90%;
 }
 
-.right-section button{
+.right-section button {
   margin-top: 80px;
 }
 
@@ -158,7 +205,7 @@ export default {
   margin-bottom: 30px;
 }
 
-.merchandising-section>div {
+.merchandising-section > div {
   display: flex;
 }
 
@@ -176,7 +223,7 @@ export default {
 }
 
 .festival-section {
-  padding: 10px 40px 20px;
+  padding: 80px 0 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -189,37 +236,48 @@ export default {
   margin-bottom: 30px;
 }
 
-.festival-section .buscador-container {
+.festival-section .filtro-section {
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0px 10%;
 }
 
 .home-container .tarjeta {
   margin: 40px;
 }
 
-.buscador-container{
-  padding: 0px 200px;
+.buscador {
+  width: 70%;
+  margin: 0 5%;
   margin-bottom: 20px;
 }
 
-.buscador {
-  width: 100%;
+.categoriasFilter {
+  width: calc(50% - 100px);
   margin-right: 20px;
 }
 
-.categoriasFilter {
-  width: 200px;
-  margin-right: 40px;
-  margin-left: 150px;
+.precioFilter {
+  width: calc(50% - 100px);
+  margin-left: 20px;
 }
 
-.precioFilter {
-  width: 200px;
-  margin-right: 40px;
+.festival-section .filtro-section .v-btn {
+  width: 110px;
+  margin-top: 12px;
+  margin-left: 40px;
 }
 
 .btn-buscar {
-  width: 78px;
+  width: 80px;
+  margin-left: 40px;
+  padding: 0;
+}
+
+.btn-buscar {
+  width: 80px;
+  margin-left: 40px;
   padding: 0;
 }
 
