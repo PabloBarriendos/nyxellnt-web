@@ -7,13 +7,16 @@
           {{ this.$store.state.eventoCompra.nombre }}
         </v-card-title>
         <v-card-subtitle>
-          {{ this.$store.state.eventoCompra.cantante }} - {{ this.$store.state.eventoCompra.localidad }} -
+          {{ this.$store.state.eventoCompra.cantante }} -
+          {{ this.$store.state.eventoCompra.localidad }} -
           {{ this.$store.state.eventoCompra.categoria }}
         </v-card-subtitle>
         <v-card-text>
           {{ this.$store.state.eventoCompra.descripcion }}
         </v-card-text>
-        <v-card-text> Fecha evento: {{ this.$store.state.eventoCompra.fecha }} </v-card-text>
+        <v-card-text>
+          Fecha evento: {{ this.$store.state.eventoCompra.fecha }}
+        </v-card-text>
         <v-card-text>
           Precio entrada: {{ this.$store.state.eventoCompra.precioEntrada }} €
         </v-card-text>
@@ -22,24 +25,63 @@
 
     <v-sheet width="300" class="mx-auto">
       <v-form fast-fail @submit.prevent>
-        <v-text-field id="firstName" @change="checkCompra" v-model="firstName" label="Nombre"
-          :rules="firstNameRules"></v-text-field>
+        <v-text-field
+          id="firstName"
+          @change="checkCompra"
+          v-model="firstName"
+          label="Nombre"
+          :rules="firstNameRules"
+        ></v-text-field>
 
-        <v-text-field id="lastName" @change="checkCompra" v-model="lastName" label="Apellidos"
-          :rules="lastNameRules"></v-text-field>
+        <v-text-field
+          id="lastName"
+          @change="checkCompra"
+          v-model="lastName"
+          label="Apellidos"
+          :rules="lastNameRules"
+        ></v-text-field>
 
-        <v-text-field id="phone" @change="checkCompra" v-model="phone" :rules="phoneRules"
-          label="Teléfono"></v-text-field>
+        <v-text-field
+          id="phone"
+          @change="checkCompra"
+          v-model="phone"
+          :rules="phoneRules"
+          label="Teléfono"
+        ></v-text-field>
 
-        <v-text-field id="creditCard" @change="checkCompra" v-model="creditCard"
-          label="Tarjeta de Crédito"></v-text-field>
+        <v-text-field
+          id="creditCard"
+          @change="checkCompra"
+          v-model="creditCard"
+          label="Tarjeta de Crédito"
+        ></v-text-field>
 
-        <v-text-field id="email" @change="checkCompra" v-model="email" label="Email" :rules="emailRules"></v-text-field>
+        <v-text-field
+          id="email"
+          @change="checkCompra"
+          v-model="email"
+          label="Email"
+          :rules="emailRules"
+        ></v-text-field>
 
-        <v-text-field id="ticket" @change="checkCompra" v-model="ticket" label="Número de entradas" type="number" min="1"
-          :max="this.$store.state.eventoCompra.stock"></v-text-field>
+        <v-text-field
+          id="ticket"
+          @change="checkCompra"
+          v-model="ticket"
+          label="Número de entradas"
+          type="number"
+          min="1"
+          :max="this.$store.state.eventoCompra.stock"
+        ></v-text-field>
 
-        <v-btn type="submit" block class="mt-2" v-on:click="comprarEvento" :disabled="comprarDisabled">Aceptar</v-btn>
+        <v-btn
+          type="submit"
+          block
+          class="mt-2"
+          v-on:click="comprarEvento"
+          :disabled="comprarDisabled"
+          >Aceptar</v-btn
+        >
       </v-form>
     </v-sheet>
   </v-container>
@@ -90,7 +132,10 @@ export default {
         document.getElementById("lastName")?.value &&
         document.getElementById("phone")?.value &&
         document.getElementById("creditCard")?.value &&
-        document.getElementById("email")?.value && document.getElementById("ticket")?.value > 0 && document.getElementById("ticket")?.value <= this.$store.state.eventoCompra.stock
+        document.getElementById("email")?.value &&
+        document.getElementById("ticket")?.value > 0 &&
+        document.getElementById("ticket")?.value <=
+          this.$store.state.eventoCompra.stock
       ) {
         this.comprarDisabled = false;
       } else {
@@ -99,8 +144,11 @@ export default {
     },
     async comprarEvento() {
       this.checkCompra();
-      if(this.comprarDisabled == false){
-        this.$store.dispatch("comprarEvento", document.getElementById("ticket")?.value);
+      if (this.comprarDisabled == false) {
+        this.$store.dispatch(
+          "comprarEvento",
+          document.getElementById("ticket")?.value
+        );
         this.$router.push(`/`);
       }
     },
@@ -111,19 +159,7 @@ export default {
 };
 </script>
 
-<style scoped>
-img {
-  height: 250px;
-  width: 200px;
-}
-
-.superior {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 800px;
-}
-
+<style lang="scss" scoped>
 .container {
   display: flex;
   justify-content: space-between;
@@ -131,9 +167,21 @@ img {
   margin-top: 100px;
   margin-bottom: 50px;
   height: 100%;
-}
 
-.v-sheet {
-  margin-left: 100px !important;
+  .superior {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 800px;
+
+    img {
+      height: 250px;
+      width: 200px;
+    }
+  }
+
+  .v-sheet {
+    margin-left: 100px !important;
+  }
 }
 </style>

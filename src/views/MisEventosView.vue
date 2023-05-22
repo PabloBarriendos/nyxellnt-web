@@ -22,9 +22,9 @@
           label="Ordenar por fecha"
           item-text="orden"
           :items="[
-          { value: true, orden: 'Fecha más reciente' },
-          { value: false, orden: 'Fecha más antigua' },
-        ]"
+            { value: true, orden: 'Fecha más reciente' },
+            { value: false, orden: 'Fecha más antigua' },
+          ]"
         ></v-select>
       </v-card-title>
       <v-card-actions class="btn-filtrar" v-on:click="requestFiltro">
@@ -78,35 +78,34 @@ export default {
 };
 </script>
   
-<style scoped>
+<style lang="scss" scoped>
 .home-container {
   margin: 0;
   padding: 0;
   max-width: 100%;
-}
 
-.home-container .tarjeta {
-  margin: 40px;
-}
+  .filtros {
+    height: 250px;
+    margin-bottom: 60px;
+    .buscador-container {
+      width: 100%;
+      display: flex;
+      margin-bottom: 10px;
 
-.filtros {
-  height: 250px;
-  margin-bottom: 60px;
-}
+      .buscador {
+        width: 100%;
+        margin-right: 20px;
+      }
+    }
 
-.filtros .buscador-container {
-  width: 100%;
-  display: flex;
-  margin-bottom: 10px;
-}
+    .fechaFilter {
+      width: 200px;
+      margin-right: 40px;
+    }
+  }
 
-.filtros .buscador {
-  width: 100%;
-  margin-right: 20px;
-}
-
-.filtros .fechaFilter {
-  width: 200px;
-  margin-right: 40px;
+  .tarjeta {
+    margin: 40px;
+  }
 }
 </style>

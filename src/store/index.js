@@ -114,6 +114,7 @@ export default new Vuex.Store({
       let apellido = datos.apellido;
       let email = datos.email;
       let password = datos.password;
+      let rol = datos.rol;
 
       await fetch(
         "https://nyxellnt-api-2.azurewebsites.net/usuario",
@@ -128,6 +129,7 @@ export default new Vuex.Store({
             apellido: apellido,
             email: email,
             password: password,
+            rol: rol,
           }),
         }
       );
