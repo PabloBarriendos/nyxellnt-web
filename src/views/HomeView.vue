@@ -102,6 +102,7 @@
           :localidad="evento.localidad"
           :genero="evento.categoria"
           :precio="evento.precioEntrada"
+          :precioVip="evento.precioEntradaVip"
           :fecha="evento.fecha"
         />
       </div>
@@ -141,148 +142,179 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home-container {
   margin: 0;
   padding: 0;
   max-width: 100%;
+
+  .carousel-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .v-carousel {
+      height: calc(100vh - 84px) !important;
+    }
+
+    button {
+      position: absolute;
+      top: 77%;
+      color: black;
+      font-family: Georgia, "Times New Roman", Times, serif;
+      font-size: 50px;
+      font-weight: bold;
+      background-color: yellow;
+      border: 5px solid black;
+      border-radius: 20px;
+      background: linear-gradient(
+        180deg,
+        rgb(217, 255, 0) 0%,
+        rgb(247, 255, 128) 35%,
+        rgb(255, 251, 215) 100%
+      );
+
+      p {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+  }
+
+  .merchandising-section {
+    padding: 140px 80px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    h3 {
+      font-size: 28px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .left-section,
+    .right-section {
+      width: 100%;
+    }
+
+    .left-section {
+      // margin-right: 20px;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .right-section {
+      margin-top: 40px;
+      button {
+        margin-top: 20px;
+      }
+
+      p {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .festival-section {
+    padding: 80px 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    h3 {
+      font-size: 28px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .filtro-section {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0px 10%;
+
+      .buscador {
+        width: 70%;
+        margin: 0 5%;
+        margin-bottom: 20px;
+      }
+
+      .categoriasFilter {
+        width: calc(50% - 100px);
+        margin-right: 20px;
+      }
+
+      .precioFilter {
+        width: calc(50% - 100px);
+        margin-left: 20px;
+      }
+
+      .v-btn {
+        width: 110px;
+        margin-top: 12px;
+        margin-left: 40px;
+      }
+    }
+
+    .cards-section {
+      .card-component {
+        margin: 40px;
+      }
+    }
+  }
+  .btn-buscar {
+    width: 80px;
+    margin-left: 40px;
+    padding: 0;
+  }
+
+  .btn-filtrar {
+    padding: 0;
+    margin-right: 100%;
+  }
 }
 
-.carousel-section {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+@media only screen and (min-width: 1024px) {
+  .home-container {
 
-.carousel-section button {
-  position: absolute;
-  top: 77%;
-  color: black;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-size: 50px;
-  font-weight: bold;
-  background-color: yellow;
-  border: 5px solid black;
-  border-radius: 20px;
-  background: linear-gradient(
-    180deg,
-    rgb(217, 255, 0) 0%,
-    rgb(247, 255, 128) 35%,
-    rgb(255, 251, 215) 100%
-  );
-}
+    .merchandising-section {
 
-.left-section img {
-  height: 70%;
-  width: 90%;
-}
+      .left-section,
+      .right-section {
+        width: calc(50% - 20px);
+      }
 
-.right-section button {
-  margin-top: 80px;
-}
+      .left-section {
+        margin-right: 40px;
+      }
 
-.carousel-section button p {
-  padding-left: 10px;
-  padding-right: 10px;
-}
+      .right-section {
+        margin-top: 0;
+        button {
+          margin-top: 20px;
+        }
 
-.v-carousel {
-  height: calc(100vh - 84px) !important;
-}
+        p {
+          margin-bottom: 20px;
+        }
+      }
+    }
 
-.merchandising-section {
-  padding: 140px 80px 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.merchandising-section h3 {
-  font-size: 28px;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.merchandising-section > div {
-  display: flex;
-}
-
-.merchandising-section .left-section,
-.merchandising-section .right-section {
-  width: 50%;
-}
-
-.merchandising-section .left-section {
-  margin-right: 20px;
-}
-
-.merchandising-section .right-section p {
-  margin-bottom: 20px;
-}
-
-.festival-section {
-  padding: 80px 0 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.festival-section h3 {
-  font-size: 28px;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.festival-section .filtro-section {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0px 10%;
-}
-
-.home-container .tarjeta {
-  margin: 40px;
-}
-
-.buscador {
-  width: 70%;
-  margin: 0 5%;
-  margin-bottom: 20px;
-}
-
-.categoriasFilter {
-  width: calc(50% - 100px);
-  margin-right: 20px;
-}
-
-.precioFilter {
-  width: calc(50% - 100px);
-  margin-left: 20px;
-}
-
-.festival-section .filtro-section .v-btn {
-  width: 110px;
-  margin-top: 12px;
-  margin-left: 40px;
-}
-
-.btn-buscar {
-  width: 80px;
-  margin-left: 40px;
-  padding: 0;
-}
-
-.btn-buscar {
-  width: 80px;
-  margin-left: 40px;
-  padding: 0;
-}
-
-.btn-filtrar {
-  padding: 0;
-  margin-right: 100%;
+    .festival-section {
+      padding: 80px 0 20px;
+    }
+  }
 }
 </style>

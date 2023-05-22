@@ -2,7 +2,11 @@
   <v-container class="header-container">
     <v-app-bar app color="primary" dark>
       <v-row justify="center">
-        <v-dialog v-model="this.$store.state.showLoginPopUp" persistent width="1024">
+        <v-dialog
+          v-model="this.$store.state.showLoginPopUp"
+          persistent
+          width="1024"
+        >
           <v-card>
             <v-card-title>
               <span class="text-h5">Iniciar sesión</span>
@@ -11,18 +15,34 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field id="emailLogin" label="Email*" required></v-text-field>
+                    <v-text-field
+                      id="emailLogin"
+                      label="Email*"
+                      required
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" required></v-text-field>
+                    <v-text-field
+                      id="passwordLogin"
+                      label="Contraseña*"
+                      type="password"
+                      required
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" v-on:click="cerrarLoginPopUp">Cerrar</v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="login">Iniciar sesión</v-btn>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                v-on:click="cerrarLoginPopUp"
+                >Cerrar</v-btn
+              >
+              <v-btn color="blue-darken-1" variant="text" @click="login"
+                >Iniciar sesión</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -35,13 +55,28 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field id="nombre" label="Nombre*" @change="checkRegister" required></v-text-field>
+                    <v-text-field
+                      id="nombre"
+                      label="Nombre*"
+                      @change="checkRegister"
+                      required
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field id="apellido" label="Apellido*" @change="checkRegister" required></v-text-field>
+                    <v-text-field
+                      id="apellido"
+                      label="Apellido*"
+                      @change="checkRegister"
+                      required
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="email" label="Email*" @change="checkRegister" required></v-text-field>
+                    <v-text-field
+                      id="email"
+                      label="Email*"
+                      @change="checkRegister"
+                      required
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
@@ -70,13 +105,15 @@
                 color="blue-darken-1"
                 variant="text"
                 @click="() => (showRegisterPopUp = false)"
-              >Cerrar</v-btn>
+                >Cerrar</v-btn
+              >
               <v-btn
                 color="blue-darken-1"
                 variant="text"
                 @click="register"
                 :disabled="registerDisabled"
-              >Registrarse</v-btn>
+                >Registrarse</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -95,7 +132,9 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-card-text label="Apellidos">
-                      <strong>Apellido: {{ $store.state.user.apellido }}</strong>
+                      <strong
+                        >Apellido: {{ $store.state.user.apellido }}</strong
+                      >
                     </v-card-text>
                   </v-col>
                   <v-col cols="12">
@@ -118,7 +157,8 @@
                 color="blue-darken-1"
                 variant="text"
                 @click="() => (showPersonalInfoPopUp = false)"
-              >Cerrar</v-btn>
+                >Cerrar</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -130,7 +170,9 @@
 
       <div class="btn-container" v-if="!$store.state.userLogged">
         <v-btn href target="_blank" v-on:click="loginPopUp" text>
-          <span class="mr-2">Iniciar sesión{{ $store.state.user.userLogged }}</span>
+          <span class="mr-2"
+            >Iniciar sesión{{ $store.state.user.userLogged }}</span
+          >
         </v-btn>
         <v-btn href target="_blank" v-on:click="registerPopUp" text>
           <span class="mr-2">Registrarse</span>
@@ -165,7 +207,7 @@ export default {
       apellido: "",
       email: "",
       password: "",
-      rol: ""
+      rol: "",
     },
     showRegisterPopUp: false,
     showUserDropdown: false,
@@ -215,7 +257,7 @@ export default {
         apellido: document.getElementById("apellido")?.value,
         email: document.getElementById("email")?.value,
         password: document.getElementById("password")?.value,
-        rol: "user"
+        rol: "user",
       });
       this.showRegisterPopUp = false;
     },
@@ -236,35 +278,52 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
 .header-container {
   height: 84px;
-}
 
-.v-app-bar {
-  height: 84px !important;
-  display: flex;
-  align-items: center;
-}
+  .v-app-bar {
+    height: 84px !important;
+    display: flex;
+    align-items: center;
 
-.btn-container {
-  position: fixed;
-  right: 10px;
-  height: 36px;
-}
+    .btn-container {
+      position: fixed;
+      right: 10px;
+      height: 36px;
+    }
 
-.avatar-container {
-  position: fixed;
-  right: 10px;
-  height: 48px;
-  width: 200px;
-  display: flex;
-  align-items: center;
-}
+    .avatar-container {
+      position: fixed;
+      right: 10px;
+      height: 48px;
+      width: 200px;
+      display: flex;
+      align-items: center;
 
-.avatar-container p {
-  margin-bottom: 0;
-  margin-left: 20px;
+      p {
+        margin-bottom: 0;
+        margin-left: 20px;
+      }
+    }
+
+    .user-dropdown {
+      width: 240px;
+      height: 154px;
+      background-color: #1976d2;
+      position: fixed;
+      right: 0;
+      top: 84px;
+
+      p {
+        margin: 20px 20px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 
 header {
@@ -278,23 +337,6 @@ header {
 
 .menu-icon {
   margin-left: 16px;
-}
-
-.user-dropdown {
-  width: 240px;
-  height: 154px;
-  background-color: #1976d2;
-  position: fixed;
-  right: 0;
-  top: 84px;
-}
-
-.user-dropdown p {
-  margin: 20px 20px;
-}
-
-.user-dropdown p:hover {
-  cursor: pointer;
 }
 
 .v-application a {
