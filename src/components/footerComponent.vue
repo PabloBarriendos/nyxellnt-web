@@ -24,13 +24,13 @@
 
     <div class="link-section">
       <div>
-      <p>Contáctanos</p>
+      <button>Contáctanos</button>
       </div>
       <div>
-      <p>Cookies</p>
+      <button @click="goCookies()">Cookies</button>
       </div>
       <div>
-      <p>Estadísticas</p>
+      <button>Estadísticas</button>
       </div>
     </div>
   </v-footer>
@@ -43,6 +43,11 @@ export default {
   data: () => ({
     icons: ["mdi-facebook", "mdi-twitter", "mdi-instagram"],
   }),
+  methods: {
+    goCookies() {
+      this.$router.push("/cookies")
+    }
+  },
 };
 </script>
 
@@ -79,7 +84,7 @@ export default {
       display: flex;
       justify-content: center;
 
-      p{
+      button{
         padding: 0 10px;
       }
     }
