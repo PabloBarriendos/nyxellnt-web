@@ -1,7 +1,7 @@
 <template>
   <v-footer class="d-flex">
     <div class="title-section">
-      <h3>Nyxelln't</h3>
+      <button @click="goHome()"><strong>Nyxelln´t</strong></button>
     </div>
 
     <div class="icons-section">
@@ -24,7 +24,7 @@
 
     <div class="link-section">
       <div>
-      <button>Contáctanos</button>
+      <button @click="goContacto()">Contáctanos</button>
       </div>
       <div>
       <button @click="goCookies()">Cookies</button>
@@ -44,8 +44,14 @@ export default {
     icons: ["mdi-facebook", "mdi-twitter", "mdi-instagram"],
   }),
   methods: {
+    goHome() {
+      this.$router.push("/")
+    },
     goCookies() {
       this.$router.push("/cookies")
+    },
+    goContacto() {
+      this.$router.push("/contacto")
     }
   },
 };
@@ -90,8 +96,6 @@ export default {
     }
 
   }
-
-
   .icono {
     background-color: white;
   }
