@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import HomeComponent from "../views/HomeView.vue";
 import EventComponent from "../views/EventView.vue";
 import MisEventosComponent from "../views/MisEventosView.vue";
+import CarritoComponent from "../views/CarritoComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -10,6 +11,7 @@ const routes = [
   { path: "/", component: HomeComponent },
   { path: "/evento", component: EventComponent },
   { path: "/mis-eventos", component: MisEventosComponent },
+  { path: "/carrito", component: CarritoComponent },
 ];
 
 const router = new VueRouter({
