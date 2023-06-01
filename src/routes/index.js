@@ -1,14 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import EventView from "../views/EventView.vue";
-import MisEventosView from "../views/MisEventosView.vue";
 import CookiesView from "../views/CookiesView.vue";
 import ContactoView from "../views/ContactoView.vue"
-import HomeComponent from "../views/HomeView.vue";
-import EventComponent from "../views/EventView.vue";
-import MisFestivalesComponent from "../views/MisFestivalesView.vue";
-import CarritoComponent from "../views/CarritoComponent.vue";
+import FestivalView from "../views/FestivalView.vue";
+import MisFestivalesView from "../views/MisFestivalesView.vue";
+import CarritoView from "../views/CarritoView.vue";
 
 Vue.use(VueRouter);
 
@@ -17,8 +14,8 @@ const routes = [
   { path: "/cookies", component: CookiesView },
   { path: "/contacto", component: ContactoView },
   { path: "/festival", component: FestivalView },
-  { path: "/mis-festivales", component: MisFestivalesComponent },
-  { path: "/carrito", component: CarritoComponent },
+  { path: "/mis-festivales", component: MisFestivalesView },
+  { path: "/carrito", component: CarritoView },
 ];
 
 const router = new VueRouter({

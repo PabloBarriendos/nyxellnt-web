@@ -12,8 +12,8 @@ export default new Vuex.Store({
     showLoginPopUp: false,
     userLogged: false,
     counter: 1,
-    eventList: [],
-    showEventList: [],
+    festivalList: [],
+    showFestivalList: [],
     userList: [],
     misComprasList: [],
     showMisComprasList: [],
@@ -43,11 +43,11 @@ export default new Vuex.Store({
     decrement(state) {
       state.counter--;
     },
-    initFestivales(state, events) {
-      state.eventList = events;
+    initFestivales(state, festivales) {
+      state.festivalList = festivales;
     },
-    cambiarShowFestivales(state, events) {
-      state.showEventList = events;
+    cambiarShowFestivales(state, festivales) {
+      state.showFestivalList = festivales;
     },
     setMisComprasList(state, list) {
       state.misComprasList = list;
@@ -66,11 +66,11 @@ export default new Vuex.Store({
     setLoginPopUp(context, showLoginPopUp) {
       context.commit("setLoginPopUp", showLoginPopUp);
     },
-    setShowEventList(context, events) {
-      context.commit("cambiarShowFestivales", events);
+    setShowFestivalList(context, festivales) {
+      context.commit("cambiarShowFestivales", festivales);
     },
     buscar({ commit }, search) {
-      let resultados = this.state.eventList.filter(item => {
+      let resultados = this.state.festivalList.filter(item => {
         if (item.nombre.toLowerCase().includes(search) || item.artistas.toLowerCase().includes(search)) {
           return item
         }
@@ -175,7 +175,7 @@ export default new Vuex.Store({
       let ordenPrecio = datos.ordenPrecio;
 
       if (mes == 'Todas las categorías' && ordenPrecio == null) {
-        commit("cambiarShowFestivales", this.state.eventList);
+        commit("cambiarShowFestivales", this.state.festivalList);
       }
       if (mes != null && mes != 'Todas las categorías' && ordenPrecio == null) {
         await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival?mes=${mes}`)

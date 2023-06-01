@@ -84,7 +84,8 @@ export default {
   methods: {
     goToCompra() {
       if (this.$store.state.userLogged == false) {
-        this.$store.dispatch("setLoginPopUp", true);
+        // this.$store.dispatch("setLoginPopUp", true);
+        this.$router.push(`/carrito`);
       } else {
         this.$store.dispatch("setIdFestivalCompra", this.id);
         // this.$router.push(`/festival`);

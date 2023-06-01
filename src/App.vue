@@ -18,7 +18,8 @@ export default {
   },
   data () {
     return {
-      showHeader: false,
+      showHeader: true,
+      // showHeader: false,
     };
   },
   created() {
@@ -34,7 +35,8 @@ export default {
         this.showHeader = true;
       } else {
         // Si la posición del desplazamiento es 0, mostrar el encabezado
-        this.showHeader = false;
+        this.showHeader = true;
+        // this.showHeader = false;
       }
     },
   },
