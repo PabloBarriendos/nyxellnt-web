@@ -63,8 +63,8 @@
         ></v-text-field>
 
         <v-select
-          v-model="genero"
-          class="categoriasFilter"
+          v-model="mes"
+          class="mesesFilter"
           label="Categorías"
           :items="[
             'Todas las categorías',
@@ -93,17 +93,17 @@
 
       <div class="cards-section">
         <CardComponent
-          v-for="evento in $store.state.showEventList"
-          :key="evento.idEvento"
-          :id="evento.idEvento"
-          :titulo="evento.nombre"
-          :cantante="evento.cantante"
-          :descripcion="evento.descripcion"
-          :localidad="evento.localidad"
-          :genero="evento.categoria"
-          :precio="evento.precioEntrada"
-          :precioVip="evento.precioEntradaVip"
-          :fecha="evento.fecha"
+          v-for="festival in $store.state.showEventList"
+          :key="festival.idFestival"
+          :id="festival.idFestival"
+          :titulo="festival.nombre"
+          :artistas="festival.artistas"
+          :descripcion="festival.descripcion"
+          :localidad="festival.localidad"
+          :mes="festival.mes"
+          :precio="festival.precioEntrada"
+          :precioVip="festival.precioEntradaVip"
+          :fecha="festival.fecha"
         />
       </div>
     </div>
@@ -121,12 +121,12 @@ export default {
   data() {
     return {
       search: "",
-      genero: null,
+      mes: null,
       ordenPrecio: null,
     };
   },
   async mounted() {
-    this.$store.dispatch("cargarEventos");
+    this.$store.dispatch("cargarFestivales");
   },
   methods: {
     async buscar() {
@@ -134,7 +134,7 @@ export default {
     },
     async requestFiltro() {
       this.$store.dispatch("requestFiltroHome", {
-        genero: this.genero,
+        mes: this.mes,
         ordenPrecio: this.ordenPrecio,
       });
     },
@@ -251,7 +251,7 @@ export default {
         margin-bottom: 20px;
       }
 
-      .categoriasFilter {
+      .mesesFilter {
         width: calc(50% - 100px);
         margin-right: 20px;
       }

@@ -11,8 +11,8 @@
       ></v-text-field>
 
       <v-select
-        v-model="genero"
-        class="categoriasFilter"
+        v-model="mes"
+        class="mesesFilter"
         label="Categorías"
         :items="[
           'Todas las categorías',
@@ -42,44 +42,44 @@
     <div class="entradas-section">
       <h2>Entradas</h2>
       <EntradaCarrito
-        :key="$store.state.showEventList[1].idEvento"
-        :id="$store.state.showEventList[1].idEvento"
+        :key="$store.state.showEventList[1].idFestival"
+        :id="$store.state.showEventList[1].idFestival"
         :titulo="$store.state.showEventList[1].nombre"
-        :cantante="$store.state.showEventList[1].cantante"
+        :artistas="$store.state.showEventList[1].artistas"
         :descripcion="$store.state.showEventList[1].descripcion"
         :localidad="$store.state.showEventList[1].localidad"
-        :genero="$store.state.showEventList[1].categoria"
+        :mes="$store.state.showEventList[1].mes"
         :precio="$store.state.showEventList[1].precioEntrada"
         :precioVip="$store.state.showEventList[1].precioEntradaVip"
         :fecha="$store.state.showEventList[1].fecha"
       />
       <!-- <EntradaCarrito
-        v-for="evento in $store.state.showEventList"
-        :key="evento.idEvento"
-        :id="evento.idEvento"
-        :titulo="evento.nombre"
-        :cantante="evento.cantante"
-        :descripcion="evento.descripcion"
-        :localidad="evento.localidad"
-        :genero="evento.categoria"
-        :precio="evento.precioEntrada"
-        :precioVip="evento.precioEntradaVip"
-        :fecha="evento.fecha"
+        v-for="festival in $store.state.showEventList"
+        :key="festival.idFestival"
+        :id="festival.idFestival"
+        :titulo="festival.nombre"
+        :artistas="festival.artistas"
+        :descripcion="festival.descripcion"
+        :localidad="festival.localidad"
+        :mes="festival.mes"
+        :precio="festival.precioEntrada"
+        :precioVip="festival.precioEntradaVip"
+        :fecha="festival.fecha"
       /> -->
     </div>
     <div class="productos-section">
       <h2>Productos</h2>
       <ProductoCarrito
-        v-for="evento in $store.state.showEventList"
-        :key="evento.idEvento"
-        :id="evento.idEvento"
-        :titulo="evento.nombre"
-        :descripcion="evento.descripcion"
-        :precio="evento.precioEntrada"
+        v-for="festival in $store.state.showEventList"
+        :key="festival.idFestival"
+        :id="festival.idFestival"
+        :titulo="festival.nombre"
+        :descripcion="festival.descripcion"
+        :precio="festival.precioEntrada"
       />
       <!-- <ProductoCarrito
-        :key="$store.state.showEventList[1].idEvento"
-        :id="$store.state.showEventList[1].idEvento"
+        :key="$store.state.showEventList[1].idFestival"
+        :id="$store.state.showEventList[1].idFestival"
         :titulo="$store.state.showEventList[1].nombre"
         :descripcion="$store.state.showEventList[1].descripcion"
         :precio="$store.state.showEventList[1].precioEntrada"
@@ -101,12 +101,12 @@ export default {
   data() {
     return {
       search: "",
-      genero: null,
+      mes: null,
       ordenPrecio: null,
     };
   },
   async mounted() {
-    this.$store.dispatch("cargarEventos");
+    this.$store.dispatch("cargarFestivales");
   },
   methods: {
     async buscar() {
@@ -114,7 +114,7 @@ export default {
     },
     async requestFiltro() {
       this.$store.dispatch("requestFiltroHome", {
-        genero: this.genero,
+        mes: this.mes,
         ordenPrecio: this.ordenPrecio,
       });
     },
@@ -141,7 +141,7 @@ export default {
       margin-bottom: 20px;
     }
 
-    .categoriasFilter {
+    .mesesFilter {
       width: calc(50% - 100px);
       margin-right: 20px;
     }

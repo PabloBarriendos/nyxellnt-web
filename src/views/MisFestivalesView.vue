@@ -32,17 +32,17 @@
       </v-card-actions>
     </v-card>
 
-    <MisEventosCardComponent
+    <MisFestivalesCardComponent
       v-for="item in $store.state.showMisComprasList"
       :key="item.operacion.idOperacion"
       :id="item.operacion.idOperacion"
-      :titulo="item.evento.nombre"
-      :cantante="item.evento.cantante"
-      :descripcion="item.evento.descripcion"
-      :localidad="item.evento.localidad"
-      :genero="item.evento.categoria"
-      :precioEntrada="item.evento.precioEntrada"
-      :fecha="item.evento.fecha"
+      :titulo="item.festival.nombre"
+      :artistas="item.festival.artistas"
+      :descripcion="item.festival.descripcion"
+      :localidad="item.festival.localidad"
+      :mes="item.festival.mes"
+      :precioEntrada="item.festival.precioEntrada"
+      :fecha="item.festival.fecha"
       :fechaCompra="item.operacion.fechaCompra"
       :precioTotal="item.operacion.precioTotal"
       :numEntradas="item.operacion.numEntradasCompradas"
@@ -51,12 +51,12 @@
 </template>
   
 <script>
-import MisEventosCardComponent from "../components/MisEventosCardComponent.vue";
+import MisFestivalesCardComponent from "../components/MisFestivalesCardComponent.vue";
 
 export default {
-  name: "MisEventosComponent",
+  name: "MisFestivalesComponent",
   components: {
-    MisEventosCardComponent,
+    MisFestivalesCardComponent,
   },
   data() {
     return {

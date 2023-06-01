@@ -13,7 +13,7 @@
             <img src="../photo/R.jpeg" />
           </div>
           <div class="top-description">
-            <v-card-subtitle> {{ cantante }} - {{ genero }} </v-card-subtitle>
+            <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
             <v-card-text>
               {{ descripcion }}
             </v-card-text>
@@ -73,10 +73,10 @@ export default {
   props: {
     id: Number,
     titulo: String,
-    cantante: String,
+    artistas: String,
     descripcion: String,
     localidad: String,
-    genero: String,
+    mes: String,
     precio: Number,
     precioVip: Number,
     fecha: String,
@@ -87,8 +87,8 @@ export default {
         // this.$store.dispatch("setLoginPopUp", true);
         this.$router.push(`/carrito`);
       } else {
-        this.$store.dispatch("setIdEventoCompra", this.id);
-        // this.$router.push(`/evento`);
+        this.$store.dispatch("setIdFestivalCompra", this.id);
+        // this.$router.push(`/festival`);
         this.$router.push(`/carrito`);
       }
     },

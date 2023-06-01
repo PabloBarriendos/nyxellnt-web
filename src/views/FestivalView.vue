@@ -4,21 +4,21 @@
       <img src="../photo/R.jpeg" />
       <div>
         <v-card-title>
-          {{ this.$store.state.eventoCompra.nombre }}
+          {{ this.$store.state.festivalCompra.nombre }}
         </v-card-title>
         <v-card-subtitle>
-          {{ this.$store.state.eventoCompra.cantante }} -
-          {{ this.$store.state.eventoCompra.localidad }} -
-          {{ this.$store.state.eventoCompra.categoria }}
+          {{ this.$store.state.festivalCompra.artistas }} -
+          {{ this.$store.state.festivalCompra.localidad }} -
+          {{ this.$store.state.festivalCompra.mes }}
         </v-card-subtitle>
         <v-card-text>
-          {{ this.$store.state.eventoCompra.descripcion }}
+          {{ this.$store.state.festivalCompra.descripcion }}
         </v-card-text>
         <v-card-text>
-          Fecha evento: {{ this.$store.state.eventoCompra.fecha }}
+          Fecha festival: {{ this.$store.state.festivalCompra.fecha }}
         </v-card-text>
         <v-card-text>
-          Precio entrada: {{ this.$store.state.eventoCompra.precioEntrada }} €
+          Precio entrada: {{ this.$store.state.festivalCompra.precioEntrada }} €
         </v-card-text>
       </div>
     </div>
@@ -71,14 +71,14 @@
           label="Número de entradas"
           type="number"
           min="1"
-          :max="this.$store.state.eventoCompra.stock"
+          :max="this.$store.state.festivalCompra.stock"
         ></v-text-field>
 
         <v-btn
           type="submit"
           block
           class="mt-2"
-          v-on:click="comprarEvento"
+          v-on:click="comprarFestival"
           :disabled="comprarDisabled"
           >Aceptar</v-btn
         >
@@ -135,18 +135,18 @@ export default {
         document.getElementById("email")?.value &&
         document.getElementById("ticket")?.value > 0 &&
         document.getElementById("ticket")?.value <=
-          this.$store.state.eventoCompra.stock
+          this.$store.state.festivalCompra.stock
       ) {
         this.comprarDisabled = false;
       } else {
         this.comprarDisabled = true;
       }
     },
-    async comprarEvento() {
+    async comprarFestival() {
       this.checkCompra();
       if (this.comprarDisabled == false) {
         this.$store.dispatch(
-          "comprarEvento",
+          "comprarFestival",
           document.getElementById("ticket")?.value
         );
         this.$router.push(`/`);
@@ -154,7 +154,7 @@ export default {
     },
   },
   async created() {
-    this.$store.dispatch("fetchEvento");
+    this.$store.dispatch("fetchFestival");
   },
 };
 </script>

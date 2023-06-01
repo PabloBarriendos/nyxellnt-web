@@ -6,14 +6,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     datoInutil: null,
-    idEvento: null,
-    eventoCompra: {},
+    idFestival: null,
+    festivalCompra: {},
     user: {},
     showLoginPopUp: false,
     userLogged: false,
     counter: 1,
-    eventList: [],
-    showEventList: [],
+    festivalList: [],
+    showFestivalList: [],
     userList: [],
     misComprasList: [],
     showMisComprasList: [],
@@ -22,11 +22,11 @@ export default new Vuex.Store({
     setDatoInutil(state, datoInutil) {
       state.datoInutil = datoInutil;
     },
-    setEventoCompra(state, eventoCompra) {
-      state.eventoCompra = eventoCompra;
+    setFestivalCompra(state, festivalCompra) {
+      state.festivalCompra = festivalCompra;
     },
-    setIdEvento(state, idEvento) {
-      state.idEvento = idEvento;
+    setIdFestival(state, idFestival) {
+      state.idFestival = idFestival;
     },
     setUser(state, user) {
       state.user = user;
@@ -43,11 +43,11 @@ export default new Vuex.Store({
     decrement(state) {
       state.counter--;
     },
-    initEventos(state, events) {
-      state.eventList = events;
+    initFestivales(state, festivales) {
+      state.festivalList = festivales;
     },
-    cambiarShowEventos(state, events) {
-      state.showEventList = events;
+    cambiarShowFestivales(state, festivales) {
+      state.showFestivalList = festivales;
     },
     setMisComprasList(state, list) {
       state.misComprasList = list;
@@ -66,20 +66,20 @@ export default new Vuex.Store({
     setLoginPopUp(context, showLoginPopUp) {
       context.commit("setLoginPopUp", showLoginPopUp);
     },
-    setShowEventList(context, events) {
-      context.commit("cambiarShowEventos", events);
+    setShowFestivalList(context, festivales) {
+      context.commit("cambiarShowFestivales", festivales);
     },
     buscar({ commit }, search) {
-      let resultados = this.state.eventList.filter(item => {
-        if (item.nombre.toLowerCase().includes(search) || item.cantante.toLowerCase().includes(search)) {
+      let resultados = this.state.festivalList.filter(item => {
+        if (item.nombre.toLowerCase().includes(search) || item.artistas.toLowerCase().includes(search)) {
           return item
         }
       });
-      commit("cambiarShowEventos", resultados);
+      commit("cambiarShowFestivales", resultados);
     },
     buscarOperacion({ commit }, search) {
       let resultados = this.state.misComprasList.filter(item => {
-        if (item.evento.nombre.toLowerCase().includes(search) || item.evento.cantante.toLowerCase().includes(search)) {
+        if (item.festival.nombre.toLowerCase().includes(search) || item.festival.artistas.toLowerCase().includes(search)) {
           return item
         }
       });
@@ -161,44 +161,44 @@ export default new Vuex.Store({
       commit("setUser", {});
       commit("setUserLogged", false);
     },
-    async cargarEventos({ commit }) {
-      await fetch('https://nyxellnt-api-2.azurewebsites.net/evento')
+    async cargarFestivales({ commit }) {
+      await fetch('https://nyxellnt-api-2.azurewebsites.net/festival')
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          commit("initEventos", data);
-          commit("cambiarShowEventos", data);
+          commit("initFestivales", data);
+          commit("cambiarShowFestivales", data);
         })
     },
     async requestFiltroHome({ commit }, datos) {
-      let genero = datos.genero;
+      let mes = datos.mes;
       let ordenPrecio = datos.ordenPrecio;
 
-      if (genero == 'Todas las categorías' && ordenPrecio == null) {
-        commit("cambiarShowEventos", this.state.eventList);
+      if (mes == 'Todas las categorías' && ordenPrecio == null) {
+        commit("cambiarShowFestivales", this.state.festivalList);
       }
-      if (genero != null && genero != 'Todas las categorías' && ordenPrecio == null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento?genero=${genero}`)
+      if (mes != null && mes != 'Todas las categorías' && ordenPrecio == null) {
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival?mes=${mes}`)
           .then(response => response.json())
           .then(data => {
-            commit("cambiarShowEventos", data);
+            commit("cambiarShowFestivales", data);
           })
           .catch(error => console.error(error));
       }
-      if ((genero == null || genero == 'Todas las categorías') && ordenPrecio != null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento?ordenarPrecio=${ordenPrecio}`)
+      if ((mes == null || mes == 'Todas las categorías') && ordenPrecio != null) {
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival?ordenarPrecio=${ordenPrecio}`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            commit("cambiarShowEventos", data);
+            commit("cambiarShowFestivales", data);
           })
           .catch(error => console.error(error));
       }
-      if (genero != null && genero != 'Todas las categorías' && ordenPrecio != null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento?genero=${genero}&ordenarPrecio=${ordenPrecio}`)
+      if (mes != null && mes != 'Todas las categorías' && ordenPrecio != null) {
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival?mes=${mes}&ordenarPrecio=${ordenPrecio}`)
           .then(response => response.json())
           .then(data => {
-            commit("cambiarShowEventos", data);
+            commit("cambiarShowFestivales", data);
           })
           .catch(error => console.error(error));
       }
@@ -208,7 +208,7 @@ export default new Vuex.Store({
 
       if (this.state.user.idUsuario) {
         let listaOperaciones = [];
-        let listaEventos = [];
+        let listaFestivales = [];
         let resultados = [];
 
         await fetch(
@@ -218,15 +218,15 @@ export default new Vuex.Store({
           .then((data) => (listaOperaciones = data))
           .catch((error) => console.error(error));
 
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/evento`)
+        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival`)
           .then((response) => response.json())
-          .then((data) => (listaEventos = data))
+          .then((data) => (listaFestivales = data))
           .catch((error) => console.error(error));
 
         listaOperaciones.forEach((operacion) => {
-          listaEventos.forEach((evento) => {
-            if (operacion.idEvento == evento.idEvento) {
-              resultados.push({ operacion, evento });
+          listaFestivales.forEach((festival) => {
+            if (operacion.idFestival == festival.idFestival) {
+              resultados.push({ operacion, festival });
             }
           });
         });
@@ -272,16 +272,16 @@ export default new Vuex.Store({
 
       }
     },
-    async setIdEventoCompra({ commit }, idEvento) {
-      document.cookie = `idEventoCompra=${idEvento}`;
-      commit("setIdEvento", idEvento);
+    async setIdFestivalCompra({ commit }, idFestival) {
+      document.cookie = `idFestivalCompra=${idFestival}`;
+      commit("setIdFestival", idFestival);
     },
-    async comprarEvento({ commit }, ticket) {
+    async comprarFestival({ commit }, ticket) {
 
-      console.log(this.state.idEvento);
+      console.log(this.state.idFestival);
       console.log(this.state.user.idUsuario);
       console.log(ticket);
-      console.log(this.state.eventoCompra.precioEntrada * ticket);
+      console.log(this.state.festivalCompra.precioEntrada * ticket);
 
       // POST operacion
       await fetch("https://nyxellnt-api-2.azurewebsites.net/operacion", {
@@ -291,49 +291,49 @@ export default new Vuex.Store({
         },
         body: JSON.stringify({
           idOperacion: 0,
-          idEvento: this.state.idEvento,
+          idFestival: this.state.idFestival,
           idUsuario: this.state.user.idUsuario,
           numEntradasCompradas: ticket,
-          precioTotal: this.state.eventoCompra.precioEntrada * ticket
+          precioTotal: this.state.festivalCompra.precioEntrada * ticket
         }),
       });
 
-      // PUT evento
+      // PUT festival
       await fetch(
-        `https://nyxellnt-api-2.azurewebsites.net/evento/${this.state.eventoCompra.idEvento}`,
+        `https://nyxellnt-api-2.azurewebsites.net/festival/${this.state.festivalCompra.idFestival}`,
         {
           method: "PUT",
           headers: {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            idEvento: this.state.eventoCompra.idEvento,
-            nombre: this.state.eventoCompra.nombre,
-            cantante: this.state.eventoCompra.cantante,
-            descripcion: this.state.eventoCompra.descripcion,
-            localidad: this.state.eventoCompra.localidad,
-            fecha: this.state.eventoCompra.fecha,
-            precioEntrada: this.state.eventoCompra.precioEntrada,
+            idFestival: this.state.festivalCompra.idFestival,
+            nombre: this.state.festivalCompra.nombre,
+            artistas: this.state.festivalCompra.artistas,
+            descripcion: this.state.festivalCompra.descripcion,
+            localidad: this.state.festivalCompra.localidad,
+            fecha: this.state.festivalCompra.fecha,
+            precioEntrada: this.state.festivalCompra.precioEntrada,
             stock:
-              this.state.eventoCompra.stock - ticket,
-            categoria: this.state.eventoCompra.categoria,
+              this.state.festivalCompra.stock - ticket,
+            mes: this.state.festivalCompra.mes,
           }),
         }
       );
 
       commit("setDatoInutil", null);
     },
-    async fetchEvento({ commit, dispatch }) {
-      let idEventoCookie = await dispatch("getCookie", "idEventoCompra");
-      if(idEventoCookie){
-        commit("setIdEvento", idEventoCookie);
+    async fetchFestival({ commit, dispatch }) {
+      let idFestivalCookie = await dispatch("getCookie", "idFestivalCompra");
+      if(idFestivalCookie){
+        commit("setIdFestival", idFestivalCookie);
       }
       await fetch(
-        `https://nyxellnt-api-2.azurewebsites.net/evento/${this.state.idEvento}`
+        `https://nyxellnt-api-2.azurewebsites.net/festival/${this.state.idFestival}`
       )
         .then((response) => response.json())
         .then((data) => {
-          commit("setEventoCompra", data);
+          commit("setFestivalCompra", data);
         })
         .catch((error) => console.error(error));
 

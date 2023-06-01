@@ -18,7 +18,7 @@
             <img src="../../photo/R.jpeg" />
           </div>
           <div class="top-description">
-            <v-card-subtitle> {{ cantante }} - {{ genero }} </v-card-subtitle>
+            <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
             <v-card-text>
               {{ descripcion }}
             </v-card-text>
@@ -67,16 +67,14 @@
 </template>
 
 <script>
-import '@mdi/font/css/materialdesignicons.css';
-
 export default {
   props: {
     id: Number,
     titulo: String,
-    cantante: String,
+    artistas: String,
     descripcion: String,
     localidad: String,
-    genero: String,
+    mes: String,
     precio: Number,
     precioVip: Number,
     fecha: String,

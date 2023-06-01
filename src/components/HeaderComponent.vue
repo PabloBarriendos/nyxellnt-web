@@ -268,7 +268,7 @@ export default {
     },
     misCompras() {
       this.showUserDropdown = false;
-      this.$router.push(`/mis-eventos?id=${this.usuario.idUsuario}`);
+      this.$router.push(`/mis-festivales?id=${this.usuario.idUsuario}`);
     },
     userDropdown() {
       this.showUserDropdown = !this.showUserDropdown;
