@@ -3,14 +3,19 @@
     <v-card-title>
       {{ titulo }}
     </v-card-title>
+    <div class="symbol-ok">
+      <!-- <v-icon color="success" icon="mdi-airplane"></v-icon>
+      <v-icon>mdi-home</v-icon> -->
+      <v-icon color="green darken-2">mdi-check-circle</v-icon>
+    </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
-        <img src="../photo/R.jpeg" />
+        <img src="../../photo/R.jpeg" />
       </div>
       <div class="derecha">
         <div class="top-info">
           <div class="top-image">
-            <img src="../photo/R.jpeg" />
+            <img src="../../photo/R.jpeg" />
           </div>
           <div class="top-description">
             <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
@@ -41,26 +46,19 @@
           </div>
 
           <v-card-actions>
-            <v-btn
-              class="white--text"
-              v-on:click="goToCompra"
-              elevation="2"
-              x-large
-              rounded
-              color="blue"
-            >
-              Comprar
-            </v-btn>
-            <v-btn
-              class="white--text"
-              v-on:click="goToCompra"
-              elevation="2"
-              x-large
-              rounded
-              color="blue"
-            >
-              Merchandising
-            </v-btn>
+            <v-text-field
+              v-model="numberValue"
+              :persistent-hint="true"
+              hide-details
+              single-line
+              type="number"
+            />
+            <v-text-field
+              v-model="numberValueVip"
+              hide-details
+              single-line
+              type="number"
+            />
           </v-card-actions>
         </div>
       </div>
@@ -69,6 +67,8 @@
 </template>
 
 <script>
+import '@mdi/font/css/materialdesignicons.css';
+
 export default {
   props: {
     id: Number,
@@ -81,28 +81,37 @@ export default {
     precioVip: Number,
     fecha: String,
   },
+  data: () => ({
+    numberValue: 1,
+    numberValueVip: 0,
+  }),
   methods: {
-    goToCompra() {
-      if (this.$store.state.userLogged == false) {
-        this.$store.dispatch("setLoginPopUp", true);
-      } else {
-        this.$store.dispatch("setIdFestivalCompra", this.id);
-        // this.$router.push(`/festival`);
-        this.$router.push(`/carrito`);
-      }
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .card-component {
+  display: flex;
+  flex-wrap: wrap;
+  
+
   .v-card__title {
+    width: 100%;
     font-weight: bold;
     white-space: nowrap;
+    padding-left: 60px
+  }
+
+  .symbol-ok{
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .tarjeta {
+    width: calc(100% - 60px);
     display: flex;
     padding: 20px;
     background-color: aliceblue;
@@ -157,10 +166,8 @@ export default {
             }
 
             span:nth-of-type(2) {
-                width: 100%;
-                // overflow: hidden;
-                // text-overflow: ellipsis;
-              }
+              width: 100%;
+            }
           }
         }
 
@@ -170,13 +177,12 @@ export default {
           width: 100%;
           justify-content: center;
 
-          .v-btn {
+          .v-input {
+            background-color: white;
             width: 154px;
-            margin: 10px 20px;
-            font-size: 0.9rem;
-            border-radius: 10px;
-            padding: 10px;
-            height: auto;
+            .v-text-field__slot{
+              padding-left: 10px;
+            }
           }
         }
       }
@@ -262,5 +268,4 @@ export default {
     }
   }
 }
-
 </style>
