@@ -89,7 +89,7 @@ export default new Vuex.Store({
       let email = datos.email;
       let password = datos.password;
 
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
+      await fetch("https://nyxellnt-4.azurewebsites.net/usuario")
         .then((response) => response.json())
         .then((data) => {
           data.forEach((element) => {
@@ -117,7 +117,7 @@ export default new Vuex.Store({
       let rol = datos.rol;
 
       await fetch(
-        "https://nyxellnt-api-2.azurewebsites.net/usuario",
+        "https://nyxellnt-4.azurewebsites.net/usuario",
         {
           method: "POST",
           headers: {
@@ -134,7 +134,7 @@ export default new Vuex.Store({
         }
       );
 
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/usuario")
+      await fetch("https://nyxellnt-4.azurewebsites.net/usuario")
         .then((response) => response.json())
         .then((data) => {
           data.forEach((element) => {
@@ -162,7 +162,7 @@ export default new Vuex.Store({
       commit("setUserLogged", false);
     },
     async cargarFestivales({ commit }) {
-      await fetch('https://nyxellnt-api-2.azurewebsites.net/festival')
+      await fetch('https://nyxellnt-4.azurewebsites.net/festival')
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -178,7 +178,7 @@ export default new Vuex.Store({
         commit("cambiarShowFestivales", this.state.festivalList);
       }
       if (mes != null && mes != 'Todas las categorías' && ordenPrecio == null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival?mes=${mes}`)
+        await fetch(`https://nyxellnt-4.azurewebsites.net/festival?mes=${mes}`)
           .then(response => response.json())
           .then(data => {
             commit("cambiarShowFestivales", data);
@@ -186,7 +186,7 @@ export default new Vuex.Store({
           .catch(error => console.error(error));
       }
       if ((mes == null || mes == 'Todas las categorías') && ordenPrecio != null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival?ordenarPrecio=${ordenPrecio}`)
+        await fetch(`https://nyxellnt-4.azurewebsites.net/festival?ordenarPrecio=${ordenPrecio}`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
@@ -195,7 +195,7 @@ export default new Vuex.Store({
           .catch(error => console.error(error));
       }
       if (mes != null && mes != 'Todas las categorías' && ordenPrecio != null) {
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival?mes=${mes}&ordenarPrecio=${ordenPrecio}`)
+        await fetch(`https://nyxellnt-4.azurewebsites.net/festival?mes=${mes}&ordenarPrecio=${ordenPrecio}`)
           .then(response => response.json())
           .then(data => {
             commit("cambiarShowFestivales", data);
@@ -212,13 +212,13 @@ export default new Vuex.Store({
         let resultados = [];
 
         await fetch(
-          `https://nyxellnt-api-2.azurewebsites.net/operacion/usuario/${this.state.user.idUsuario}`
+          `https://nyxellnt-4.azurewebsites.net/operacion/usuario/${this.state.user.idUsuario}`
         )
           .then((response) => response.json())
           .then((data) => (listaOperaciones = data))
           .catch((error) => console.error(error));
 
-        await fetch(`https://nyxellnt-api-2.azurewebsites.net/festival`)
+        await fetch(`https://nyxellnt-4.azurewebsites.net/festival`)
           .then((response) => response.json())
           .then((data) => (listaFestivales = data))
           .catch((error) => console.error(error));
@@ -284,7 +284,7 @@ export default new Vuex.Store({
       console.log(this.state.festivalCompra.precioEntrada * ticket);
 
       // POST operacion
-      await fetch("https://nyxellnt-api-2.azurewebsites.net/operacion", {
+      await fetch("https://nyxellnt-4.azurewebsites.net/operacion", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -300,7 +300,7 @@ export default new Vuex.Store({
 
       // PUT festival
       await fetch(
-        `https://nyxellnt-api-2.azurewebsites.net/festival/${this.state.festivalCompra.idFestival}`,
+        `https://nyxellnt-4.azurewebsites.net/festival/${this.state.festivalCompra.idFestival}`,
         {
           method: "PUT",
           headers: {
@@ -329,7 +329,7 @@ export default new Vuex.Store({
         commit("setIdFestival", idFestivalCookie);
       }
       await fetch(
-        `https://nyxellnt-api-2.azurewebsites.net/festival/${this.state.idFestival}`
+        `https://nyxellnt-4.azurewebsites.net/festival/${this.state.idFestival}`
       )
         .then((response) => response.json())
         .then((data) => {

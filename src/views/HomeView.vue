@@ -3,7 +3,7 @@
     <div class="carousel-section">
       <v-carousel height="auto">
         <v-carousel-item
-          src="../photo/mejores-festivales-festivales-musica-electronica-mundo-primavera-verano-defqon-1-festival.jpg"
+          src="../photo/mejores-eventos-festivales-musica-electronica-mundo-primavera-verano-defqon-1-festival.jpg"
           cover
         ></v-carousel-item>
 
