@@ -1,7 +1,7 @@
 <template>
   <v-container class="header-container">
     <v-app-bar app color="primary" dark>
-      <v-row justify="center">
+      <v-row>
         <v-dialog
           v-model="this.$store.state.showLoginPopUp"
           persistent
@@ -277,7 +277,6 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 .header-container {
   height: 84px;
@@ -286,6 +285,11 @@ export default {
     height: 84px !important;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+
+    .row {
+      position: fixed;
+    }
 
     .btn-container {
       position: fixed;
@@ -342,5 +346,25 @@ header {
 .v-application a {
   color: white;
   text-decoration: none;
+}
+
+@media only screen and (max-width: 550px) {
+  .header-container {
+    height: 120px;
+
+    .v-app-bar {
+      height: 120px !important;
+      .btn-container {
+        height: auto;
+        width: calc(100% - 150px);
+        display: flex;
+        flex-wrap: wrap;
+
+        .v-btn{
+          width: 100%;
+        }
+      }
+    }
+  }
 }
 </style>
