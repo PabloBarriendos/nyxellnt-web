@@ -229,6 +229,9 @@ export default {
       this.showUserDropdown = false;
       this.$router.push(`/`);
     },
+    miPerfil(){
+
+    },
     carrito() {
       this.showUserDropdown = false;
       this.$router.push(`/carrito`);
