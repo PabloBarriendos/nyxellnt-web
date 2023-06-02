@@ -1,38 +1,30 @@
 <template>
-  <v-footer class="d-flex">
-    <div class="title-section">
-      <button @click="goHome()"><strong>Nyxelln´t</strong></button>
-    </div>
+  <v-footer class="d-flex flex-wrap">
+    <v-col cols="12" md="4" class="title-section">
+      <v-btn color="white" @click="goHome()" text><strong >Nyxelln´t</strong></v-btn>
+    </v-col>
 
-    <div class="icons-section">
-      <div class="icons">
-        <v-btn
-          v-for="icon in icons"
-          :key="icon"
-          class="mx-4 icono"
-          :icon="icon"
-          variant="plain"
-          size="small"
-          color="black"
-        ></v-btn>
-      </div>
-      <div class="date-section px-4 py-2 bg-black text-center w-100">
-        <router-link to="/"><strong>Nyxelln`t — </strong></router-link>
+    <v-col cols="12" md="4" class="icons-section">
+      <v-row class="icons" justify="center">
+        <v-col v-for="icon in icons" :key="icon" cols="auto">
+          <v-btn :icon="true" variant="plain" size="small" color="black">
+            <v-icon color="white">{{ icon }}</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+      <div class="date-section px-4 py-2 bg-black text-center">
+        <router-link to="/">Nyxelln`t —</router-link>
         {{ new Date().getFullYear() }}
       </div>
-    </div>
+    </v-col>
 
-    <div class="link-section">
-      <div>
-      <button @click="goContacto()">Contáctanos</button>
-      </div>
-      <div>
-      <button @click="goCookies()">Cookies</button>
-      </div>
-      <div>
-      <button>Estadísticas</button>
-      </div>
-    </div>
+    <v-col cols="12" md="4" class="link-section">
+      <v-row class="links" justify="center">
+        <v-col cols="auto" v-for="link in links" :key="link">
+          <v-btn color="white" @click="goTo(link.link)" text>{{ link.texto }}</v-btn>
+        </v-col>
+      </v-row>
+    </v-col>
   </v-footer>
 </template>
   
@@ -41,17 +33,15 @@ export default {
   name: "footerComponent",
 
   data: () => ({
-    icons: ["mdi-facebook", "mdi-twitter", "mdi-instagram"],
+    icons: ["mdi-instagram", "mdi-twitter", "mdi-facebook"],
+    links: [{texto: "Contactanos", link: "contacto"}, {texto: "Cookies", link: "cookies"}, {texto: "Estadísticas", link: ""}],
   }),
   methods: {
     goHome() {
-      this.$router.push("/")
+      this.$router.push("/");
     },
-    goCookies() {
-      this.$router.push("/cookies")
-    },
-    goContacto() {
-      this.$router.push("/contacto")
+    goTo(route) {
+      this.$router.push(`/${route.toLowerCase()}`);
     }
   },
 };
@@ -63,45 +53,60 @@ export default {
   color: white;
   padding: 40px;
 
-  >div {
-    width: calc(100% / 3);
+  .title-section,
+  .icons-section,
+  .link-section {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
   }
 
-  .icons-section{
+  .icons-section {
+    flex-direction: column;
 
-    .date-section{
-      width: 100%;
+    .date-section {
       margin-top: 10px;
       justify-content: center;
-      a{
+      a {
         color: white;
         text-decoration: none;
       }
     }
-
   }
 
-  .link-section{
-    >div{
-      width: calc(100% / 3);
+  .link-section {
+    .links {
       display: flex;
       justify-content: center;
 
-      button{
+      v-btn {
         padding: 0 10px;
       }
     }
-
   }
+
   .icono {
     background-color: white;
   }
+
   .v-application a {
     color: white;
     text-decoration: none;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .v-footer {
+    .title-section,
+    .icons-section,
+    .link-section {
+      width: calc(100% / 3);
+    }
+  }
+
+  .link-section {
+    .links {
+      flex-direction: row;
+    }
   }
 }
 </style>
