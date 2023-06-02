@@ -93,7 +93,7 @@
 
       <div class="cards-section">
         <CardComponent
-          v-for="festival in $store.state.showEventList"
+          v-for="festival in $store.state.showFestivalList"
           :key="festival.idFestival"
           :id="festival.idFestival"
           :titulo="festival.nombre"
@@ -104,6 +104,7 @@
           :precio="festival.precioEntrada"
           :precioVip="festival.precioEntradaVip"
           :fecha="festival.fecha"
+          :imagen="festival.imagen"
         />
       </div>
     </div>

@@ -5,12 +5,12 @@
     </v-card-title>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
-        <img src="../photo/R.jpeg" />
+        <img :src="'data:image/png;base64,'+this.imagen" />
       </div>
       <div class="derecha">
         <div class="top-info">
           <div class="top-image">
-            <img src="../photo/R.jpeg" />
+            <img :src="'data:image/png;base64,'+this.imagen" />
           </div>
           <div class="top-description">
             <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
@@ -80,6 +80,7 @@ export default {
     precio: Number,
     precioVip: Number,
     fecha: String,
+    imagen: String
   },
   methods: {
     goToCompra() {
