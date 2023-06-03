@@ -1,11 +1,14 @@
 <template>
   <v-container class="home-container">
+    <!-- <loading :active="isLoading" :can-cancel="false" :is-full-page="true"></loading> -->
     <div class="banner">
       <div class="banner-text">
         <v-text>¡ Las mejores ofertas en productos y entradas <br> solo disponibles aquí y para ti !</v-text>
-        <v-btn>¡Compra Ya!</v-btn>
+        <v-btn @click="scrollToSection('festival-section')">¡Compra Ya!</v-btn>
       </div>
-      <img src="../assets/banner.jpg">
+      <img id="imgBanner1" src="../assets/banner.jpg">
+      <img id="imgBanner2" src="../assets/banner2.jpg">
+      <img id="imgBanner3" src="../assets/banner3.jpg">
     </div>
 
     <div class="merchandising-section">
@@ -30,35 +33,26 @@
             webs!
           </p>
           <p>No lo pienses y consíguelos antes de que se agoten.</p>
-          <p>¡Stock limitado!</p>
-
           <v-btn> Ver tienda </v-btn>
+          <p>¡Stock limitado!</p>
         </div>
       </div>
     </div>
 
-    <div class="festival-section">
+    <div id="festival-section">
       <h3>Festivales</h3>
 
       <div class="filtro-section">
         <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
-          class="buscador"></v-text-field>
+          class="buscador" @input="requestFiltro()"></v-text-field>
 
-        <v-select v-model="mes" class="mesesFilter" label="Categorías" :items="[
-          'Todas las categorías',
-          'Rock',
-          'Pop',
-          'Flamenco',
-          'Jazz',
-          'Musical',
-          'Opera',
-        ]" multiple></v-select>
-        <v-select v-model="ordenPrecio" class="precioFilter" label="Ordenar por precio" item-text="orden" :items="[
-          { value: 'asc', orden: 'Precio ascendente' },
-          { value: 'des', orden: 'Precio descendente' },
-        ]"></v-select>
+        <v-select v-model="mes" class="mesesFilter" label="Ordenar por mes" :items="meses" @change="requestFiltro()" multiple></v-select>
+        <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
+          { value: 'asc', orden: 'Fecha ▲' },
+          { value: 'des', orden: 'Fecha ▼' },
+        ]" @change="requestFiltro()"></v-select>
 
-        <v-btn> Resetear </v-btn>
+        <v-btn @click="resetearFiltro()"> Resetear </v-btn>
       </div>
 
       <div class="cards-section">
@@ -74,19 +68,32 @@
 
 <script>
 import CardComponent from "../components/CardComponent.vue";
+// import Loading from "vue-loading-overlay";
+// import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   name: "HomeComponent",
   components: {
     CardComponent,
   },
-  data() {
-    return {
-      search: "",
-      mes: null,
-      ordenPrecio: null,
-    };
-  },
+  data: () => ({
+    search: "",
+    mes: null,
+    meses: [
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ],
+    ordenFecha: null,
+    showAllEvents: false,
+    isLoading: false,
+  }),
+  
   async mounted() {
     this.$store.dispatch("cargarFestivales");
   },
@@ -96,15 +103,34 @@ export default {
     },
     async requestFiltro() {
       this.$store.dispatch("requestFiltroHome", {
+        stringBuscar: this.search,
         mes: this.mes,
-        ordenPrecio: this.ordenPrecio,
+        ordenFecha: this.ordenFecha,
       });
     },
+    scrollToSection(id) {
+      console.log(this.$store.state.user);
+      const section = document.querySelector(`#${id}`);
+      section.scrollIntoView({ behavior: 'smooth' });
+    },
+    resetearFiltro() {
+      // this.showAllEvents = true;
+      this.search = "";
+      this.mes = null;
+      this.ordenFecha = null;
+      this.requestFiltro();
+    },
+    // mostrarSpinner() {
+    //   this.isLoading = true;
+    //   // Realiza la lógica o llamadas asíncronas aquí
+    //   // Cuando la lógica o llamadas asincrónicas se completen, establece isLoading en false para ocultar el spinner
+    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+// @import url("vue-loading-overlay/dist/vue-loading.css");
 .home-container {
   margin: 0;
   padding: 0;
@@ -116,6 +142,18 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    #imgBanner1 {
+      display: none;
+    }
+
+    #imgBanner2 {
+      display: none;
+    }
+
+    #imgBanner3 {
+      display: block;
+    }
 
     .banner-text {
       position: absolute;
@@ -150,7 +188,7 @@ export default {
   }
 
   .merchandising-section {
-    padding: 140px 80px 10px;
+    padding: 80px 80px 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -182,19 +220,29 @@ export default {
     }
 
     .right-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       margin-top: 40px;
+      justify-content: center;
 
       button {
-        margin-top: 20px;
+        margin-top: 30px;
+        margin-bottom: 6px;
       }
 
       p {
+        width: 100%;
         margin-bottom: 20px;
+
+        &:last-of-type {
+          text-align: center;
+        }
       }
     }
   }
 
-  .festival-section {
+  #festival-section {
     padding: 80px 0 20px;
     display: flex;
     flex-wrap: wrap;
@@ -258,6 +306,8 @@ export default {
 @media only screen and (min-width: 1024px) {
   .home-container {
 
+
+
     .merchandising-section {
 
       .left-section,
@@ -272,18 +322,91 @@ export default {
       .right-section {
         margin-top: 0;
 
-        button {
-          margin-top: 20px;
-        }
-
         p {
           margin-bottom: 20px;
         }
       }
     }
 
-    .festival-section {
+    #festival-section {
       padding: 80px 0 20px;
+    }
+  }
+}
+
+
+@media only screen and (max-width: 600px) {
+  .banner {
+    .banner-text {
+      margin-top: 84px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .banner {
+    .banner-text {
+
+      v-text {
+        font-size: 25px !important;
+      }
+
+      .v-btn {
+        margin-top: 60px;
+        padding: 28px;
+
+        span {
+          font-size: 20px;
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+
+// para ajustar la imagen principal
+@media only screen and (min-width: 450px) {
+  .home-container {
+    .banner {
+      #imgBanner1 {
+        display: none;
+      }
+
+      #imgBanner2 {
+        display: block;
+      }
+
+      #imgBanner3 {
+        display: none;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 850px) {
+  .home-container {
+    .banner {
+      #imgBanner1 {
+        display: block;
+      }
+
+      #imgBanner2 {
+        display: none;
+      }
+
+      #imgBanner3 {
+        display: none;
+      }
     }
   }
 }

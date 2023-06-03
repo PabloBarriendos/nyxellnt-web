@@ -1,19 +1,19 @@
 <template>
   <v-footer class="d-flex flex-wrap">
     <v-col cols="12" md="4" class="title-section">
-      <v-btn color="black" @click="goHome()" text><strong >Nyxelln´t</strong></v-btn>
+      <img @click="goHome()" src="../assets/Logo.png">
     </v-col>
 
     <v-col cols="12" md="4" class="icons-section">
       <v-row class="icons" justify="center">
         <v-col v-for="icon in icons" :key="icon" cols="auto">
           <v-btn :icon="true" variant="plain" size="small" color="black">
-            <v-icon color="black">{{ icon }}</v-icon>
+            <v-icon color="white">{{ icon }}</v-icon>
           </v-btn>
         </v-col>
       </v-row>
       <div class="date-section px-4 py-2 bg-black text-center">
-        <router-link to="/">Nyxelln`t —</router-link>
+        <router-link to="/">Festivalia —</router-link>
         {{ new Date().getFullYear() }}
       </div>
     </v-col>
@@ -21,7 +21,7 @@
     <v-col cols="12" md="4" class="link-section">
       <v-row class="links" justify="center">
         <v-col cols="auto" v-for="link in links" :key="link">
-          <v-btn color="black" @click="goTo(link.link)" text>{{ link.texto }}</v-btn>
+          <v-btn color="white" @click="goTo(link.link)" text>{{ link.texto }}</v-btn>
         </v-col>
       </v-row>
     </v-col>
@@ -39,6 +39,7 @@ export default {
   methods: {
     goHome() {
       this.$router.push("/");
+      document.documentElement.scrollTop = 0;
     },
     goTo(route) {
       this.$router.push(`/${route.toLowerCase()}`);
@@ -49,8 +50,8 @@ export default {
 
 <style lang="scss" scoped>
 .v-footer {
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   padding: 40px;
 
   .title-section,
@@ -60,6 +61,16 @@ export default {
     justify-content: center;
   }
 
+  .title-section{
+    img {
+      width: 130px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    
+  }
+
   .icons-section {
     flex-direction: column;
 
@@ -67,7 +78,7 @@ export default {
       margin-top: 10px;
       justify-content: center;
       a {
-        color: black;
+        color: white;
         text-decoration: none;
       }
     }
@@ -84,12 +95,12 @@ export default {
     }
   }
 
-  .icono {
-    background-color: black;
+  .v-icon {
+    color: white;
   }
 
   .v-application a {
-    color: black;
+    color: white;
     text-decoration: none;
   }
 }
