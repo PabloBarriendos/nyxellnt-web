@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 var link = "http://localhost:80"
+// https://nyxellnt-api-2.azurewebsites.net/
 
 export default new Vuex.Store({
   state: {
