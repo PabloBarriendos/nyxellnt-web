@@ -1,23 +1,11 @@
 <template>
   <v-container class="home-container">
-    <div class="carousel-section">
-      <v-carousel height="auto">
-        <v-carousel-item
-          src="../photo/mejores-eventos-festivales-musica-electronica-mundo-primavera-verano-defqon-1-festival.jpg"
-          cover
-        ></v-carousel-item>
-
-        <v-carousel-item src="../photo/R.jpeg" cover></v-carousel-item>
-
-        <v-carousel-item
-          src="../photo/TURISMOFESTIVALESESPAÑA1.jpg"
-          cover
-        ></v-carousel-item>
-      </v-carousel>
-
-      <button>
-        <p>Comprar entradas</p>
-      </button>
+    <div class="banner">
+      <div class="banner-text">
+        <v-text>¡ Las mejores ofertas en productos y entradas <br> solo disponibles aquí y para ti !</v-text>
+        <v-btn>¡Compra Ya!</v-btn>
+      </div>
+      <img src="../assets/banner.jpg">
     </div>
 
     <div class="merchandising-section">
@@ -25,7 +13,7 @@
 
       <div>
         <div class="left-section">
-          <img src="../photo/574545117a6eccda0a795e0855f7b340.jpg" />
+          <img src="" />
         </div>
 
         <div class="right-section">
@@ -53,59 +41,32 @@
       <h3>Festivales</h3>
 
       <div class="filtro-section">
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-          class="buscador"
-        ></v-text-field>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
+          class="buscador"></v-text-field>
 
-        <v-select
-          v-model="mes"
-          class="mesesFilter"
-          label="Categorías"
-          :items="[
-            'Todas las categorías',
-            'Rock',
-            'Pop',
-            'Flamenco',
-            'Jazz',
-            'Musical',
-            'Opera',
-          ]"
-          multiple
-        ></v-select>
-        <v-select
-          v-model="ordenPrecio"
-          class="precioFilter"
-          label="Ordenar por precio"
-          item-text="orden"
-          :items="[
-            { value: 'asc', orden: 'Precio ascendente' },
-            { value: 'des', orden: 'Precio descendente' },
-          ]"
-        ></v-select>
+        <v-select v-model="mes" class="mesesFilter" label="Categorías" :items="[
+          'Todas las categorías',
+          'Rock',
+          'Pop',
+          'Flamenco',
+          'Jazz',
+          'Musical',
+          'Opera',
+        ]" multiple></v-select>
+        <v-select v-model="ordenPrecio" class="precioFilter" label="Ordenar por precio" item-text="orden" :items="[
+          { value: 'asc', orden: 'Precio ascendente' },
+          { value: 'des', orden: 'Precio descendente' },
+        ]"></v-select>
 
         <v-btn> Resetear </v-btn>
       </div>
 
       <div class="cards-section">
-        <CardComponent
-          v-for="festival in $store.state.showFestivalList"
-          :key="festival.idFestival"
-          :id="festival.idFestival"
-          :titulo="festival.nombre"
-          :artistas="festival.artistas"
-          :descripcion="festival.descripcion"
-          :localidad="festival.localidad"
-          :mes="festival.mes"
-          :precio="festival.precioEntrada"
-          :precioVip="festival.precioEntradaVip"
-          :fecha="festival.fecha"
-          :imagen="festival.imagen"
-        />
+        <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
+          :id="festival.idFestival" :titulo="festival.nombre" :artistas="festival.artistas"
+          :descripcion="festival.descripcion" :localidad="festival.localidad" :mes="festival.mes"
+          :precio="festival.precioEntrada" :precioVip="festival.precioEntradaVip" :fecha="festival.fecha"
+          :imagen="festival.imagen" />
       </div>
     </div>
   </v-container>
@@ -149,37 +110,42 @@ export default {
   padding: 0;
   max-width: 100%;
 
-  .carousel-section {
-    position: relative;
+  .banner {
+    width: 100vw;
+    height: 560px;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .v-carousel {
-      height: calc(100vh - 84px) !important;
+    .banner-text {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      v-text {
+        width: 100%;
+        font-size: 34px;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        background-color: rgba(250, 250, 250, 0.1);
+        border-radius: 10px;
+      }
+
+      .v-btn {
+        margin-top: 100px;
+        padding: 28px;
+
+        span {
+          font-size: 20px;
+        }
+      }
     }
 
-    button {
-      position: absolute;
-      top: 77%;
-      color: black;
-      font-family: Georgia, "Times New Roman", Times, serif;
-      font-size: 50px;
-      font-weight: bold;
-      background-color: yellow;
-      border: 5px solid black;
-      border-radius: 20px;
-      background: linear-gradient(
-        180deg,
-        rgb(217, 255, 0) 0%,
-        rgb(247, 255, 128) 35%,
-        rgb(255, 251, 215) 100%
-      );
-
-      p {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -189,7 +155,7 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
 
-    > div {
+    >div {
       display: flex;
       flex-wrap: wrap;
     }
@@ -217,6 +183,7 @@ export default {
 
     .right-section {
       margin-top: 40px;
+
       button {
         margin-top: 20px;
       }
@@ -275,6 +242,7 @@ export default {
       }
     }
   }
+
   .btn-buscar {
     width: 80px;
     margin-left: 40px;
@@ -303,6 +271,7 @@ export default {
 
       .right-section {
         margin-top: 0;
+
         button {
           margin-top: 20px;
         }

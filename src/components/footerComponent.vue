@@ -1,14 +1,14 @@
 <template>
   <v-footer class="d-flex flex-wrap">
     <v-col cols="12" md="4" class="title-section">
-      <v-btn color="white" @click="goHome()" text><strong >Nyxelln´t</strong></v-btn>
+      <v-btn color="black" @click="goHome()" text><strong >Nyxelln´t</strong></v-btn>
     </v-col>
 
     <v-col cols="12" md="4" class="icons-section">
       <v-row class="icons" justify="center">
         <v-col v-for="icon in icons" :key="icon" cols="auto">
           <v-btn :icon="true" variant="plain" size="small" color="black">
-            <v-icon color="white">{{ icon }}</v-icon>
+            <v-icon color="black">{{ icon }}</v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -21,7 +21,7 @@
     <v-col cols="12" md="4" class="link-section">
       <v-row class="links" justify="center">
         <v-col cols="auto" v-for="link in links" :key="link">
-          <v-btn color="white" @click="goTo(link.link)" text>{{ link.texto }}</v-btn>
+          <v-btn color="black" @click="goTo(link.link)" text>{{ link.texto }}</v-btn>
         </v-col>
       </v-row>
     </v-col>
@@ -49,8 +49,8 @@ export default {
 
 <style lang="scss" scoped>
 .v-footer {
-  background-color: #1976d2;
-  color: white;
+  background-color: white;
+  color: black;
   padding: 40px;
 
   .title-section,
@@ -67,7 +67,7 @@ export default {
       margin-top: 10px;
       justify-content: center;
       a {
-        color: white;
+        color: black;
         text-decoration: none;
       }
     }
@@ -85,11 +85,11 @@ export default {
   }
 
   .icono {
-    background-color: white;
+    background-color: black;
   }
 
   .v-application a {
-    color: white;
+    color: black;
     text-decoration: none;
   }
 }
