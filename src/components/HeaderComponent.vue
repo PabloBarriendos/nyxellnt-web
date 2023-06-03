@@ -117,51 +117,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="showPersonalInfoPopUp" persistent width="1024">
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Información personal</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Nombre">
-                      <strong>Nombre: {{ $store.state.user.nombre }}</strong>
-                    </v-card-text>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-card-text label="Apellidos">
-                      <strong
-                        >Apellido: {{ $store.state.user.apellido }}</strong
-                      >
-                    </v-card-text>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-card-text label="Email">
-                      <strong>Email: {{ $store.state.user.email }}</strong>
-                    </v-card-text>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-card-text label="Contraseña" type="password">
-                      <strong>Contraseña:</strong>
-                      ***********
-                    </v-card-text>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="() => (showPersonalInfoPopUp = false)"
-                >Cerrar</v-btn
-              >
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-row>
 
       <div class="text-h4 title">
@@ -188,9 +143,22 @@
       </div>
 
       <div class="user-dropdown" v-if="showUserDropdown">
-        <p v-on:click="showInfo">Información personal</p>
-        <p v-on:click="misCompras">Mis compras</p>
-        <p v-on:click="logout">Cerrar sesión</p>
+        <div v-on:click="miPerfil">
+          <v-icon color="white">mdi-account-circle</v-icon>
+          <p>Mi Perfil</p>
+        </div>
+        <div v-on:click="misCompras">
+          <v-icon color="white">mdi-calculator</v-icon>
+          <p>Mis Compras</p>
+        </div>
+        <div v-on:click="carrito">
+          <v-icon color="white">mdi-cart</v-icon>
+          <p>Carrito</p>
+        </div>
+        <div v-on:click="logout">
+          <v-icon color="red">mdi-logout</v-icon>
+          <p>Cerrar sesión</p>
+        </div>
       </div>
     </v-app-bar>
   </v-container>
@@ -210,8 +178,7 @@ export default {
       rol: "",
     },
     showRegisterPopUp: false,
-    showUserDropdown: false,
-    showPersonalInfoPopUp: false,
+    showUserDropdown: false
   }),
   created() {
     this.$store.dispatch("cargarCookiesUsuario");
@@ -237,10 +204,6 @@ export default {
     cerrarLoginPopUp() {
       this.$store.dispatch("setLoginPopUp", false);
     },
-    showInfo() {
-      this.showPersonalInfoPopUp = true;
-      this.showUserDropdown = false;
-    },
     async login() {
       let email = document.getElementById("emailLogin")?.value;
       let password = document.getElementById("passwordLogin")?.value;
@@ -265,6 +228,13 @@ export default {
       this.$store.dispatch("logout");
       this.showUserDropdown = false;
       this.$router.push(`/`);
+    },
+    miPerfil(){
+
+    },
+    carrito() {
+      this.showUserDropdown = false;
+      this.$router.push(`/carrito`);
     },
     misCompras() {
       this.showUserDropdown = false;
@@ -313,17 +283,29 @@ export default {
 
     .user-dropdown {
       width: 240px;
-      height: 154px;
+      height: 256px;
       background-color: #1976d2;
       position: fixed;
       right: 0;
       top: 84px;
 
-      p {
-        margin: 20px 20px;
+      div {
+        display: flex;
+        justify-content: flex-start;
+        padding-left: 36px;
 
         &:hover {
           cursor: pointer;
+          p {
+            font-weight: bold;
+          }
+        }
+        &:last-of-type p {
+          color: red;
+        }
+
+        p {
+          margin: 20px 20px;
         }
       }
     }
@@ -360,9 +342,13 @@ header {
         display: flex;
         flex-wrap: wrap;
 
-        .v-btn{
+        .v-btn {
           width: 100%;
         }
+      }
+
+      .user-dropdown {
+        top: 120px;
       }
     }
   }
