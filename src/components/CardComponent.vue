@@ -1,16 +1,20 @@
 <template>
   <div class="card-component">
-    <v-card-title>
-      {{ titulo }}
-    </v-card-title>
+    <div class="titulo">
+      <v-card-title>
+        {{ titulo }}
+      </v-card-title>
+      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="primary">mdi-pencil</v-icon>
+      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="red" @click="deletePopUp()">mdi-delete</v-icon>
+    </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
-        <img :src="'data:image/png;base64,'+this.imagen" />
+        <img :src="'data:image/png;base64,' + this.imagen" />
       </div>
       <div class="derecha">
         <div class="top-info">
           <div class="top-image">
-            <img :src="'data:image/png;base64,'+this.imagen" />
+            <img :src="'data:image/png;base64,' + this.imagen" />
           </div>
           <div class="top-description">
             <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
@@ -47,7 +51,6 @@
               elevation="2"
               x-large
               rounded
-              color="blue"
             >
               Comprar
             </v-btn>
@@ -57,7 +60,6 @@
               elevation="2"
               x-large
               rounded
-              color="blue"
             >
               Merchandising
             </v-btn>
@@ -65,11 +67,39 @@
         </div>
       </div>
     </v-card>
+    <v-dialog
+      v-model="showDeletePopUp"
+      persistent
+      width="400"
+    >
+      <v-card class="popupDelete">
+        <v-card-text>
+          <span class="text-h5"
+            >¿Estas seguro de que deseas eliminar este evento?</span
+          >
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="success" variant="text" v-on:click="deleteFestival()"
+            >Aceptar</v-btn
+          >
+          <v-btn
+            color="error"
+            variant="text"
+            @click="cerrarDeletePopUp"
+            >Cancelar</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 export default {
+  data: () => ({
+    showDeletePopUp: false,
+  }),
   props: {
     id: Number,
     titulo: String,
@@ -80,7 +110,7 @@ export default {
     precio: Number,
     precioVip: Number,
     fecha: String,
-    imagen: String
+    imagen: String,
   },
   methods: {
     goToCompra() {
@@ -93,21 +123,48 @@ export default {
         this.$router.push(`/carrito`);
       }
     },
+    deleteFestival() {
+      this.$store.dispatch("deleteFestivalCompra", this.id);
+      // this.$store.dispatch("cargarFestivales");
+      this.showDeletePopUp = false;
+    },
+    deletePopUp() {
+      this.showDeletePopUp = true;
+    },
+    cerrarDeletePopUp() {
+      this.showDeletePopUp = false;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.popupDelete {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .card-component {
-  .v-card__title {
-    font-weight: bold;
-    white-space: nowrap;
+  .titulo {
+    display: flex;
+
+    .v-card__title {
+      font-weight: bold;
+      white-space: nowrap;
+      width: calc(100% - 88px);
+    }
+
+    .v-icon {
+      margin: 0 10px;
+    }
   }
 
   .tarjeta {
     display: flex;
     padding: 20px;
-    background-color: aliceblue;
+    background-color: rgba(200, 200, 200, 0.3);
 
     .izquierda {
       display: none;
@@ -123,11 +180,13 @@ export default {
         .top-image {
           // display: none;
           display: block;
+
           img {
             width: 100%;
             border-radius: 4px;
           }
         }
+
         .v-card__subtitle {
           font-weight: bold;
         }
@@ -159,10 +218,10 @@ export default {
             }
 
             span:nth-of-type(2) {
-                width: 100%;
-                // overflow: hidden;
-                // text-overflow: ellipsis;
-              }
+              width: 100%;
+              // overflow: hidden;
+              // text-overflow: ellipsis;
+            }
           }
         }
 
@@ -179,6 +238,7 @@ export default {
             border-radius: 10px;
             padding: 10px;
             height: auto;
+            background-color: black;
           }
         }
       }
@@ -202,6 +262,7 @@ export default {
 
       .derecha {
         width: 100%;
+
         .top-info {
           .top-image {
             display: none;
@@ -241,6 +302,7 @@ export default {
 
       .derecha {
         width: 100%;
+
         .top-info {
           .top-image {
             display: none;
@@ -264,5 +326,4 @@ export default {
     }
   }
 }
-
 </style>

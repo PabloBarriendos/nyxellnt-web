@@ -1,7 +1,7 @@
 <template>
   <v-footer class="d-flex flex-wrap">
     <v-col cols="12" md="4" class="title-section">
-      <v-btn color="white" @click="goHome()" text><strong >Nyxelln´t</strong></v-btn>
+      <img @click="goHome()" src="../assets/logo.png">
     </v-col>
 
     <v-col cols="12" md="4" class="icons-section">
@@ -13,7 +13,7 @@
         </v-col>
       </v-row>
       <div class="date-section px-4 py-2 bg-black text-center">
-        <router-link to="/">Nyxelln`t —</router-link>
+        <router-link to="/">Festivalia —</router-link>
         {{ new Date().getFullYear() }}
       </div>
     </v-col>
@@ -39,6 +39,7 @@ export default {
   methods: {
     goHome() {
       this.$router.push("/");
+      document.documentElement.scrollTop = 0;
     },
     goTo(route) {
       this.$router.push(`/${route.toLowerCase()}`);
@@ -49,7 +50,7 @@ export default {
 
 <style lang="scss" scoped>
 .v-footer {
-  background-color: #1976d2;
+  background-color: black;
   color: white;
   padding: 40px;
 
@@ -58,6 +59,16 @@ export default {
   .link-section {
     display: flex;
     justify-content: center;
+  }
+
+  .title-section{
+    img {
+      width: 130px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    
   }
 
   .icons-section {
@@ -84,8 +95,8 @@ export default {
     }
   }
 
-  .icono {
-    background-color: white;
+  .v-icon {
+    color: white;
   }
 
   .v-application a {

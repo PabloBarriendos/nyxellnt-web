@@ -1,7 +1,7 @@
 <template>
   <v-container class="container">
     <div class="superior">
-      <img src="../photo/R.jpeg" />
+      <img src="" />
       <div>
         <v-card-title>
           {{ this.$store.state.festivalCompra.nombre }}

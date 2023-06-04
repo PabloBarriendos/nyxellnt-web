@@ -1,6 +1,6 @@
 <template>
-  <v-container class="header-container">
-    <v-app-bar app color="primary" dark>
+  <v-container :class="{ showFondo: showFondo }" class="header-container">
+    <v-app-bar app color="transparent" dark>
       <v-row>
         <v-dialog
           v-model="this.$store.state.showLoginPopUp"
@@ -19,6 +19,7 @@
                       id="emailLogin"
                       label="Email*"
                       required
+                      :rules="emailRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -34,20 +35,22 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                v-on:click="cerrarLoginPopUp"
+              <v-btn color="error" variant="text" v-on:click="cerrarLoginPopUp"
                 >Cerrar</v-btn
               >
-              <v-btn color="blue-darken-1" variant="text" @click="login"
+              <v-btn color="success" variant="text" @click="login"
                 >Iniciar sesión</v-btn
               >
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="showRegisterPopUp" persistent width="1024">
-          <v-card>
+        <v-dialog
+          v-model="showRegisterPopUp"
+          persistent
+          width="1024"
+          content-class="registerClass"
+        >
+          <v-card class="customClass">
             <v-card-title>
               <span class="text-h5">Registrarse</span>
             </v-card-title>
@@ -60,6 +63,7 @@
                       label="Nombre*"
                       @change="checkRegister"
                       required
+                      :rules="firstNameRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -68,6 +72,7 @@
                       label="Apellido*"
                       @change="checkRegister"
                       required
+                      :rules="lastNameRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -76,6 +81,7 @@
                       label="Email*"
                       @change="checkRegister"
                       required
+                      :rules="emailRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -102,13 +108,13 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
-                color="blue-darken-1"
+                color="error"
                 variant="text"
                 @click="() => (showRegisterPopUp = false)"
                 >Cerrar</v-btn
               >
               <v-btn
-                color="blue-darken-1"
+                color="success"
                 variant="text"
                 @click="register"
                 :disabled="registerDisabled"
@@ -120,7 +126,10 @@
       </v-row>
 
       <div class="text-h4 title">
-        <router-link to="/">Nyxellnt</router-link>
+        <router-link class="router-link" to="/"
+          ><img src="../assets/logo.png" />
+          <p>Festivalia</p>
+        </router-link>
       </div>
 
       <div class="btn-container" v-if="!$store.state.userLogged">
@@ -144,15 +153,15 @@
 
       <div class="user-dropdown" v-if="showUserDropdown">
         <div v-on:click="miPerfil">
-          <v-icon color="white">mdi-account-circle</v-icon>
+          <v-icon>mdi-account-circle</v-icon>
           <p>Mi Perfil</p>
         </div>
         <div v-on:click="misCompras">
-          <v-icon color="white">mdi-calculator</v-icon>
+          <v-icon>mdi-calculator</v-icon>
           <p>Mis Compras</p>
         </div>
         <div v-on:click="carrito">
-          <v-icon color="white">mdi-cart</v-icon>
+          <v-icon>mdi-cart</v-icon>
           <p>Carrito</p>
         </div>
         <div v-on:click="logout">
@@ -170,6 +179,7 @@ export default {
   components: {},
   data: () => ({
     registerDisabled: true,
+    showFondo: false,
     usuario: {
       nombre: "",
       apellido: "",
@@ -178,12 +188,48 @@ export default {
       rol: "",
     },
     showRegisterPopUp: false,
-    showUserDropdown: false
+    showUserDropdown: false,
+    emailRules: [
+      (value) => {
+        if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+        return "Debe ser un Email valido.";
+      }
+    ],
+    firstNameRules: [
+      (value) => {
+        if (value?.length > 2) return true;
+
+        return "El nombre debe contener al menos 3 carácteres.";
+      },
+    ],
+    lastNameRules: [
+      (value) => {
+        if (/[^0-9]/.test(value)) return true;
+
+        return "El apellido no puede contener digitos.";
+      },
+    ]
   }),
   created() {
+    window.addEventListener("scroll", this.handleScroll);
     this.$store.dispatch("cargarCookiesUsuario");
+    document.addEventListener("click", this.closeUserDropdown);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+    document.removeEventListener("click", this.closeUserDropdown);
   },
   methods: {
+    handleScroll() {
+      // Si la posición del desplazamiento es mayor a 0, ocultar el encabezado
+      this.showUserDropdown = false;
+      if (window.scrollY > 515) {
+        this.showFondo = true;
+      } else {
+        // Si la posición del desplazamiento es 0, mostrar el encabezado
+        this.showFondo = false;
+      }
+    },
     checkRegister() {
       if (
         document.getElementById("nombre")?.value &&
@@ -229,9 +275,7 @@ export default {
       this.showUserDropdown = false;
       this.$router.push(`/`);
     },
-    miPerfil(){
-
-    },
+    miPerfil() {},
     carrito() {
       this.showUserDropdown = false;
       this.$router.push(`/carrito`);
@@ -240,22 +284,86 @@ export default {
       this.showUserDropdown = false;
       this.$router.push(`/mis-festivales?id=${this.usuario.idUsuario}`);
     },
-    userDropdown() {
+    userDropdown(event) {
+      event.stopPropagation();
       this.showUserDropdown = !this.showUserDropdown;
+    },
+    closeUserDropdown() {
+      this.showUserDropdown = false;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.registerClass {
+  margin-top: 100px;
+}
 .header-container {
   height: 84px;
+  position: absolute;
+  width: 100%;
+  max-width: 100%;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+
+  &.showFondo {
+    position: fixed;
+    .v-app-bar {
+      position: fixed;
+      background-color: white !important;
+      box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12) !important;
+      .user-dropdown {
+        box-shadow: -2px 3px 4px -1px rgba(0, 0, 0, 0.5);
+        background-color: white;
+        height: 256px;
+        padding-top: 0;
+        top: 84px;
+
+        div {
+          &:hover {
+            background-color: rgba(200, 200, 200, 0.5);
+            p {
+              font-weight: bold;
+            }
+          }
+          .v-icon {
+            color: black;
+          }
+        }
+      }
+    }
+    p,
+    span {
+      color: black;
+    }
+    .menu-icon {
+      color: black;
+    }
+  }
 
   .v-app-bar {
     height: 84px !important;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    box-shadow: none !important;
+    position: relative;
+
+    .title {
+      .router-link {
+        display: flex;
+        align-items: center;
+
+        p {
+          font-family: "Times New Roman", Times, serif;
+          margin-bottom: 0;
+        }
+      }
+    }
 
     .row {
       position: fixed;
@@ -265,6 +373,11 @@ export default {
       position: fixed;
       right: 10px;
       height: 36px;
+      button {
+        span {
+          font-size: 18px;
+        }
+      }
     }
 
     .avatar-container {
@@ -274,8 +387,10 @@ export default {
       width: 200px;
       display: flex;
       align-items: center;
+      z-index: 5;
 
       p {
+        font-size: 18px;
         margin-bottom: 0;
         margin-left: 20px;
       }
@@ -283,23 +398,32 @@ export default {
 
     .user-dropdown {
       width: 240px;
-      height: 256px;
-      background-color: #1976d2;
+      height: 340px;
+      padding-top: 84px;
+      background-color: black;
       position: fixed;
       right: 0;
-      top: 84px;
+      top: 0;
+      box-shadow: -2px 2px 4px -1px rgba(250, 250, 250, 0.5);
 
       div {
         display: flex;
         justify-content: flex-start;
         padding-left: 36px;
 
+        .v-icon {
+          color: white;
+        }
+
         &:hover {
           cursor: pointer;
+          background-color: rgba(250, 250, 250, 0.5);
+
           p {
             font-weight: bold;
           }
         }
+
         &:last-of-type p {
           color: red;
         }
@@ -310,6 +434,10 @@ export default {
       }
     }
   }
+}
+
+img {
+  width: 80px;
 }
 
 header {
@@ -323,6 +451,7 @@ header {
 
 .menu-icon {
   margin-left: 16px;
+  width: 20px;
 }
 
 .v-application a {
@@ -330,15 +459,16 @@ header {
   text-decoration: none;
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 680px) {
   .header-container {
     height: 120px;
 
     .v-app-bar {
-      height: 120px !important;
+      box-shadow: none;
+
       .btn-container {
         height: auto;
-        width: calc(100% - 150px);
+        width: calc(100% - 250px);
         display: flex;
         flex-wrap: wrap;
 
@@ -346,10 +476,37 @@ header {
           width: 100%;
         }
       }
+    }
+  }
+}
 
-      .user-dropdown {
-        top: 120px;
+@media only screen and (max-width: 480px) {
+  .header-container {
+    .v-app-bar {
+      .btn-container {
+        height: auto;
+        width: calc(100% - 100px);
+        justify-content: end;
+
+        .v-btn {
+          width: auto;
+        }
       }
+
+      .avatar-container {
+        justify-content: center;
+        .v-avatar {
+          display: none;
+        }
+      }
+    }
+  }
+  .title {
+    img {
+      width: 66px;
+    }
+    p {
+      display: none;
     }
   }
 }

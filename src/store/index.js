@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-var link = "http://localhost:80"
+var link = "http://localhost:80";
 // https://nyxellnt-api-2.azurewebsites.net/
 
 export default new Vuex.Store({
@@ -12,6 +12,7 @@ export default new Vuex.Store({
     festivalCompra: {},
     user: {},
     showLoginPopUp: false,
+    loading: false,
     userLogged: false,
     counter: 1,
     festivalList: [],
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     userList: [],
     misComprasList: [],
     showMisComprasList: [],
+    mostrarMensajeDelete: false,
   },
   mutations: {
     setDatoInutil(state, datoInutil) {
@@ -35,6 +37,12 @@ export default new Vuex.Store({
     },
     setLoginPopUp(state, showLoginPopUp) {
       state.showLoginPopUp = showLoginPopUp;
+    },
+    setLoading(state, loading) {
+      state.loading = loading;
+    },
+    setMensajeDelete(state, mostrartMensajeDelete) {
+      state.mostrartMensajeDelete = mostrartMensajeDelete;
     },
     setUserLogged(state, userLogged) {
       state.userLogged = userLogged;
@@ -68,21 +76,29 @@ export default new Vuex.Store({
     setLoginPopUp(context, showLoginPopUp) {
       context.commit("setLoginPopUp", showLoginPopUp);
     },
+    setLoading(context, loading) {
+      context.commit("setLoading", loading);
+    },
     setShowFestivalList(context, festivales) {
       context.commit("cambiarShowFestivales", festivales);
     },
-    buscar({ commit }, search) {
-      let resultados = this.state.festivalList.filter(item => {
-        if (item.nombre.toLowerCase().includes(search) || item.artistas.toLowerCase().includes(search)) {
-          return item
-        }
-      });
-      commit("cambiarShowFestivales", resultados);
-    },
+    // buscar({ commit }, search) {
+    //   let resultados = this.state.festivalList.filter(item => {
+    //     if (item.nombre.toLowerCase().includes(search) || item.artistas.toLowerCase().includes(search) || item.localidad.toLowerCase().includes(search)) {
+    //       return item
+    //     }
+    //   });
+    //   return resultados;
+    //   // commit("setDatoInutil", null);
+    //   // commit("cambiarShowFestivales", resultados);
+    // },
     buscarOperacion({ commit }, search) {
-      let resultados = this.state.misComprasList.filter(item => {
-        if (item.festival.nombre.toLowerCase().includes(search) || item.festival.artistas.toLowerCase().includes(search)) {
-          return item
+      let resultados = this.state.misComprasList.filter((item) => {
+        if (
+          item.festival.nombre.toLowerCase().includes(search) ||
+          item.festival.artistas.toLowerCase().includes(search)
+        ) {
+          return item;
         }
       });
       commit("setShowMisComprasList", resultados);
@@ -91,14 +107,11 @@ export default new Vuex.Store({
       let email = datos.email;
       let password = datos.password;
 
-      await fetch(link+"/usuario")
+      await fetch(link + "/usuario")
         .then((response) => response.json())
         .then((data) => {
           data.forEach((element) => {
-            if (
-              element.email == email &&
-              element.password == password
-            ) {
+            if (element.email == email && element.password == password) {
               commit("setUser", element);
               commit("setUserLogged", true);
               document.cookie = `userId=${element.idUsuario}`;
@@ -106,6 +119,7 @@ export default new Vuex.Store({
               document.cookie = `userApellido=${element.apellido}`;
               document.cookie = `userEmail=${element.email}`;
               document.cookie = `userPassword=${element.password}`;
+              document.cookie = `userRol=${element.rol}`;
             }
           });
         })
@@ -118,32 +132,26 @@ export default new Vuex.Store({
       let password = datos.password;
       let rol = datos.rol;
 
-      await fetch(
-        link+"/usuario",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            id: 0,
-            nombre: nombre,
-            apellido: apellido,
-            email: email,
-            password: password,
-            rol: rol,
-          }),
-        }
-      );
+      await fetch(link + "/usuario", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          id: 0,
+          nombre: nombre,
+          apellido: apellido,
+          email: email,
+          password: password,
+          rol: rol,
+        }),
+      });
 
-      await fetch(link+"/usuario")
+      await fetch(link + "/usuario")
         .then((response) => response.json())
         .then((data) => {
           data.forEach((element) => {
-            if (
-              element.email == email &&
-              element.password == password
-            ) {
+            if (element.email == email && element.password == password) {
               commit("setUser", element);
               commit("setUserLogged", true);
               document.cookie = `user=${element}`;
@@ -160,50 +168,75 @@ export default new Vuex.Store({
       document.cookie = `userApellido=`;
       document.cookie = `userEmail=`;
       document.cookie = `userPassword=`;
+      document.cookie = `userRol=`;
       commit("setUser", {});
       commit("setUserLogged", false);
     },
     async cargarFestivales({ commit }) {
-      await fetch(link+'/festival')
-        .then(response => response.json())
-        .then(data => {
+      commit("setLoading", true);
+      await fetch(link + "/festival")
+        .then((response) => response.json())
+        .then((data) => {
           console.log(data);
           commit("initFestivales", data);
           commit("cambiarShowFestivales", data);
-        })
+        });
+        commit("setLoading", false);
     },
     async requestFiltroHome({ commit }, datos) {
+      commit("setLoading", true);
+      let stringBuscar = datos.stringBuscar;
       let mes = datos.mes;
-      let ordenPrecio = datos.ordenPrecio;
+      let ordenFecha = datos.ordenFecha;
 
-      if (mes == 'Todas las categorías' && ordenPrecio == null) {
-        commit("cambiarShowFestivales", this.state.festivalList);
+      let resultados = this.state.festivalList;
+
+      if (mes == "Todas las categorías" && ordenFecha == null) {
+        commit("cambiarShowFestivales", resultados);
       }
-      if (mes != null && mes != 'Todas las categorías' && ordenPrecio == null) {
-        await fetch(link+`/festival?mes=${mes}`)
-          .then(response => response.json())
-          .then(data => {
+      if (mes != null && mes != "Todas las categorías" && ordenFecha == null) {
+        await fetch(link + `/festival?mes=${mes}`)
+          .then((response) => response.json())
+          .then((data) => {
+            resultados = data;
             commit("cambiarShowFestivales", data);
           })
-          .catch(error => console.error(error));
+          .catch((error) => console.error(error));
       }
-      if ((mes == null || mes == 'Todas las categorías') && ordenPrecio != null) {
-        await fetch(link+`/festival?ordenarPrecio=${ordenPrecio}`)
-          .then(response => response.json())
-          .then(data => {
+      if (
+        (mes == null || mes == "Todas las categorías") &&
+        ordenFecha != null
+      ) {
+        await fetch(link + `/festival?ordenarFecha=${ordenFecha}`)
+          .then((response) => response.json())
+          .then((data) => {
             console.log(data);
+            resultados = data;
             commit("cambiarShowFestivales", data);
           })
-          .catch(error => console.error(error));
+          .catch((error) => console.error(error));
       }
-      if (mes != null && mes != 'Todas las categorías' && ordenPrecio != null) {
-        await fetch(link+`festival?mes=${mes}&ordenarPrecio=${ordenPrecio}`)
-          .then(response => response.json())
-          .then(data => {
+      if (mes != null && mes != "Todas las categorías" && ordenFecha != null) {
+        await fetch(link + `festival?mes=${mes}&ordenarFecha=${ordenFecha}`)
+          .then((response) => response.json())
+          .then((data) => {
+            resultados = data;
             commit("cambiarShowFestivales", data);
           })
-          .catch(error => console.error(error));
+          .catch((error) => console.error(error));
       }
+
+      resultados = resultados.filter((item) => {
+        if (
+          item.nombre.toLowerCase().includes(stringBuscar) ||
+          item.artistas.toLowerCase().includes(stringBuscar) ||
+          item.localidad.toLowerCase().includes(stringBuscar)
+        ) {
+          return item;
+        }
+      });
+      commit("cambiarShowFestivales", resultados);
+      commit("setLoading", false);
     },
     async getOperaciones({ commit, dispatch }) {
       await dispatch("cargarCookiesUsuario");
@@ -213,14 +246,12 @@ export default new Vuex.Store({
         let listaFestivales = [];
         let resultados = [];
 
-        await fetch(
-          link+`/operacion/usuario/${this.state.user.idUsuario}`
-        )
+        await fetch(link + `/operacion/usuario/${this.state.user.idUsuario}`)
           .then((response) => response.json())
           .then((data) => (listaOperaciones = data))
           .catch((error) => console.error(error));
 
-        await fetch(link+`/festival`)
+        await fetch(link + `/festival`)
           .then((response) => response.json())
           .then((data) => (listaFestivales = data))
           .catch((error) => console.error(error));
@@ -235,35 +266,36 @@ export default new Vuex.Store({
 
         commit("setMisComprasList", resultados);
         commit("setShowMisComprasList", resultados);
-
       }
     },
     async requestFiltroOperaciones({ commit }, ordenFecha) {
-      console.log(ordenFecha)
+      console.log(ordenFecha);
       console.log("Antes: ");
       console.log(this.state.showMisComprasList);
-      console.log(this.state.showMisComprasList[0].operacion.fechaCompra)
-      console.log(Date.parse(this.state.showMisComprasList[0].operacion.fechaCompra))
+      console.log(this.state.showMisComprasList[0].operacion.fechaCompra);
+      console.log(
+        Date.parse(this.state.showMisComprasList[0].operacion.fechaCompra)
+      );
       if (ordenFecha != null) {
         if (ordenFecha == true) {
           this.state.showMisComprasList.sort((a, b) => {
             let dateA = a.operacion.fechaCompra.split("-");
-            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0])
+            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
             let dateB = b.operacion.fechaCompra.split("-");
-            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0])
+            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
 
-            console.log(finalDateA)
+            console.log(finalDateA);
 
-            return (finalDateB - finalDateA)
+            return finalDateB - finalDateA;
           });
         } else {
           this.state.showMisComprasList.sort((a, b) => {
             let dateA = a.operacion.fechaCompra.split("-");
-            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0])
+            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
             let dateB = b.operacion.fechaCompra.split("-");
-            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0])
+            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
 
-            return (finalDateA - finalDateB)
+            return finalDateA - finalDateB;
           });
         }
 
@@ -271,22 +303,42 @@ export default new Vuex.Store({
         console.log(this.state.showMisComprasList);
 
         commit("setDatoInutil", null);
-
       }
     },
     async setIdFestivalCompra({ commit }, idFestival) {
       document.cookie = `idFestivalCompra=${idFestival}`;
       commit("setIdFestival", idFestival);
     },
+    async deleteFestivalCompra(context, idFestival) {
+      fetch(link+"/festival/"+idFestival, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            this.mostrarMensajeDelete = true;
+            console.log("eliminado correctamente");
+            context.dispatch('cargarFestivales');
+            context.commit("setMensajeDelete", true);
+            context.commit("setLoading", true);
+          } else {
+            console.error("No se pudo eliminar el evento");
+          }
+        })
+        .catch((error) => {
+          console.error("Error en la solicitud:", error);
+        });
+    },
     async comprarFestival({ commit }, ticket) {
-
       console.log(this.state.idFestival);
       console.log(this.state.user.idUsuario);
       console.log(ticket);
       console.log(this.state.festivalCompra.precioEntrada * ticket);
 
       // POST operacion
-      await fetch(link+"/operacion", {
+      await fetch(link + "/operacion", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -296,49 +348,42 @@ export default new Vuex.Store({
           idFestival: this.state.idFestival,
           idUsuario: this.state.user.idUsuario,
           numEntradasCompradas: ticket,
-          precioTotal: this.state.festivalCompra.precioEntrada * ticket
+          precioTotal: this.state.festivalCompra.precioEntrada * ticket,
         }),
       });
 
       // PUT festival
-      await fetch(
-        link+`/festival/${this.state.festivalCompra.idFestival}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            idFestival: this.state.festivalCompra.idFestival,
-            nombre: this.state.festivalCompra.nombre,
-            artistas: this.state.festivalCompra.artistas,
-            descripcion: this.state.festivalCompra.descripcion,
-            localidad: this.state.festivalCompra.localidad,
-            fecha: this.state.festivalCompra.fecha,
-            precioEntrada: this.state.festivalCompra.precioEntrada,
-            stock:
-              this.state.festivalCompra.stock - ticket,
-            mes: this.state.festivalCompra.mes,
-          }),
-        }
-      );
+      await fetch(link + `/festival/${this.state.festivalCompra.idFestival}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          idFestival: this.state.festivalCompra.idFestival,
+          nombre: this.state.festivalCompra.nombre,
+          artistas: this.state.festivalCompra.artistas,
+          descripcion: this.state.festivalCompra.descripcion,
+          localidad: this.state.festivalCompra.localidad,
+          fecha: this.state.festivalCompra.fecha,
+          precioEntrada: this.state.festivalCompra.precioEntrada,
+          stock: this.state.festivalCompra.stock - ticket,
+          mes: this.state.festivalCompra.mes,
+        }),
+      });
 
       commit("setDatoInutil", null);
     },
     async fetchFestival({ commit, dispatch }) {
       let idFestivalCookie = await dispatch("getCookie", "idFestivalCompra");
-      if(idFestivalCookie){
+      if (idFestivalCookie) {
         commit("setIdFestival", idFestivalCookie);
       }
-      await fetch(
-        link+`/festival/${this.state.idFestival}`
-      )
+      await fetch(link + `/festival/${this.state.idFestival}`)
         .then((response) => response.json())
         .then((data) => {
           commit("setFestivalCompra", data);
         })
         .catch((error) => console.error(error));
-
     },
     getCookie({ commit }, stringCookie) {
       var cookies = document.cookie;
@@ -350,7 +395,10 @@ export default new Vuex.Store({
           cookie = cookie.substring(1);
         }
         if (cookie.indexOf(`${stringCookie}=`) == 0) {
-          miCookieValue = cookie.substring(`${stringCookie}=`.length, cookie.length);
+          miCookieValue = cookie.substring(
+            `${stringCookie}=`.length,
+            cookie.length
+          );
           break;
         }
       }
@@ -363,12 +411,19 @@ export default new Vuex.Store({
       let apellido = await dispatch("getCookie", "userApellido");
       let email = await dispatch("getCookie", "userEmail");
       let password = await dispatch("getCookie", "userPassword");
+      let rol = await dispatch("getCookie", "userRol");
 
       if (idUsuario && nombre && apellido && email && password) {
-        commit("setUser", { idUsuario: idUsuario, nombre: nombre, apellido: apellido, email: email, password: password });
+        commit("setUser", {
+          idUsuario: idUsuario,
+          nombre: nombre,
+          apellido: apellido,
+          email: email,
+          password: password,
+          rol: rol,
+        });
         commit("setUserLogged", true);
       }
-
     },
   },
   getters: {

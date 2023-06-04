@@ -9,7 +9,7 @@
     <v-card class="tarjeta" variant="tonal">
       <div class="top-info">
         <div class="top-image">
-          <img src="../../photo/R.jpeg" />
+          <img src="" />
         </div>
         <div class="top-description">
           <v-card-text>
