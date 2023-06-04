@@ -1,6 +1,5 @@
 <template>
   <v-container class="home-container">
-    <!-- <loading :active="isLoading" :can-cancel="false" :is-full-page="true"></loading> -->
     <div class="banner">
       <div class="banner-text">
         <v-text>¡ Las mejores ofertas en productos y entradas <br> solo disponibles aquí y para ti !</v-text>
@@ -43,10 +42,11 @@
       <h3>Festivales</h3>
 
       <div class="filtro-section">
-        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details
-          class="buscador" @input="requestFiltro()"></v-text-field>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details class="buscador"
+          @input="requestFiltro()"></v-text-field>
 
-        <v-select v-model="mes" class="mesesFilter" label="Ordenar por mes" :items="meses" @change="requestFiltro()" multiple></v-select>
+        <v-select v-model="mes" class="mesesFilter" label="Ordenar por mes" :items="meses" @change="requestFiltro()"
+          multiple></v-select>
         <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
           { value: 'asc', orden: 'Fecha ▲' },
           { value: 'des', orden: 'Fecha ▼' },
@@ -55,8 +55,8 @@
         <v-btn @click="resetearFiltro()"> Resetear </v-btn>
       </div>
 
+      <SpinnerComponent v-if="$store.state.loading" />
       <div class="cards-section">
-        <SpinnerComponent/>
         <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
           :id="festival.idFestival" :titulo="festival.nombre" :artistas="festival.artistas"
           :descripcion="festival.descripcion" :localidad="festival.localidad" :mes="festival.mes"
@@ -64,14 +64,15 @@
           :imagen="festival.imagen" />
       </div>
     </div>
+    <v-snackbar v-model="this.$store.state.mostrarMensajeDelete" :timeout="2000" color="success">
+      Festival borrado correctamente
+    </v-snackbar>
   </v-container>
 </template>
 
 <script>
 import CardComponent from "../components/CardComponent.vue";
 import SpinnerComponent from "../components/shared/SpinnerComponent.vue"
-// import Loading from "vue-loading-overlay";
-// import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   name: "HomeComponent",
@@ -96,7 +97,7 @@ export default {
     showAllEvents: false,
     isLoading: false,
   }),
-  
+
   async mounted() {
     this.$store.dispatch("cargarFestivales");
   },
@@ -117,23 +118,16 @@ export default {
       section.scrollIntoView({ behavior: 'smooth' });
     },
     resetearFiltro() {
-      // this.showAllEvents = true;
       this.search = "";
       this.mes = null;
       this.ordenFecha = null;
       this.requestFiltro();
     },
-    // mostrarSpinner() {
-    //   this.isLoading = true;
-    //   // Realiza la lógica o llamadas asíncronas aquí
-    //   // Cuando la lógica o llamadas asincrónicas se completen, establece isLoading en false para ocultar el spinner
-    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-// @import url("vue-loading-overlay/dist/vue-loading.css");
 .home-container {
   margin: 0;
   padding: 0;

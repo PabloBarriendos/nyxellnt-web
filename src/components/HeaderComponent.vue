@@ -19,6 +19,7 @@
                       id="emailLogin"
                       label="Email*"
                       required
+                      :rules="emailRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -62,6 +63,7 @@
                       label="Nombre*"
                       @change="checkRegister"
                       required
+                      :rules="firstNameRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -70,6 +72,7 @@
                       label="Apellido*"
                       @change="checkRegister"
                       required
+                      :rules="lastNameRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -78,6 +81,7 @@
                       label="Email*"
                       @change="checkRegister"
                       required
+                      :rules="emailRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -185,6 +189,26 @@ export default {
     },
     showRegisterPopUp: false,
     showUserDropdown: false,
+    emailRules: [
+      (value) => {
+        if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+        return "Debe ser un Email valido.";
+      }
+    ],
+    firstNameRules: [
+      (value) => {
+        if (value?.length > 2) return true;
+
+        return "El nombre debe contener al menos 3 carácteres.";
+      },
+    ],
+    lastNameRules: [
+      (value) => {
+        if (/[^0-9]/.test(value)) return true;
+
+        return "El apellido no puede contener digitos.";
+      },
+    ]
   }),
   created() {
     window.addEventListener("scroll", this.handleScroll);
@@ -271,7 +295,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .registerClass {
   margin-top: 100px;
 }

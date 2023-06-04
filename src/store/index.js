@@ -12,7 +12,7 @@ export default new Vuex.Store({
     festivalCompra: {},
     user: {},
     showLoginPopUp: false,
-    showDeletePopUp: false,
+    loading: false,
     userLogged: false,
     counter: 1,
     festivalList: [],
@@ -38,8 +38,8 @@ export default new Vuex.Store({
     setLoginPopUp(state, showLoginPopUp) {
       state.showLoginPopUp = showLoginPopUp;
     },
-    setDeletePopUp(state, showDeletePopUp) {
-      state.showDeletePopUp = showDeletePopUp;
+    setLoading(state, loading) {
+      state.loading = loading;
     },
     setMensajeDelete(state, mostrartMensajeDelete) {
       state.mostrartMensajeDelete = mostrartMensajeDelete;
@@ -76,8 +76,8 @@ export default new Vuex.Store({
     setLoginPopUp(context, showLoginPopUp) {
       context.commit("setLoginPopUp", showLoginPopUp);
     },
-    setDeletePopUp(context, showDeletePopUp) {
-      context.commit("setDeletePopUp", showDeletePopUp);
+    setLoading(context, loading) {
+      context.commit("setLoading", loading);
     },
     setShowFestivalList(context, festivales) {
       context.commit("cambiarShowFestivales", festivales);
@@ -119,6 +119,7 @@ export default new Vuex.Store({
               document.cookie = `userApellido=${element.apellido}`;
               document.cookie = `userEmail=${element.email}`;
               document.cookie = `userPassword=${element.password}`;
+              document.cookie = `userRol=${element.rol}`;
             }
           });
         })
@@ -167,10 +168,12 @@ export default new Vuex.Store({
       document.cookie = `userApellido=`;
       document.cookie = `userEmail=`;
       document.cookie = `userPassword=`;
+      document.cookie = `userRol=`;
       commit("setUser", {});
       commit("setUserLogged", false);
     },
     async cargarFestivales({ commit }) {
+      commit("setLoading", true);
       await fetch(link + "/festival")
         .then((response) => response.json())
         .then((data) => {
@@ -178,8 +181,10 @@ export default new Vuex.Store({
           commit("initFestivales", data);
           commit("cambiarShowFestivales", data);
         });
+        commit("setLoading", false);
     },
     async requestFiltroHome({ commit }, datos) {
+      commit("setLoading", true);
       let stringBuscar = datos.stringBuscar;
       let mes = datos.mes;
       let ordenFecha = datos.ordenFecha;
@@ -187,14 +192,14 @@ export default new Vuex.Store({
       let resultados = this.state.festivalList;
 
       if (mes == "Todas las categorías" && ordenFecha == null) {
-        // commit("cambiarShowFestivales", resultados);
+        commit("cambiarShowFestivales", resultados);
       }
       if (mes != null && mes != "Todas las categorías" && ordenFecha == null) {
         await fetch(link + `/festival?mes=${mes}`)
           .then((response) => response.json())
           .then((data) => {
             resultados = data;
-            // commit("cambiarShowFestivales", data);
+            commit("cambiarShowFestivales", data);
           })
           .catch((error) => console.error(error));
       }
@@ -207,7 +212,7 @@ export default new Vuex.Store({
           .then((data) => {
             console.log(data);
             resultados = data;
-            // commit("cambiarShowFestivales", data);
+            commit("cambiarShowFestivales", data);
           })
           .catch((error) => console.error(error));
       }
@@ -216,7 +221,7 @@ export default new Vuex.Store({
           .then((response) => response.json())
           .then((data) => {
             resultados = data;
-            // commit("cambiarShowFestivales", data);
+            commit("cambiarShowFestivales", data);
           })
           .catch((error) => console.error(error));
       }
@@ -230,8 +235,8 @@ export default new Vuex.Store({
           return item;
         }
       });
-
       commit("cambiarShowFestivales", resultados);
+      commit("setLoading", false);
     },
     async getOperaciones({ commit, dispatch }) {
       await dispatch("cargarCookiesUsuario");
@@ -304,7 +309,7 @@ export default new Vuex.Store({
       document.cookie = `idFestivalCompra=${idFestival}`;
       commit("setIdFestival", idFestival);
     },
-    async deleteFestivalCompra({ commit }, idFestival) {
+    async deleteFestivalCompra(context, idFestival) {
       fetch(link+"/festival/"+idFestival, {
         method: "DELETE",
         headers: {
@@ -314,7 +319,10 @@ export default new Vuex.Store({
         .then((response) => {
           if (response.ok) {
             this.mostrarMensajeDelete = true;
-            commit("setMensajeDelete", true);
+            console.log("eliminado correctamente");
+            context.dispatch('cargarFestivales');
+            context.commit("setMensajeDelete", true);
+            context.commit("setLoading", true);
           } else {
             console.error("No se pudo eliminar el evento");
           }
@@ -403,6 +411,7 @@ export default new Vuex.Store({
       let apellido = await dispatch("getCookie", "userApellido");
       let email = await dispatch("getCookie", "userEmail");
       let password = await dispatch("getCookie", "userPassword");
+      let rol = await dispatch("getCookie", "userRol");
 
       if (idUsuario && nombre && apellido && email && password) {
         commit("setUser", {
@@ -411,6 +420,7 @@ export default new Vuex.Store({
           apellido: apellido,
           email: email,
           password: password,
+          rol: rol,
         });
         commit("setUserLogged", true);
       }

@@ -68,7 +68,7 @@
       </div>
     </v-card>
     <v-dialog
-      v-model="this.$store.state.showDeletePopUp"
+      v-model="showDeletePopUp"
       persistent
       width="400"
     >
@@ -90,13 +90,6 @@
             >Cancelar</v-btn
           >
         </v-card-actions>
-        <v-snackbar
-          v-model="this.$store.state.mostrarMensajeDelete"
-          :timeout="2000"
-          color="success"
-        >
-          Festival borrado correctamente
-        </v-snackbar>
       </v-card>
     </v-dialog>
   </div>
@@ -104,6 +97,9 @@
 
 <script>
 export default {
+  data: () => ({
+    showDeletePopUp: false,
+  }),
   props: {
     id: Number,
     titulo: String,
@@ -115,9 +111,6 @@ export default {
     precioVip: Number,
     fecha: String,
     imagen: String,
-  },
-  destroyed() {
-    this.$store.dispatch("setDeletePopUp", false);
   },
   methods: {
     goToCompra() {
@@ -132,13 +125,14 @@ export default {
     },
     deleteFestival() {
       this.$store.dispatch("deleteFestivalCompra", this.id);
-      this.$store.dispatch("cargarFestivales");
+      // this.$store.dispatch("cargarFestivales");
+      this.showDeletePopUp = false;
     },
     deletePopUp() {
-      this.$store.dispatch("setDeletePopUp", true);
+      this.showDeletePopUp = true;
     },
     cerrarDeletePopUp() {
-      this.$store.dispatch("setDeletePopUp", false);
+      this.showDeletePopUp = false;
     },
   },
 };
