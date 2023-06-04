@@ -211,6 +211,11 @@ export default {
     ]
   }),
   created() {
+    if(this.$store.state.paginaHome){
+      this.showFondo = true;
+    }else{
+      this.showFondo = false;
+    }
     window.addEventListener("scroll", this.handleScroll);
     this.$store.dispatch("cargarCookiesUsuario");
     document.addEventListener("click", this.closeUserDropdown);
@@ -223,11 +228,13 @@ export default {
     handleScroll() {
       // Si la posición del desplazamiento es mayor a 0, ocultar el encabezado
       this.showUserDropdown = false;
-      if (window.scrollY > 515) {
-        this.showFondo = true;
-      } else {
-        // Si la posición del desplazamiento es 0, mostrar el encabezado
-        this.showFondo = false;
+      if(this.$store.state.paginaHome){
+        if (window.scrollY > 515) {
+          this.showFondo = true;
+        } else {
+          // Si la posición del desplazamiento es 0, mostrar el encabezado
+          this.showFondo = false;
+        }
       }
     },
     checkRegister() {
