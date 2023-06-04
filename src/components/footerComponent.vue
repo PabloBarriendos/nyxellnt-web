@@ -1,7 +1,7 @@
 <template>
   <v-footer class="d-flex flex-wrap">
     <v-col cols="12" md="4" class="title-section">
-      <img @click="goHome()" src="../assets/Logo.png">
+      <img @click="goHome()" src="../assets/logo.png">
     </v-col>
 
     <v-col cols="12" md="4" class="icons-section">

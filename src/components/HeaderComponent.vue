@@ -44,12 +44,12 @@
           </v-card>
         </v-dialog>
         <v-dialog
-          class="registerPopUp"
           v-model="showRegisterPopUp"
           persistent
           width="1024"
+          content-class="registerClass"
         >
-          <v-card>
+          <v-card class="customClass">
             <v-card-title>
               <span class="text-h5">Registrarse</span>
             </v-card-title>
@@ -123,7 +123,7 @@
 
       <div class="text-h4 title">
         <router-link class="router-link" to="/"
-          ><img src="../assets/Logo.png" />
+          ><img src="../assets/logo.png" />
           <p>Festivalia</p>
         </router-link>
       </div>
@@ -271,8 +271,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.registerPopUp {
+<style lang="scss">
+.registerClass {
   margin-top: 100px;
 }
 .header-container {

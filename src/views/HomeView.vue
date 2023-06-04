@@ -56,6 +56,7 @@
       </div>
 
       <div class="cards-section">
+        <SpinnerComponent/>
         <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
           :id="festival.idFestival" :titulo="festival.nombre" :artistas="festival.artistas"
           :descripcion="festival.descripcion" :localidad="festival.localidad" :mes="festival.mes"
@@ -68,6 +69,7 @@
 
 <script>
 import CardComponent from "../components/CardComponent.vue";
+import SpinnerComponent from "../components/shared/SpinnerComponent.vue"
 // import Loading from "vue-loading-overlay";
 // import "vue-loading-overlay/dist/vue-loading.css";
 
@@ -75,6 +77,7 @@ export default {
   name: "HomeComponent",
   components: {
     CardComponent,
+    SpinnerComponent,
   },
   data: () => ({
     search: "",
