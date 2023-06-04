@@ -2,20 +2,23 @@
   <v-container class="home-container">
     <div class="banner">
       <div class="banner-text">
-        <v-text>¡ Las mejores ofertas en productos y entradas <br> solo disponibles aquí y para ti !</v-text>
+        <v-text
+          >¡ Las mejores ofertas en productos y entradas <br />
+          solo disponibles aquí y para ti !</v-text
+        >
         <v-btn @click="scrollToSection('festival-section')">¡Compra Ya!</v-btn>
       </div>
-      <img id="imgBanner1" src="../assets/banner.jpg">
-      <img id="imgBanner2" src="../assets/banner2.jpg">
-      <img id="imgBanner3" src="../assets/banner3.jpg">
+      <img id="imgBanner1" src="../assets/banner.jpg" />
+      <img id="imgBanner2" src="../assets/banner2.jpg" />
+      <img id="imgBanner3" src="../assets/banner3.jpg" />
     </div>
 
     <div class="merchandising-section">
       <h3>Merchandising</h3>
 
-      <div>
+      <div class="sections">
         <div class="left-section">
-          <img src="" />
+          <img src="../assets/merchandising.jpg" />
         </div>
 
         <div class="right-section">
@@ -42,29 +45,62 @@
       <h3>Festivales</h3>
 
       <div class="filtro-section">
-        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details class="buscador"
-          @input="requestFiltro()"></v-text-field>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Buscar"
+          single-line
+          hide-details
+          class="buscador"
+          @input="requestFiltro()"
+        ></v-text-field>
 
-        <v-select v-model="mes" class="mesesFilter" label="Ordenar por mes" :items="meses" @change="requestFiltro()"
-          multiple></v-select>
-        <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
-          { value: 'asc', orden: 'Fecha ▲' },
-          { value: 'des', orden: 'Fecha ▼' },
-        ]" @change="requestFiltro()"></v-select>
+        <v-select
+          v-model="mes"
+          class="mesesFilter"
+          label="Ordenar por mes"
+          :items="meses"
+          @change="requestFiltro()"
+          multiple
+        ></v-select>
+        <v-select
+          v-model="ordenFecha"
+          class="fechaFilter"
+          label="Ordenar por fecha"
+          item-text="orden"
+          :items="[
+            { value: 'asc', orden: 'Fecha ▲' },
+            { value: 'des', orden: 'Fecha ▼' },
+          ]"
+          @change="requestFiltro()"
+        ></v-select>
 
         <v-btn @click="resetearFiltro()"> Resetear </v-btn>
       </div>
 
       <SpinnerComponent v-if="$store.state.loading" />
       <div class="cards-section">
-        <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
-          :id="festival.idFestival" :titulo="festival.nombre" :artistas="festival.artistas"
-          :descripcion="festival.descripcion" :localidad="festival.localidad" :mes="festival.mes"
-          :precio="festival.precioEntrada" :precioVip="festival.precioEntradaVip" :fecha="festival.fecha"
-          :imagen="festival.imagen" />
+        <CardComponent
+          v-for="festival in $store.state.showFestivalList"
+          :key="festival.idFestival"
+          :id="festival.idFestival"
+          :titulo="festival.nombre"
+          :artistas="festival.artistas"
+          :descripcion="festival.descripcion"
+          :localidad="festival.localidad"
+          :mes="festival.mes"
+          :precio="festival.precioEntrada"
+          :precioVip="festival.precioEntradaVip"
+          :fecha="festival.fecha"
+          :imagen="festival.imagen"
+        />
       </div>
     </div>
-    <v-snackbar v-model="this.$store.state.mostrarMensajeDelete" :timeout="2000" color="success">
+    <v-snackbar
+      v-model="this.$store.state.mostrarMensajeDelete"
+      :timeout="2000"
+      color="success"
+    >
       Festival borrado correctamente
     </v-snackbar>
   </v-container>
@@ -72,7 +108,7 @@
 
 <script>
 import CardComponent from "../components/CardComponent.vue";
-import SpinnerComponent from "../components/shared/SpinnerComponent.vue"
+import SpinnerComponent from "../components/shared/SpinnerComponent.vue";
 
 export default {
   name: "HomeComponent",
@@ -84,14 +120,14 @@ export default {
     search: "",
     mes: null,
     meses: [
-      'Mayo',
-      'Junio',
-      'Julio',
-      'Agosto',
-      'Septiembre',
-      'Octubre',
-      'Noviembre',
-      'Diciembre',
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
     ],
     ordenFecha: null,
     showAllEvents: false,
@@ -115,7 +151,7 @@ export default {
     scrollToSection(id) {
       console.log(this.$store.state.user);
       const section = document.querySelector(`#${id}`);
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({ behavior: "smooth" });
     },
     resetearFiltro() {
       this.search = "";
@@ -190,7 +226,7 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
 
-    >div {
+    > div {
       display: flex;
       flex-wrap: wrap;
     }
@@ -202,38 +238,41 @@ export default {
       margin-bottom: 30px;
     }
 
-    .left-section,
-    .right-section {
-      width: 100%;
-    }
-
-    .left-section {
-      // margin-right: 20px;
-
-      img {
-        height: 100%;
+    .sections {
+      max-width: 1300px;
+      .left-section,
+      .right-section {
         width: 100%;
       }
-    }
 
-    .right-section {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 40px;
-      justify-content: center;
+      .left-section {
+        // margin-right: 20px;
 
-      button {
-        margin-top: 30px;
-        margin-bottom: 6px;
+        img {
+          height: 100%;
+          width: 100%;
+        }
       }
 
-      p {
-        width: 100%;
-        margin-bottom: 20px;
+      .right-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 40px;
+        justify-content: center;
 
-        &:last-of-type {
-          text-align: center;
+        button {
+          margin-top: 30px;
+          margin-bottom: 6px;
+        }
+
+        p {
+          width: 100%;
+          margin-bottom: 20px;
+
+          &:last-of-type {
+            text-align: center;
+          }
         }
       }
     }
@@ -302,25 +341,23 @@ export default {
 
 @media only screen and (min-width: 1024px) {
   .home-container {
-
-
-
     .merchandising-section {
+      .sections{
+        .left-section,
+        .right-section {
+          width: calc(50% - 20px);
+        }
 
-      .left-section,
-      .right-section {
-        width: calc(50% - 20px);
-      }
+        .left-section {
+          margin-right: 40px;
+        }
 
-      .left-section {
-        margin-right: 40px;
-      }
+        .right-section {
+          margin-top: 0;
 
-      .right-section {
-        margin-top: 0;
-
-        p {
-          margin-bottom: 20px;
+          p {
+            margin-bottom: 20px;
+          }
         }
       }
     }
@@ -330,7 +367,6 @@ export default {
     }
   }
 }
-
 
 @media only screen and (max-width: 600px) {
   .banner {
@@ -348,7 +384,6 @@ export default {
 @media only screen and (max-width: 480px) {
   .banner {
     .banner-text {
-
       v-text {
         font-size: 25px !important;
       }
@@ -369,7 +404,6 @@ export default {
     }
   }
 }
-
 
 // para ajustar la imagen principal
 @media only screen and (min-width: 450px) {
