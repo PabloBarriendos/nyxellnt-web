@@ -4,7 +4,7 @@
       <div class="banner-text">
         <v-text>¡ Las mejores ofertas en productos y entradas <br />
           solo disponibles aquí y para ti !</v-text>
-        <v-btn @click="scrollToSection('festival-section')">¡Compra Ya!</v-btn>
+        <v-btn @click="scrollToSection('festival-section')" >¡Compra Ya!</v-btn>
       </div>
       <img id="imgBanner1" src="../assets/banner.jpg" />
       <img id="imgBanner2" src="../assets/banner2.jpg" />
@@ -33,7 +33,8 @@
             webs!
           </p>
           <p>No lo pienses y consíguelos antes de que se agoten.</p>
-          <v-btn> Ver tienda </v-btn>
+          <v-btn class="white--text"
+        color="black"> Ver tienda </v-btn>
           <p>¡Stock limitado!</p>
         </div>
       </div>
@@ -44,7 +45,7 @@
         ¡ Consulta los 5 eventos más vendidos aquí !
       </v-card-title>
       <v-card-actions>
-        <v-btn color="white" @click="goGrafica()">Aquí</v-btn>
+        <v-btn color="black" @click="goGrafica()" class="white--text">Aquí</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -62,7 +63,8 @@
           { value: 'des', orden: 'Fecha ▼' },
         ]" @change="requestFiltro()"></v-select>
 
-        <v-btn @click="resetearFiltro()"> Resetear </v-btn>
+        <v-btn @click="resetearFiltro()" class="white--text"
+        color="black"> Resetear </v-btn>
       </div>
 
       <SpinnerComponent v-if="$store.state.loading" />
@@ -71,7 +73,7 @@
           :id="festival.idFestival" :titulo="festival.nombre" :artistas="festival.artistas"
           :descripcion="festival.descripcion" :localidad="festival.localidad" :mes="festival.mes"
           :precio="festival.precioEntrada" :precioVip="festival.precioEntradaVip" :fecha="festival.fecha"
-          :imagen="festival.imagen" />
+          :imagen="festival.imagen" :stock="festival.stock" :stockVip="festival.stockVip" />
       </div>
     </div>
     <v-snackbar v-model="$store.state.mostrarMensajeDelete" :timeout="2000" color="success">

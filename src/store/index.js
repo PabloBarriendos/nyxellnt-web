@@ -314,6 +314,27 @@ export default new Vuex.Store({
       document.cookie = `idFestivalCompra=${idFestival}`;
       commit("setIdFestival", idFestival);
     },
+    async editFestivalCompra(context, datos) {
+      context.commit("setLoading", true);
+      console.log('datos', datos);
+      fetch(link + "/festival/" + datos.idFestival, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos)
+      })
+        .then((response) => {
+          if (response.ok) {
+            context.dispatch("cargarFestivales");
+          } else {
+            console.error("No se ha podido editar el festival");
+          }
+        })
+        .catch((error) => {
+          console.error("Error en la solicitud:", error);
+        });
+    },
     async deleteFestivalCompra(context, idFestival) {
       context.commit("setLoading", true);
       fetch(link + "/festival/" + idFestival, {

@@ -6,36 +6,14 @@
       </v-card-title>
       <textarea v-if="showEditar" id="editTitulo" v-model="tituloEditar">
       </textarea>
-      <v-btn
-        class="white--text"
-        v-on:click="editarFestival"
-        elevation="2"
-        x-large
-        rounded
-      >
+      <v-btn v-if="showEditar" class="white--text" color="success" v-on:click="editarFestival" elevation="2" rounded>
         Guardar
       </v-btn>
-      <v-btn
-        class="white--text"
-        v-on:click="showEditar == false"
-        elevation="2"
-        x-large
-        rounded
-      >
+      <v-btn v-if="showEditar" color="error" class="white--text" v-on:click="closeEditar" elevation="2" rounded>
         Descartar
       </v-btn>
-      <v-icon
-        v-if="this.$store.state.user.rol == 'admin'"
-        color="primary"
-        @click="openEditar()"
-        >mdi-pencil</v-icon
-      >
-      <v-icon
-        v-if="this.$store.state.user.rol == 'admin'"
-        color="red"
-        @click="deletePopUp()"
-        >mdi-delete</v-icon
-      >
+      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="primary" @click="openEditar()">mdi-pencil</v-icon>
+      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="red" @click="deletePopUp()">mdi-delete</v-icon>
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
@@ -50,11 +28,7 @@
             <v-card-subtitle v-if="!showEditar">
               {{ artistas }} - {{ mes }}
             </v-card-subtitle>
-            <textarea
-              v-if="showEditar"
-              id="editArtistas"
-              v-model="artistasEditar"
-            >
+            <textarea v-if="showEditar" id="editArtistas" v-model="artistasEditar">
             </textarea>
             <v-card-subtitle class="separadorEdit" v-if="showEditar">
               -
@@ -64,11 +38,7 @@
             <v-card-text v-if="!showEditar">
               {{ descripcion }}
             </v-card-text>
-            <textarea
-              v-if="showEditar"
-              id="editDescripcion"
-              v-model="descripcionEditar"
-            >
+            <textarea v-if="showEditar" id="editDescripcion" v-model="descripcionEditar">
             </textarea>
           </div>
         </div>
@@ -78,58 +48,34 @@
             <v-card-text>
               <span>Localidad: </span>
               <span v-if="!showEditar">{{ localidad }}</span>
-              <textarea
-                v-if="showEditar"
-                id="editLocalidad"
-                v-model="localidadEditar"
-              >
+              <textarea v-if="showEditar" id="editLocalidad" v-model="localidadEditar">
               </textarea>
             </v-card-text>
             <v-card-text>
               <span>Fecha: </span>
               <span v-if="!showEditar">{{ fecha }}</span>
-              <textarea v-if="showEditar" id="editFecha" v-model="fechaEditar">
+              <textarea v-if="showEditar" id="editFecha" v-model="fechaEditar" :rules="fechaRules">
               </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio estándar: </span>
               <span v-if="!showEditar">{{ precio }}€</span>
-              <textarea
-                v-if="showEditar"
-                id="editPrecio"
-                v-model="precioEditar"
-              >
+              <textarea v-if="showEditar" id="editPrecio" v-model="precioEditar" :rules="rulePrecio">
               </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio VIP: </span>
               <span v-if="!showEditar">{{ precioVip }}€</span>
-              <textarea
-                v-if="showEditar"
-                id="editPrecioVip"
-                v-model="precioVipEditar"
-              >
+              <textarea v-if="showEditar" id="editPrecioVip" v-model="precioVipEditar" :rules="rulePrecioVip">
               </textarea>
             </v-card-text>
           </div>
 
           <v-card-actions>
-            <v-btn
-              class="white--text"
-              v-on:click="goToCompra"
-              elevation="2"
-              x-large
-              rounded
-            >
+            <v-btn class="white--text" v-on:click="goToCompra" elevation="2" x-large rounded>
               Comprar
             </v-btn>
-            <v-btn
-              class="white--text"
-              v-on:click="goToCompra"
-              elevation="2"
-              x-large
-              rounded
-            >
+            <v-btn class="white--text" v-on:click="goToCompra" elevation="2" x-large rounded>
               Merchandising
             </v-btn>
           </v-card-actions>
@@ -139,18 +85,12 @@
     <v-dialog v-model="showDeletePopUp" persistent width="400">
       <v-card class="popupDelete">
         <v-card-text>
-          <span class="text-h5"
-            >¿Estas seguro de que deseas eliminar este evento?</span
-          >
+          <span class="text-h5">¿Estas seguro de que deseas eliminar este evento?</span>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" variant="text" v-on:click="deleteFestival()"
-            >Aceptar</v-btn
-          >
-          <v-btn color="error" variant="text" @click="cerrarDeletePopUp"
-            >Cancelar</v-btn
-          >
+          <v-btn color="success" variant="text" v-on:click="deleteFestival()">Aceptar</v-btn>
+          <v-btn color="error" variant="text" @click="cerrarDeletePopUp">Cancelar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -170,6 +110,25 @@ export default {
     precioEditar: Number,
     precioVipEditar: Number,
     fechaEditar: String,
+    rulePrecio: [
+      v => !!v || 'El campo es requerido',
+      v => /^\d+$/.test(v) || 'Ingresa solo números'
+    ],
+    rulePrecioVip: [
+      v => !!v || 'El campo es requerido',
+      v => /^\d+$/.test(v) || 'Ingresa solo números'
+    ],
+    fechaRules: [
+      v => !!v || 'El campo es requerido', 
+      v => /^\d{2}\/\d{2}\/\d{2}$/.test(v) || 'Ingresa una fecha válida (dd/mm/aa)', 
+      v => {
+        const parts = v.split('/');
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]);
+        const year = parseInt(parts[2]);
+        return this.isValidDate(day, month, year) || 'Ingresa una fecha válida (dd/mm/aa)'; 
+      }
+    ]
   }),
   props: {
     id: Number,
@@ -182,6 +141,8 @@ export default {
     precioVip: Number,
     fecha: String,
     imagen: String,
+    stock: Number,
+    stockVip: Number
   },
   created() {
     this.tituloEditar = this.titulo;
@@ -197,8 +158,25 @@ export default {
     openEditar() {
       this.showEditar = true;
     },
+    closeEditar() {
+      this.showEditar = false;
+    },
     editarFestival() {
-      
+      const datos = {
+        idFestival: this.id,
+        nombre: this.tituloEditar,
+        artistas: this.artistasEditar,
+        descripcion: this.descripcionEditar,
+        localidad: this.localidadEditar,
+        fecha: this.fechaEditar,
+        precioEntrada: this.precioEditar,
+        stock: this.stock,
+        precioEntradaVip: this.precioVipEditar,
+        stockVip: this.stockVip,
+        mes: this.mesEditar,
+        imagen: this.imagen
+      }
+      this.$store.dispatch("editFestivalCompra", datos);
     },
     goToCompra() {
       if (this.$store.state.userLogged == false) {
@@ -221,6 +199,10 @@ export default {
     cerrarDeletePopUp() {
       this.showDeletePopUp = false;
     },
+    isValidDate(day, month, year) {
+      const date = new Date(year, month - 1, day);
+      return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
+    }
   },
 };
 </script>
@@ -276,11 +258,16 @@ textarea {
 .card-component {
   .titulo {
     display: flex;
+    align-items: center;
 
     .v-card__title {
       font-weight: bold;
       white-space: nowrap;
       width: calc(100% - 88px);
+    }
+
+    .v-btn {
+      margin: 0 10px;
     }
 
     .v-icon {
@@ -336,7 +323,7 @@ textarea {
           display: flex;
           flex-wrap: wrap;
 
-          > .v-card__text {
+          >.v-card__text {
             width: calc(100% / 2);
             display: flex;
             flex-wrap: wrap;
@@ -406,7 +393,7 @@ textarea {
           .text-info {
             width: calc(100% - 184px);
 
-            > .v-card__text {
+            >.v-card__text {
               width: calc(100% / 2);
             }
           }
@@ -446,7 +433,7 @@ textarea {
           .text-info {
             width: calc(100% - 184px);
 
-            > .v-card__text {
+            >.v-card__text {
               width: calc(100% / 2);
             }
           }
