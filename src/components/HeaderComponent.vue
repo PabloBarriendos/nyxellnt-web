@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{ showFondo: showFondo }" class="header-container">
+  <v-container :class="{ showFondo: showFondo || !this.$store.state.paginaHome}" class="header-container">
     <v-app-bar app color="transparent" dark>
       <v-row>
         <v-dialog
@@ -212,9 +212,9 @@ export default {
   }),
   created() {
     if(this.$store.state.paginaHome){
-      this.showFondo = true;
-    }else{
       this.showFondo = false;
+    }else{
+      this.showFondo = true;
     }
     window.addEventListener("scroll", this.handleScroll);
     this.$store.dispatch("cargarCookiesUsuario");
