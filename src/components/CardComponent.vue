@@ -1,11 +1,41 @@
 <template>
   <div class="card-component">
     <div class="titulo">
-      <v-card-title>
+      <v-card-title v-if="!showEditar">
         {{ titulo }}
       </v-card-title>
-      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="primary">mdi-pencil</v-icon>
-      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="red" @click="deletePopUp()">mdi-delete</v-icon>
+      <textarea v-if="showEditar" id="editTitulo" v-model="tituloEditar">
+      </textarea>
+      <v-btn
+        class="white--text"
+        v-on:click="editarFestival"
+        elevation="2"
+        x-large
+        rounded
+      >
+        Guardar
+      </v-btn>
+      <v-btn
+        class="white--text"
+        v-on:click="showEditar == false"
+        elevation="2"
+        x-large
+        rounded
+      >
+        Descartar
+      </v-btn>
+      <v-icon
+        v-if="this.$store.state.user.rol == 'admin'"
+        color="primary"
+        @click="openEditar()"
+        >mdi-pencil</v-icon
+      >
+      <v-icon
+        v-if="this.$store.state.user.rol == 'admin'"
+        color="red"
+        @click="deletePopUp()"
+        >mdi-delete</v-icon
+      >
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
@@ -17,10 +47,29 @@
             <img :src="'data:image/png;base64,' + this.imagen" />
           </div>
           <div class="top-description">
-            <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
-            <v-card-text>
+            <v-card-subtitle v-if="!showEditar">
+              {{ artistas }} - {{ mes }}
+            </v-card-subtitle>
+            <textarea
+              v-if="showEditar"
+              id="editArtistas"
+              v-model="artistasEditar"
+            >
+            </textarea>
+            <v-card-subtitle class="separadorEdit" v-if="showEditar">
+              -
+            </v-card-subtitle>
+            <textarea v-if="showEditar" id="editMes" v-model="mesEditar">
+            </textarea>
+            <v-card-text v-if="!showEditar">
               {{ descripcion }}
             </v-card-text>
+            <textarea
+              v-if="showEditar"
+              id="editDescripcion"
+              v-model="descripcionEditar"
+            >
+            </textarea>
           </div>
         </div>
 
@@ -28,19 +77,39 @@
           <div class="text-info">
             <v-card-text>
               <span>Localidad: </span>
-              <span>{{ localidad }}</span>
+              <span v-if="!showEditar">{{ localidad }}</span>
+              <textarea
+                v-if="showEditar"
+                id="editLocalidad"
+                v-model="localidadEditar"
+              >
+              </textarea>
             </v-card-text>
             <v-card-text>
               <span>Fecha: </span>
-              <span>{{ fecha }}</span>
+              <span v-if="!showEditar">{{ fecha }}</span>
+              <textarea v-if="showEditar" id="editFecha" v-model="fechaEditar">
+              </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio estándar: </span>
-              <span>{{ precio }}€</span>
+              <span v-if="!showEditar">{{ precio }}€</span>
+              <textarea
+                v-if="showEditar"
+                id="editPrecio"
+                v-model="precioEditar"
+              >
+              </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio VIP: </span>
-              <span>{{ precioVip }}€</span>
+              <span v-if="!showEditar">{{ precioVip }}€</span>
+              <textarea
+                v-if="showEditar"
+                id="editPrecioVip"
+                v-model="precioVipEditar"
+              >
+              </textarea>
             </v-card-text>
           </div>
 
@@ -67,11 +136,7 @@
         </div>
       </div>
     </v-card>
-    <v-dialog
-      v-model="showDeletePopUp"
-      persistent
-      width="400"
-    >
+    <v-dialog v-model="showDeletePopUp" persistent width="400">
       <v-card class="popupDelete">
         <v-card-text>
           <span class="text-h5"
@@ -83,10 +148,7 @@
           <v-btn color="success" variant="text" v-on:click="deleteFestival()"
             >Aceptar</v-btn
           >
-          <v-btn
-            color="error"
-            variant="text"
-            @click="cerrarDeletePopUp"
+          <v-btn color="error" variant="text" @click="cerrarDeletePopUp"
             >Cancelar</v-btn
           >
         </v-card-actions>
@@ -99,6 +161,15 @@
 export default {
   data: () => ({
     showDeletePopUp: false,
+    showEditar: false,
+    tituloEditar: String,
+    artistasEditar: String,
+    descripcionEditar: String,
+    localidadEditar: String,
+    mesEditar: String,
+    precioEditar: Number,
+    precioVipEditar: Number,
+    fechaEditar: String,
   }),
   props: {
     id: Number,
@@ -112,7 +183,23 @@ export default {
     fecha: String,
     imagen: String,
   },
+  created() {
+    this.tituloEditar = this.titulo;
+    this.artistasEditar = this.artistas;
+    this.descripcionEditar = this.descripcion;
+    this.localidadEditar = this.localidad;
+    this.mesEditar = this.mes;
+    this.precioEditar = this.precio;
+    this.precioVipEditar = this.precioVip;
+    this.fechaEditar = this.fecha;
+  },
   methods: {
+    openEditar() {
+      this.showEditar = true;
+    },
+    editarFestival() {
+      
+    },
     goToCompra() {
       if (this.$store.state.userLogged == false) {
         // this.$store.dispatch("setLoginPopUp", true);
@@ -146,6 +233,46 @@ export default {
   align-items: center;
 }
 
+textarea {
+  resize: none;
+  height: 34px;
+  border: 1px solid black;
+  padding: 4px;
+  width: calc(100% - 8px);
+  margin: 0 8px 0 0;
+
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.375rem;
+  letter-spacing: 0.0071428571em;
+
+  &#editTitulo {
+    width: calc(100% - 16px);
+    margin: 16px 16px 16px 0;
+    font-weight: bold;
+  }
+
+  &#editArtistas {
+    width: calc(100% - 152px);
+    margin: 16px;
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+
+  &#editMes {
+    margin: 16px;
+    margin-top: 0;
+    width: 120px;
+    font-weight: bold;
+  }
+
+  &#editDescripcion {
+    width: calc(100% - 32px);
+    height: 120px;
+    margin: 0 16px 0 16px;
+  }
+}
+
 .card-component {
   .titulo {
     display: flex;
@@ -177,6 +304,8 @@ export default {
       width: 100%;
 
       .top-info {
+        width: 100%;
+
         .top-image {
           // display: none;
           display: block;
@@ -189,6 +318,10 @@ export default {
 
         .v-card__subtitle {
           font-weight: bold;
+
+          &.separadorEdit {
+            padding: 0 0 0 16px;
+          }
         }
       }
 

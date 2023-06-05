@@ -188,7 +188,7 @@ export default new Vuex.Store({
           commit("initFestivales", data);
           commit("cambiarShowFestivales", data);
         });
-        commit("setLoading", false);
+      commit("setLoading", false);
     },
     async requestFiltroHome({ commit }, datos) {
       commit("setLoading", true);
@@ -198,10 +198,10 @@ export default new Vuex.Store({
 
       let resultados = this.state.festivalList;
 
-      if (mes == "Todas las categorías" && ordenFecha == null) {
+      if (mes == null && ordenFecha == null) {
         commit("cambiarShowFestivales", resultados);
       }
-      if (mes != null && mes != "Todas las categorías" && ordenFecha == null) {
+      if (mes != null && ordenFecha == null) {
         await fetch(link + `/festival?mes=${mes}`)
           .then((response) => response.json())
           .then((data) => {
@@ -210,10 +210,7 @@ export default new Vuex.Store({
           })
           .catch((error) => console.error(error));
       }
-      if (
-        (mes == null || mes == "Todas las categorías") &&
-        ordenFecha != null
-      ) {
+      if (mes == null && ordenFecha != null) {
         await fetch(link + `/festival?ordenarFecha=${ordenFecha}`)
           .then((response) => response.json())
           .then((data) => {
@@ -223,8 +220,9 @@ export default new Vuex.Store({
           })
           .catch((error) => console.error(error));
       }
-      if (mes != null && mes != "Todas las categorías" && ordenFecha != null) {
-        await fetch(link + `festival?mes=${mes}&ordenarFecha=${ordenFecha}`)
+      if (mes != null && ordenFecha != null) {
+        console.log("HOLA");
+        await fetch(link + `/festival?mes=${mes}&ordenarFecha=${ordenFecha}`)
           .then((response) => response.json())
           .then((data) => {
             resultados = data;
@@ -317,7 +315,8 @@ export default new Vuex.Store({
       commit("setIdFestival", idFestival);
     },
     async deleteFestivalCompra(context, idFestival) {
-      fetch(link+"/festival/"+idFestival, {
+      context.commit("setLoading", true);
+      fetch(link + "/festival/" + idFestival, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -325,11 +324,8 @@ export default new Vuex.Store({
       })
         .then((response) => {
           if (response.ok) {
-            this.mostrarMensajeDelete = true;
-            console.log("eliminado correctamente");
-            context.dispatch('cargarFestivales');
+            context.dispatch("cargarFestivales");
             context.commit("setMensajeDelete", true);
-            context.commit("setLoading", true);
           } else {
             console.error("No se pudo eliminar el evento");
           }

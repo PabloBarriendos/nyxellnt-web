@@ -34,7 +34,7 @@ export default {
 
   data: () => ({
     icons: ["mdi-instagram", "mdi-twitter", "mdi-facebook"],
-    links: [{texto: "Contactanos", link: "contacto"}, {texto: "Cookies", link: "cookies"}, {texto: "Estadísticas", link: ""}],
+    links: [{texto: "Contactanos", link: "contacto"}, {texto: "Cookies", link: "cookies"}, {texto: "Estadísticas", link: "grafica"}],
   }),
   methods: {
     goHome() {

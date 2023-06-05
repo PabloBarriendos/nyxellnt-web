@@ -2,10 +2,8 @@
   <v-container class="home-container">
     <div class="banner">
       <div class="banner-text">
-        <v-text
-          >¡ Las mejores ofertas en productos y entradas <br />
-          solo disponibles aquí y para ti !</v-text
-        >
+        <v-text>¡ Las mejores ofertas en productos y entradas <br />
+          solo disponibles aquí y para ti !</v-text>
         <v-btn @click="scrollToSection('festival-section')">¡Compra Ya!</v-btn>
       </div>
       <img id="imgBanner1" src="../assets/banner.jpg" />
@@ -41,66 +39,42 @@
       </div>
     </div>
 
+    <v-card class="top-events-card">
+      <v-card-title class="top-events-title">
+        ¡ Consulta los 5 eventos más vendidos aquí !
+      </v-card-title>
+      <v-card-actions>
+        <v-btn color="white" @click="goGrafica()">Aquí</v-btn>
+      </v-card-actions>
+    </v-card>
+
     <div id="festival-section">
       <h3>Festivales</h3>
 
       <div class="filtro-section">
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-          class="buscador"
-          @input="requestFiltro()"
-        ></v-text-field>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details class="buscador"
+          @input="requestFiltro()"></v-text-field>
 
-        <v-select
-          v-model="mes"
-          class="mesesFilter"
-          label="Ordenar por mes"
-          :items="meses"
-          @change="requestFiltro()"
-          multiple
-        ></v-select>
-        <v-select
-          v-model="ordenFecha"
-          class="fechaFilter"
-          label="Ordenar por fecha"
-          item-text="orden"
-          :items="[
-            { value: 'asc', orden: 'Fecha ▲' },
-            { value: 'des', orden: 'Fecha ▼' },
-          ]"
-          @change="requestFiltro()"
-        ></v-select>
+        <v-select v-model="mes" class="mesesFilter" label="Ordenar por mes" :items="meses"
+          @change="requestFiltro()"></v-select>
+        <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
+          { value: 'asc', orden: 'Fecha ▲' },
+          { value: 'des', orden: 'Fecha ▼' },
+        ]" @change="requestFiltro()"></v-select>
 
         <v-btn @click="resetearFiltro()"> Resetear </v-btn>
       </div>
 
       <SpinnerComponent v-if="$store.state.loading" />
-      <div class="cards-section">
-        <CardComponent
-          v-for="festival in $store.state.showFestivalList"
-          :key="festival.idFestival"
-          :id="festival.idFestival"
-          :titulo="festival.nombre"
-          :artistas="festival.artistas"
-          :descripcion="festival.descripcion"
-          :localidad="festival.localidad"
-          :mes="festival.mes"
-          :precio="festival.precioEntrada"
-          :precioVip="festival.precioEntradaVip"
-          :fecha="festival.fecha"
-          :imagen="festival.imagen"
-        />
+      <div class="cards-section" v-if="!$store.state.loading">
+        <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
+          :id="festival.idFestival" :titulo="festival.nombre" :artistas="festival.artistas"
+          :descripcion="festival.descripcion" :localidad="festival.localidad" :mes="festival.mes"
+          :precio="festival.precioEntrada" :precioVip="festival.precioEntradaVip" :fecha="festival.fecha"
+          :imagen="festival.imagen" />
       </div>
     </div>
-    <v-snackbar
-      v-model="this.$store.state.mostrarMensajeDelete"
-      :timeout="2000"
-      color="success"
-    >
+    <v-snackbar v-model="$store.state.mostrarMensajeDelete" :timeout="2000" color="success">
       Festival borrado correctamente
     </v-snackbar>
   </v-container>
@@ -139,11 +113,11 @@ export default {
   //   this.$store.dispatch("cargarFestivales");
   // },
   created() {
-      this.$store.dispatch("setPaginaHome", true);
-      this.$store.dispatch("cargarFestivales");
+    this.$store.dispatch("setPaginaHome", true);
+    this.$store.dispatch("cargarFestivales");
   },
   destroyed() {
-      this.$store.dispatch("setPaginaHome", false);
+    this.$store.dispatch("setPaginaHome", false);
   },
   methods: {
     async buscar() {
@@ -167,6 +141,9 @@ export default {
       this.ordenFecha = null;
       this.requestFiltro();
     },
+    goGrafica(){
+      this.$router.push(`/grafica`);
+    }
   },
 };
 </script>
@@ -176,6 +153,23 @@ export default {
   margin: 0;
   padding: 0;
   max-width: 100%;
+
+  .top-events-card {
+    margin: 100px auto;
+    max-width: 850px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(156, 156, 156, 0.281);
+    border-radius: 20px;
+  }
+
+  .top-events-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
 
   .banner {
     width: 100vw;
@@ -234,7 +228,7 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
 
-    > div {
+    >div {
       display: flex;
       flex-wrap: wrap;
     }
@@ -248,6 +242,7 @@ export default {
 
     .sections {
       max-width: 1300px;
+
       .left-section,
       .right-section {
         width: 100%;
@@ -350,7 +345,8 @@ export default {
 @media only screen and (min-width: 1024px) {
   .home-container {
     .merchandising-section {
-      .sections{
+      .sections {
+
         .left-section,
         .right-section {
           width: calc(50% - 20px);
