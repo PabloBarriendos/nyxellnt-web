@@ -134,8 +134,16 @@ export default {
     isLoading: false,
   }),
 
-  async mounted() {
-    this.$store.dispatch("cargarFestivales");
+  // async mounted() {
+  //   this.$store.dispatch("setPaginaHome", true);
+  //   this.$store.dispatch("cargarFestivales");
+  // },
+  created() {
+      this.$store.dispatch("setPaginaHome", true);
+      this.$store.dispatch("cargarFestivales");
+  },
+  destroyed() {
+      this.$store.dispatch("setPaginaHome", false);
   },
   methods: {
     async buscar() {

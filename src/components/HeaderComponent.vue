@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{ showFondo: showFondo }" class="header-container">
+  <v-container :class="{ showFondo: showFondo || !this.$store.state.paginaHome}" class="header-container">
     <v-app-bar app color="transparent" dark>
       <v-row>
         <v-dialog
@@ -211,6 +211,11 @@ export default {
     ]
   }),
   created() {
+    if(this.$store.state.paginaHome){
+      this.showFondo = false;
+    }else{
+      this.showFondo = true;
+    }
     window.addEventListener("scroll", this.handleScroll);
     this.$store.dispatch("cargarCookiesUsuario");
     document.addEventListener("click", this.closeUserDropdown);
@@ -223,11 +228,13 @@ export default {
     handleScroll() {
       // Si la posición del desplazamiento es mayor a 0, ocultar el encabezado
       this.showUserDropdown = false;
-      if (window.scrollY > 515) {
-        this.showFondo = true;
-      } else {
-        // Si la posición del desplazamiento es 0, mostrar el encabezado
-        this.showFondo = false;
+      if(this.$store.state.paginaHome){
+        if (window.scrollY > 515) {
+          this.showFondo = true;
+        } else {
+          // Si la posición del desplazamiento es 0, mostrar el encabezado
+          this.showFondo = false;
+        }
       }
     },
     checkRegister() {

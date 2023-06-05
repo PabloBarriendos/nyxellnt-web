@@ -11,6 +11,7 @@ export default new Vuex.Store({
     idFestival: null,
     festivalCompra: {},
     user: {},
+    paginaHome: false,
     showLoginPopUp: false,
     loading: false,
     userLogged: false,
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    setPaginaHome(state, paginaHome) {
+      state.paginaHome = paginaHome;
     },
     setLoginPopUp(state, showLoginPopUp) {
       state.showLoginPopUp = showLoginPopUp;
@@ -72,6 +76,9 @@ export default new Vuex.Store({
   actions: {
     setUser(context, user) {
       context.commit("setUser", user);
+    },
+    setPaginaHome(context, paginaHome) {
+      context.commit("setPaginaHome", paginaHome);
     },
     setLoginPopUp(context, showLoginPopUp) {
       context.commit("setLoginPopUp", showLoginPopUp);
