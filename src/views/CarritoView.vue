@@ -1,60 +1,21 @@
 <template>
   <v-container class="carrito-container">
-    <div class="filtro-section">
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Buscar"
-        single-line
-        hide-details
-        class="buscador"
-      ></v-text-field>
-
-      <v-select
-        v-model="mes"
-        class="mesesFilter"
-        label="Categorías"
-        :items="[
-          'Todas las categorías',
-          'Rock',
-          'Pop',
-          'Flamenco',
-          'Jazz',
-          'Musical',
-          'Opera',
-        ]"
-        multiple
-      ></v-select>
-      <v-select
-        v-model="ordenPrecio"
-        class="precioFilter"
-        label="Ordenar por precio"
-        item-text="orden"
-        :items="[
-          { value: 'asc', orden: 'Precio ascendente' },
-          { value: 'des', orden: 'Precio descendente' },
-        ]"
-      ></v-select>
-
-      <v-btn> Resetear </v-btn>
-    </div>
-
     <div class="entradas-section">
       <h2>Entradas</h2>
-      <EntradaCarrito
-        :key="$store.state.showEventList[1].idFestival"
-        :id="$store.state.showEventList[1].idFestival"
-        :titulo="$store.state.showEventList[1].nombre"
-        :artistas="$store.state.showEventList[1].artistas"
-        :descripcion="$store.state.showEventList[1].descripcion"
-        :localidad="$store.state.showEventList[1].localidad"
-        :mes="$store.state.showEventList[1].mes"
-        :precio="$store.state.showEventList[1].precioEntrada"
-        :precioVip="$store.state.showEventList[1].precioEntradaVip"
-        :fecha="$store.state.showEventList[1].fecha"
-      />
-      <!-- <EntradaCarrito
-        v-for="festival in $store.state.showEventList"
+      <!-- <EntradaCarritoComponent
+        :key="$store.state.showFestivalList[1].idFestival"
+        :id="$store.state.showFestivalList[1].idFestival"
+        :titulo="$store.state.showFestivalList[1].nombre"
+        :artistas="$store.state.showFestivalList[1].artistas"
+        :descripcion="$store.state.showFestivalList[1].descripcion"
+        :localidad="$store.state.showFestivalList[1].localidad"
+        :mes="$store.state.showFestivalList[1].mes"
+        :precio="$store.state.showFestivalList[1].precioEntrada"
+        :precioVip="$store.state.showFestivalList[1].precioEntradaVip"
+        :fecha="$store.state.showFestivalList[1].fecha"
+      /> -->
+      <EntradaCarritoComponent
+        v-for="festival in $store.state.showFestivalList"
         :key="festival.idFestival"
         :id="festival.idFestival"
         :titulo="festival.nombre"
@@ -65,38 +26,38 @@
         :precio="festival.precioEntrada"
         :precioVip="festival.precioEntradaVip"
         :fecha="festival.fecha"
-      /> -->
+      />
     </div>
     <div class="productos-section">
       <h2>Productos</h2>
-      <ProductoCarrito
-        v-for="festival in $store.state.showEventList"
+      <!-- <ProductoCarritoComponent
+        v-for="festival in $store.state.showFestivalList"
         :key="festival.idFestival"
         :id="festival.idFestival"
         :titulo="festival.nombre"
         :descripcion="festival.descripcion"
         :precio="festival.precioEntrada"
-      />
-      <!-- <ProductoCarrito
-        :key="$store.state.showEventList[1].idFestival"
-        :id="$store.state.showEventList[1].idFestival"
-        :titulo="$store.state.showEventList[1].nombre"
-        :descripcion="$store.state.showEventList[1].descripcion"
-        :precio="$store.state.showEventList[1].precioEntrada"
       /> -->
+      <ProductoCarritoComponent
+        :key="$store.state.showFestivalList[1].idFestival"
+        :id="$store.state.showFestivalList[1].idFestival"
+        :titulo="$store.state.showFestivalList[1].nombre"
+        :descripcion="$store.state.showFestivalList[1].descripcion"
+        :precio="$store.state.showFestivalList[1].precioEntrada"
+      />
     </div>
   </v-container>
 </template>
 
 <script>
-import ProductoCarrito from "../components/carrito/ProductoCarrito.vue";
-import EntradaCarrito from "../components/carrito/EntradaCarrito.vue";
+import EntradaCarritoComponent from "../components/carrito/EntradaCarritoComponent.vue";
+import ProductoCarritoComponent from "../components/carrito/ProductoCarritoComponent.vue";
 
 export default {
   name: "CarritoComponent",
   components: {
-    ProductoCarrito,
-    EntradaCarrito,
+    EntradaCarritoComponent,
+    ProductoCarritoComponent,
   },
   data() {
     return {
@@ -162,7 +123,7 @@ export default {
   .productos-section {
     margin-top: 40px;
     h2 {
-      color: blue;
+      color: black;
       text-transform: uppercase;
       font-size: 24px;
       padding: 0 40px;

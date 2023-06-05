@@ -1,68 +1,69 @@
+
+
 <template>
   <div class="card-component">
-    <v-card-title>
-      {{ titulo }}
-    </v-card-title>
-    <div class="symbol-ok">
-      <!-- <v-icon color="success" icon="mdi-airplane"></v-icon>
-      <v-icon>mdi-home</v-icon> -->
-      <v-icon color="green darken-2">mdi-check-circle</v-icon>
+    <div class="titulo">
+      <v-card-title>
+        {{ titulo }}
+      </v-card-title>
     </div>
-    <v-card class="tarjeta" variant="tonal">
-      <div class="izquierda">
-        <img src="" />
+    <div class="pene">
+      <div class="symbol-ok">
+        <v-checkbox v-model="isChecked" color="success"></v-checkbox>
       </div>
-      <div class="derecha">
-        <div class="top-info">
-          <div class="top-image">
-            <img src="" />
+      <v-card class="tarjeta" variant="tonal">
+        <div class="izquierda">
+          <img :src="'data:image/png;base64,' + this.imagen" />
+        </div>
+        <div class="derecha">
+          <div class="top-info">
+            <div class="top-image">
+              <img :src="'data:image/png;base64,' + this.imagen" />
+            </div>
+            <div class="top-description">
+              <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
+              <v-card-text>
+                {{ descripcion }}
+              </v-card-text>
+            </div>
           </div>
-          <div class="top-description">
-            <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
-            <v-card-text>
-              {{ descripcion }}
-            </v-card-text>
+  
+          <div class="bottom-info">
+            <div class="text-info">
+              <v-card-text>
+                <span>Localidad: </span>
+                <span>{{ localidad }}</span>
+              </v-card-text>
+              <v-card-text>
+                <span>Fecha: </span>
+                <span>{{ fecha }}</span>
+              </v-card-text>
+              <v-card-text class="text-precio">
+                <span>Precio estándar: </span>
+                <span>{{ precio }}€</span>
+              </v-card-text>
+              <v-card-text class="text-precio">
+                <span>Precio VIP: </span>
+                <span>{{ precioVip }}€</span>
+              </v-card-text>
+            </div>
+  
+            <v-card-actions>
+              <div class="estandar">
+                <v-text>Estandar: </v-text>
+                <v-text-field v-model="numberValue" :persistent-hint="true" hide-details single-line type="number" />
+              </div>
+              <div class="vip">
+                <v-text>VIP: </v-text>
+                <v-text-field v-model="numberValueVip" hide-details single-line type="number" />
+              </div>
+  
+            </v-card-actions>
           </div>
         </div>
+      </v-card>
+    </div>
 
-        <div class="bottom-info">
-          <div class="text-info">
-            <v-card-text>
-              <span>Localidad: </span>
-              <span>{{ localidad }}</span>
-            </v-card-text>
-            <v-card-text>
-              <span>Fecha: </span>
-              <span>{{ fecha }}</span>
-            </v-card-text>
-            <v-card-text class="text-precio">
-              <span>Precio estándar: </span>
-              <span>{{ precio }}€</span>
-            </v-card-text>
-            <v-card-text class="text-precio">
-              <span>Precio VIP: </span>
-              <span>{{ precioVip }}€</span>
-            </v-card-text>
-          </div>
-
-          <v-card-actions>
-            <v-text-field
-              v-model="numberValue"
-              :persistent-hint="true"
-              hide-details
-              single-line
-              type="number"
-            />
-            <v-text-field
-              v-model="numberValueVip"
-              hide-details
-              single-line
-              type="number"
-            />
-          </v-card-actions>
-        </div>
-      </div>
-    </v-card>
   </div>
 </template>
 
@@ -90,29 +91,39 @@ export default {
 
 <style lang="scss" scoped>
 .card-component {
-  display: flex;
-  flex-wrap: wrap;
-  
 
-  .v-card__title {
-    width: 100%;
-    font-weight: bold;
-    white-space: nowrap;
-    padding-left: 60px
-  }
-
-  .symbol-ok{
-    width: 60px;
+  .pene{
     display: flex;
     align-items: center;
-    justify-content: center;
+  }
+  .estandar {
+    display: flex;
+    align-items: center;
+  }
+
+  .vip {
+    display: flex;
+    align-items: center;
+  }
+
+  .titulo {
+    display: flex;
+
+    .v-card__title {
+      font-weight: bold;
+      white-space: nowrap;
+      width: calc(100% - 88px);
+    }
+
+    .v-icon {
+      margin: 0 10px;
+    }
   }
 
   .tarjeta {
-    width: calc(100% - 60px);
     display: flex;
     padding: 20px;
-    background-color: aliceblue;
+    background-color: rgba(200, 200, 200, 0.3);
 
     .izquierda {
       display: none;
@@ -128,11 +139,13 @@ export default {
         .top-image {
           // display: none;
           display: block;
+
           img {
             width: 100%;
             border-radius: 4px;
           }
         }
+
         .v-card__subtitle {
           font-weight: bold;
         }
@@ -149,7 +162,7 @@ export default {
           display: flex;
           flex-wrap: wrap;
 
-          > .v-card__text {
+          >.v-card__text {
             width: calc(100% / 2);
             display: flex;
             flex-wrap: wrap;
@@ -165,6 +178,8 @@ export default {
 
             span:nth-of-type(2) {
               width: 100%;
+              // overflow: hidden;
+              // text-overflow: ellipsis;
             }
           }
         }
@@ -175,13 +190,7 @@ export default {
           width: 100%;
           justify-content: center;
 
-          .v-input {
-            background-color: white;
-            width: 154px;
-            .v-text-field__slot{
-              padding-left: 10px;
-            }
-          }
+
         }
       }
     }
@@ -204,6 +213,7 @@ export default {
 
       .derecha {
         width: 100%;
+
         .top-info {
           .top-image {
             display: none;
@@ -214,7 +224,7 @@ export default {
           .text-info {
             width: calc(100% - 184px);
 
-            > .v-card__text {
+            >.v-card__text {
               width: calc(100% / 2);
             }
           }
@@ -243,6 +253,7 @@ export default {
 
       .derecha {
         width: 100%;
+
         .top-info {
           .top-image {
             display: none;
@@ -253,7 +264,7 @@ export default {
           .text-info {
             width: calc(100% - 184px);
 
-            > .v-card__text {
+            >.v-card__text {
               width: calc(100% / 2);
             }
           }
