@@ -211,11 +211,6 @@ export default {
     ]
   }),
   created() {
-    if(this.$store.state.paginaHome){
-      this.showFondo = false;
-    }else{
-      this.showFondo = true;
-    }
     window.addEventListener("scroll", this.handleScroll);
     this.$store.dispatch("cargarCookiesUsuario");
     document.addEventListener("click", this.closeUserDropdown);
