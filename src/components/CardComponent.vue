@@ -9,12 +9,12 @@
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
-        <img :src="'data:image/png;base64,' + this.imagen" />
+        <img :src="this.imagen" />
       </div>
       <div class="derecha">
         <div class="top-info">
           <div class="top-image">
-            <img :src="'data:image/png;base64,' + this.imagen" />
+            <img :src="this.imagen" />
           </div>
           <div class="top-description">
             <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>

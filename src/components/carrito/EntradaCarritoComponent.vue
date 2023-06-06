@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="card-component">
     <div class="titulo">
@@ -7,18 +5,18 @@
         {{ titulo }}
       </v-card-title>
     </div>
-    <div class="pene">
+    <div class="card-body">
       <div class="symbol-ok">
         <v-checkbox v-model="isChecked" color="success"></v-checkbox>
       </div>
       <v-card class="tarjeta" variant="tonal">
         <div class="izquierda">
-          <img :src="'data:image/png;base64,' + this.imagen" />
+          <img :src="this.imagen" />
         </div>
         <div class="derecha">
           <div class="top-info">
             <div class="top-image">
-              <img :src="'data:image/png;base64,' + this.imagen" />
+              <img :src="this.imagen" />
             </div>
             <div class="top-description">
               <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
@@ -27,7 +25,7 @@
               </v-card-text>
             </div>
           </div>
-  
+
           <div class="bottom-info">
             <div class="text-info">
               <v-card-text>
@@ -47,23 +45,32 @@
                 <span>{{ precioVip }}€</span>
               </v-card-text>
             </div>
-  
+
             <v-card-actions>
               <div class="estandar">
-                <v-text>Estandar: </v-text>
-                <v-text-field v-model="numberValue" :persistent-hint="true" hide-details single-line type="number" />
+                <v-text>Estándar: </v-text>
+                <v-text-field
+                  v-model="numberValue"
+                  :persistent-hint="true"
+                  hide-details
+                  single-line
+                  type="number"
+                />
               </div>
               <div class="vip">
                 <v-text>VIP: </v-text>
-                <v-text-field v-model="numberValueVip" hide-details single-line type="number" />
+                <v-text-field
+                  v-model="numberValueVip"
+                  hide-details
+                  single-line
+                  type="number"
+                />
               </div>
-  
             </v-card-actions>
           </div>
         </div>
       </v-card>
     </div>
-
   </div>
 </template>
 
@@ -84,24 +91,13 @@ export default {
     numberValue: 1,
     numberValueVip: 0,
   }),
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
 .card-component {
-
-  .pene{
-    display: flex;
-    align-items: center;
-  }
-  .estandar {
-    display: flex;
-    align-items: center;
-  }
-
-  .vip {
+  .card-body {
     display: flex;
     align-items: center;
   }
@@ -162,7 +158,7 @@ export default {
           display: flex;
           flex-wrap: wrap;
 
-          >.v-card__text {
+          > .v-card__text {
             width: calc(100% / 2);
             display: flex;
             flex-wrap: wrap;
@@ -189,8 +185,32 @@ export default {
           flex-wrap: wrap;
           width: 100%;
           justify-content: center;
+          padding: 0;
 
+          .estandar, .vip {
+            width: calc(100% / 2);
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.375rem;
+            letter-spacing: 0.0071428571em;
+            padding: 16px;
 
+            v-text {
+              font-weight: bold;
+              white-space: nowrap;
+            }
+            .v-input {
+              width: 100%;
+            }
+          }
+
+          // .vip {
+          //   width: calc(100% / 2);
+          //   display: flex;
+          //   flex-wrap: wrap;
+          // }
         }
       }
     }
@@ -224,7 +244,7 @@ export default {
           .text-info {
             width: calc(100% - 184px);
 
-            >.v-card__text {
+            > .v-card__text {
               width: calc(100% / 2);
             }
           }
@@ -264,7 +284,7 @@ export default {
           .text-info {
             width: calc(100% - 184px);
 
-            >.v-card__text {
+            > .v-card__text {
               width: calc(100% / 2);
             }
           }
