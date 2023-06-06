@@ -2,8 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-var link = "http://localhost:80";
+var link = "https://festivalia-api-1.azurewebsites.net/";
 // https://nyxellnt-api-2.azurewebsites.net/
+// http://localhost:80
 
 export default new Vuex.Store({
   state: {
@@ -188,7 +189,7 @@ export default new Vuex.Store({
           commit("initFestivales", data);
           commit("cambiarShowFestivales", data);
         });
-        commit("setLoading", false);
+      commit("setLoading", false);
     },
     async requestFiltroHome({ commit }, datos) {
       commit("setLoading", true);
@@ -198,10 +199,10 @@ export default new Vuex.Store({
 
       let resultados = this.state.festivalList;
 
-      if (mes == "Todas las categorías" && ordenFecha == null) {
+      if (mes == null && ordenFecha == null) {
         commit("cambiarShowFestivales", resultados);
       }
-      if (mes != null && mes != "Todas las categorías" && ordenFecha == null) {
+      if (mes != null && ordenFecha == null) {
         await fetch(link + `/festival?mes=${mes}`)
           .then((response) => response.json())
           .then((data) => {
@@ -210,10 +211,7 @@ export default new Vuex.Store({
           })
           .catch((error) => console.error(error));
       }
-      if (
-        (mes == null || mes == "Todas las categorías") &&
-        ordenFecha != null
-      ) {
+      if (mes == null && ordenFecha != null) {
         await fetch(link + `/festival?ordenarFecha=${ordenFecha}`)
           .then((response) => response.json())
           .then((data) => {
@@ -223,8 +221,9 @@ export default new Vuex.Store({
           })
           .catch((error) => console.error(error));
       }
-      if (mes != null && mes != "Todas las categorías" && ordenFecha != null) {
-        await fetch(link + `festival?mes=${mes}&ordenarFecha=${ordenFecha}`)
+      if (mes != null && ordenFecha != null) {
+        console.log("HOLA");
+        await fetch(link + `/festival?mes=${mes}&ordenarFecha=${ordenFecha}`)
           .then((response) => response.json())
           .then((data) => {
             resultados = data;
@@ -316,8 +315,30 @@ export default new Vuex.Store({
       document.cookie = `idFestivalCompra=${idFestival}`;
       commit("setIdFestival", idFestival);
     },
+    async editFestivalCompra(context, datos) {
+      context.commit("setLoading", true);
+      console.log('datos', datos);
+      fetch(link + "/festival/" + datos.idFestival, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos)
+      })
+        .then((response) => {
+          if (response.ok) {
+            context.dispatch("cargarFestivales");
+          } else {
+            console.error("No se ha podido editar el festival");
+          }
+        })
+        .catch((error) => {
+          console.error("Error en la solicitud:", error);
+        });
+    },
     async deleteFestivalCompra(context, idFestival) {
-      fetch(link+"/festival/"+idFestival, {
+      context.commit("setLoading", true);
+      fetch(link + "/festival/" + idFestival, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -325,11 +346,8 @@ export default new Vuex.Store({
       })
         .then((response) => {
           if (response.ok) {
-            this.mostrarMensajeDelete = true;
-            console.log("eliminado correctamente");
-            context.dispatch('cargarFestivales');
+            context.dispatch("cargarFestivales");
             context.commit("setMensajeDelete", true);
-            context.commit("setLoading", true);
           } else {
             console.error("No se pudo eliminar el evento");
           }
