@@ -2,7 +2,7 @@
   <div class="card-component">
     <div class="titulo">
       <v-card-title>
-        {{ titulo }}
+        {{ festival.titulo }}
       </v-card-title>
     </div>
     <div class="card-body">
@@ -11,17 +11,17 @@
       </div>
       <v-card class="tarjeta" variant="tonal">
         <div class="izquierda">
-          <img :src="this.imagen" />
+          <img :src="festival.imagen" />
         </div>
         <div class="derecha">
           <div class="top-info">
             <div class="top-image">
-              <img :src="this.imagen" />
+              <img :src="festival.imagen" />
             </div>
             <div class="top-description">
-              <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
+              <v-card-subtitle> {{ festival.artistas }} - {{ festival.mes }} </v-card-subtitle>
               <v-card-text>
-                {{ descripcion }}
+                {{ festival.descripcion }}
               </v-card-text>
             </div>
           </div>
@@ -30,25 +30,25 @@
             <div class="text-info">
               <v-card-text>
                 <span>Localidad: </span>
-                <span>{{ localidad }}</span>
+                <span>{{ festival.localidad }}</span>
               </v-card-text>
               <v-card-text>
                 <span>Fecha: </span>
-                <span>{{ fecha }}</span>
+                <span>{{ festival.fecha }}</span>
               </v-card-text>
               <v-card-text class="text-precio">
                 <span>Precio estándar: </span>
-                <span>{{ precio }}€</span>
+                <span>{{ festival.precioEntrada }}€</span>
               </v-card-text>
               <v-card-text class="text-precio">
                 <span>Precio VIP: </span>
-                <span>{{ precioVip }}€</span>
+                <span>{{ festival.precioEntradaVip }}€</span>
               </v-card-text>
             </div>
 
             <v-card-actions>
               <div class="estandar">
-                <v-text>Estándar: </v-text>
+                <v-text name="precioEstandar">Estándar: </v-text>
                 <v-text-field
                   v-model="numberValue"
                   :persistent-hint="true"
@@ -58,7 +58,7 @@
                 />
               </div>
               <div class="vip">
-                <v-text>VIP: </v-text>
+                <v-text name="precioVip">VIP: </v-text>
                 <v-text-field
                   v-model="numberValueVip"
                   hide-details
@@ -75,19 +75,14 @@
 </template>
 
 <script>
+import Festival from '@/models/festival-model.js';
+
 export default {
   props: {
-    id: Number,
-    titulo: String,
-    artistas: String,
-    descripcion: String,
-    localidad: String,
-    mes: String,
-    precio: Number,
-    precioVip: Number,
-    fecha: String,
+    festival: Festival
   },
   data: () => ({
+    isChecked: false,
     numberValue: 1,
     numberValueVip: 0,
   }),
@@ -251,6 +246,9 @@ export default {
 
           .v-card__actions {
             width: 154px;
+            .estandar, .vip{
+              width: 100%;
+            }
           }
         }
       }

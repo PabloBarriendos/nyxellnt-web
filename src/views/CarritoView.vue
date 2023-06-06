@@ -1,32 +1,23 @@
 <template>
   <v-container class="carrito-container">
+    <h1>Carrito</h1>
+    <div class="btn-comprar">
+      <v-btn color="success" variant="text" v-on:click="finalizarCompra()">
+        <v-icon>mdi-cart</v-icon> Finalizar Compra
+      </v-btn>
+    </div>
     <div class="entradas-section">
       <h2>Entradas</h2>
-      <!-- <EntradaCarritoComponent
-        :key="$store.state.showFestivalList[1].idFestival"
-        :id="$store.state.showFestivalList[1].idFestival"
-        :titulo="$store.state.showFestivalList[1].nombre"
-        :artistas="$store.state.showFestivalList[1].artistas"
-        :descripcion="$store.state.showFestivalList[1].descripcion"
-        :localidad="$store.state.showFestivalList[1].localidad"
-        :mes="$store.state.showFestivalList[1].mes"
-        :precio="$store.state.showFestivalList[1].precioEntrada"
-        :precioVip="$store.state.showFestivalList[1].precioEntradaVip"
-        :fecha="$store.state.showFestivalList[1].fecha"
-      /> -->
       <EntradaCarritoComponent
-        v-for="festival in $store.state.showFestivalList"
+        v-for="festival in listaEntradasCarrito"
         :key="festival.idFestival"
-        :id="festival.idFestival"
-        :titulo="festival.nombre"
-        :artistas="festival.artistas"
-        :descripcion="festival.descripcion"
-        :localidad="festival.localidad"
-        :mes="festival.mes"
-        :precio="festival.precioEntrada"
-        :precioVip="festival.precioEntradaVip"
-        :fecha="festival.fecha"
+        :festival="festival"
       />
+      <!-- <EntradaCarritoComponent
+        v-for="festival in [$store.state.showFestivalList[1]]"
+        :key="festival.idFestival"
+        :festival="festival"
+      /> -->
     </div>
     <div class="productos-section">
       <h2>Productos</h2>
@@ -38,47 +29,40 @@
         :descripcion="festival.descripcion"
         :precio="festival.precioEntrada"
       /> -->
-      <ProductoCarritoComponent
+      <!-- <ProductoCarritoComponent
         :key="$store.state.showFestivalList[1].idFestival"
         :id="$store.state.showFestivalList[1].idFestival"
         :titulo="$store.state.showFestivalList[1].nombre"
         :descripcion="$store.state.showFestivalList[1].descripcion"
         :precio="$store.state.showFestivalList[1].precioEntrada"
-      />
+        :imagen="$store.state.showFestivalList[1].imagen"
+      /> -->
     </div>
   </v-container>
 </template>
 
 <script>
 import EntradaCarritoComponent from "../components/carrito/EntradaCarritoComponent.vue";
-import ProductoCarritoComponent from "../components/carrito/ProductoCarritoComponent.vue";
+// import ProductoCarritoComponent from "../components/carrito/ProductoCarritoComponent.vue";
 
 export default {
   name: "CarritoComponent",
   components: {
     EntradaCarritoComponent,
-    ProductoCarritoComponent,
+    // ProductoCarritoComponent,
   },
-  data() {
-    return {
-      search: "",
-      mes: null,
-      ordenPrecio: null,
-    };
-  },
-  async mounted() {
-    this.$store.dispatch("cargarFestivales");
+  data: () => ({
+    listaEntradasCarrito: []
+  }),
+  created() {
+    const listaEntradasStorage = localStorage.getItem('listaEntradasCarrito');
+    this.listaEntradasCarrito = JSON.parse(listaEntradasStorage);
+    
   },
   methods: {
-    async buscar() {
-      this.$store.dispatch("buscar", this.search);
-    },
-    async requestFiltro() {
-      this.$store.dispatch("requestFiltroHome", {
-        mes: this.mes,
-        ordenPrecio: this.ordenPrecio,
-      });
-    },
+    finalizarCompra(){
+      // todo
+    }
   },
 };
 </script>
@@ -88,34 +72,24 @@ export default {
   margin: 0;
   padding: 0;
   max-width: 100%;
+  margin-top: 160px;
 
-  .filtro-section {
-    margin-top: 60px;
+  h1{
+    width: 100%;
+    text-align: center;
+    font-size: 54px;
+  }
+  .btn-comprar{
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    padding: 0px 10%;
+    justify-content: center;
+    margin: 40px 0;
+    .v-btn{
+      padding: 24px;
 
-    .buscador {
-      width: 70%;
-      margin: 0 5%;
-      margin-bottom: 20px;
-    }
-
-    .mesesFilter {
-      width: calc(50% - 100px);
-      margin-right: 20px;
-    }
-
-    .precioFilter {
-      width: calc(50% - 100px);
-      margin-left: 20px;
-    }
-
-    .v-btn {
-      width: 110px;
-      margin-top: 12px;
-      margin-left: 40px;
+      .v-icon{
+        margin-right: 10px;
+      }
     }
   }
 

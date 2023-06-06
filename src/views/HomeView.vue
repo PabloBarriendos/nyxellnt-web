@@ -83,16 +83,7 @@
         <CardComponent
           v-for="festival in $store.state.showFestivalList"
           :key="festival.idFestival"
-          :id="festival.idFestival"
-          :titulo="festival.nombre"
-          :artistas="festival.artistas"
-          :descripcion="festival.descripcion"
-          :localidad="festival.localidad"
-          :mes="festival.mes"
-          :precio="festival.precioEntrada"
-          :precioVip="festival.precioEntradaVip"
-          :fecha="festival.fecha"
-          :imagen="festival.imagen"
+          :festival="festival"
         />
       </div>
     </div>

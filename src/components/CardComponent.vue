@@ -2,24 +2,24 @@
   <div class="card-component">
     <div class="titulo">
       <v-card-title>
-        {{ titulo }}
+        {{ festival.nombre }}
       </v-card-title>
       <v-icon v-if="this.$store.state.user.rol == 'admin'" color="primary">mdi-pencil</v-icon>
       <v-icon v-if="this.$store.state.user.rol == 'admin'" color="red" @click="deletePopUp()">mdi-delete</v-icon>
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
-        <img :src="this.imagen" />
+        <img :src="festival.imagen" />
       </div>
       <div class="derecha">
         <div class="top-info">
           <div class="top-image">
-            <img :src="this.imagen" />
+            <img :src="festival.imagen" />
           </div>
           <div class="top-description">
-            <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
+            <v-card-subtitle> {{ festival.artistas }} - {{ festival.mes }} </v-card-subtitle>
             <v-card-text>
-              {{ descripcion }}
+              {{ festival.descripcion }}
             </v-card-text>
           </div>
         </div>
@@ -28,19 +28,19 @@
           <div class="text-info">
             <v-card-text>
               <span>Localidad: </span>
-              <span>{{ localidad }}</span>
+              <span>{{ festival.localidad }}</span>
             </v-card-text>
             <v-card-text>
               <span>Fecha: </span>
-              <span>{{ fecha }}</span>
+              <span>{{ festival.fecha }}</span>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio estándar: </span>
-              <span>{{ precio }}€</span>
+              <span>{{ festival.precioEntrada }}€</span>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio VIP: </span>
-              <span>{{ precioVip }}€</span>
+              <span>{{ festival.precioEntradaVip }}€</span>
             </v-card-text>
           </div>
 
@@ -96,35 +96,50 @@
 </template>
 
 <script>
+import Festival from '@/models/festival-model.js';
+
 export default {
   data: () => ({
     showDeletePopUp: false,
   }),
   props: {
-    id: Number,
-    titulo: String,
-    artistas: String,
-    descripcion: String,
-    localidad: String,
-    mes: String,
-    precio: Number,
-    precioVip: Number,
-    fecha: String,
-    imagen: String,
+    festival: Festival
   },
   methods: {
     goToCompra() {
       if (this.$store.state.userLogged == false) {
-        // this.$store.dispatch("setLoginPopUp", true);
-        this.$router.push(`/carrito`);
+        this.$store.dispatch("setLoginPopUp", true);
       } else {
-        this.$store.dispatch("setIdFestivalCompra", this.id);
+        // Crea un nuevo objeto que deseas agregar al array
+        const festivalCarrito = this.festival;
+
+        // Obtiene el array existente del Local Storage
+        const listaEntradasStorage = localStorage.getItem('listaEntradasCarrito');
+
+        // Convierte la cadena JSON del array a un objeto JavaScript
+        let listaEntradasCarrito = JSON.parse(listaEntradasStorage);
+
+        // Verifica si el array existe o es nulo
+        if (!listaEntradasCarrito) {
+          listaEntradasCarrito = []; // Inicializa un nuevo array vacío
+        }
+
+        // Agrega el nuevo objeto al array
+        listaEntradasCarrito.push(festivalCarrito);
+
+        // Convierte el array actualizado a una cadena JSON
+        const listaEntradasCarritoJSON = JSON.stringify(listaEntradasCarrito);
+
+        // Almacena el array actualizado en el Local Storage
+        localStorage.setItem('listaEntradasCarrito', listaEntradasCarritoJSON);
+
+        this.$store.dispatch("setIdFestivalCompra", this.festival.idFestival);
         // this.$router.push(`/festival`);
         this.$router.push(`/carrito`);
       }
     },
     deleteFestival() {
-      this.$store.dispatch("deleteFestivalCompra", this.id);
+      this.$store.dispatch("deleteFestivalCompra", this.festival.idFestival);
       // this.$store.dispatch("cargarFestivales");
       this.showDeletePopUp = false;
     },
