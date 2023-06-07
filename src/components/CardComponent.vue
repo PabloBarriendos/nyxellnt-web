@@ -110,31 +110,26 @@ export default {
       if (this.$store.state.userLogged == false) {
         this.$store.dispatch("setLoginPopUp", true);
       } else {
-        // Crea un nuevo objeto que deseas agregar al array
-        const festivalCarrito = this.festival;
+        let yaExiste = false;
+        let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
 
-        // Obtiene el array existente del Local Storage
-        const listaEntradasStorage = localStorage.getItem('listaEntradasCarrito');
-
-        // Convierte la cadena JSON del array a un objeto JavaScript
-        let listaEntradasCarrito = JSON.parse(listaEntradasStorage);
-
-        // Verifica si el array existe o es nulo
-        if (!listaEntradasCarrito) {
-          listaEntradasCarrito = []; // Inicializa un nuevo array vacío
+        if (!listaEntradasStorage) {
+          listaEntradasStorage = [];
         }
-
-        // Agrega el nuevo objeto al array
-        listaEntradasCarrito.push(festivalCarrito);
-
-        // Convierte el array actualizado a una cadena JSON
-        const listaEntradasCarritoJSON = JSON.stringify(listaEntradasCarrito);
-
-        // Almacena el array actualizado en el Local Storage
-        localStorage.setItem('listaEntradasCarrito', listaEntradasCarritoJSON);
-
+        if(listaEntradasStorage.length > 0){
+          listaEntradasStorage.forEach(item => {
+            if(item.idFestival === this.festival.idFestival){
+              yaExiste = true;
+            }
+          });
+        }
+        if(yaExiste == false){
+          listaEntradasStorage.push(this.festival);
+        }
+        localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+      
         this.$store.dispatch("setIdFestivalCompra", this.festival.idFestival);
-        // this.$router.push(`/festival`);
+        
         this.$router.push(`/carrito`);
       }
     },

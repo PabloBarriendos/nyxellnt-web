@@ -12,6 +12,7 @@
         v-for="festival in listaEntradasCarrito"
         :key="festival.idFestival"
         :festival="festival"
+        @deletedEntradaCarrito="cargarListaCarrito"
       />
       <!-- <EntradaCarritoComponent
         v-for="festival in [$store.state.showFestivalList[1]]"
@@ -60,6 +61,10 @@ export default {
     
   },
   methods: {
+    cargarListaCarrito(){
+      const listaEntradasStorage = localStorage.getItem('listaEntradasCarrito');
+      this.listaEntradasCarrito = JSON.parse(listaEntradasStorage);
+    },
     finalizarCompra(){
       // todo
     }

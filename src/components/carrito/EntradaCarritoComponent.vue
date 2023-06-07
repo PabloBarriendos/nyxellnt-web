@@ -6,8 +6,9 @@
       </v-card-title>
     </div>
     <div class="card-body">
-      <div class="symbol-ok">
-        <v-checkbox v-model="isChecked" color="success"></v-checkbox>
+      <div class="icons">
+        <!-- <v-checkbox v-model="isChecked" color="success"></v-checkbox> -->
+        <v-icon class="iconDelete" color="error" @click="deleteFestivalCarrito()">mdi-delete</v-icon>
       </div>
       <v-card class="tarjeta" variant="tonal">
         <div class="izquierda">
@@ -52,6 +53,8 @@
                 <v-text-field
                   v-model="numberValue"
                   :persistent-hint="true"
+                  :min="0"
+                  :max="maxEntradas"
                   hide-details
                   single-line
                   type="number"
@@ -61,6 +64,8 @@
                 <v-text name="precioVip">VIP: </v-text>
                 <v-text-field
                   v-model="numberValueVip"
+                  :min="0"
+                  :max="maxEntradasVip"
                   hide-details
                   single-line
                   type="number"
@@ -85,8 +90,31 @@ export default {
     isChecked: false,
     numberValue: 1,
     numberValueVip: 0,
+
+    maxEntradas: 5,
+    maxEntradasVip: 5,
   }),
-  methods: {},
+  created(){
+    if(this.festival.stock < 5){
+      this.maxEntradas = this.festival.stock;
+    }
+    if(this.festival.stockVip < 5){
+      this.maxEntradasVip = this.festival.stockVip;
+    }
+  },
+  methods: {
+    deleteFestivalCarrito() {
+      const listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+      const indiceEntradaBorrar = listaEntradasStorage.findIndex(item => item.idFestival === this.festival.idFestival);
+
+      if(indiceEntradaBorrar !== -1){
+        listaEntradasStorage.splice(indiceEntradaBorrar, 1);
+      }
+      localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+
+      this.$emit('deletedEntradaCarrito', true);
+    }
+  },
 };
 </script>
 
@@ -95,6 +123,12 @@ export default {
   .card-body {
     display: flex;
     align-items: center;
+
+    .icons{
+      .iconDelete{
+        margin: 0 10px
+      }
+    }
   }
 
   .titulo {
@@ -114,6 +148,7 @@ export default {
   .tarjeta {
     display: flex;
     padding: 20px;
+    width: calc(100% - 44px);
     background-color: rgba(200, 200, 200, 0.3);
 
     .izquierda {
