@@ -124,7 +124,12 @@ export default {
           });
         }
         if(yaExiste == false){
-          listaEntradasStorage.push(this.festival);
+          const objetoCarrito = {
+            festival: this.festival,
+            entradas: 1,
+            entradasVip: 0,
+          }
+          listaEntradasStorage.push(objetoCarrito);
         }
         localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
       

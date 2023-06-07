@@ -4,11 +4,11 @@
       <v-card-title>
         {{ festival.titulo }}
       </v-card-title>
+      <v-icon class="iconDelete" color="error" @click="deleteFestivalCarrito()">mdi-delete</v-icon>
     </div>
     <div class="card-body">
       <div class="icons">
-        <!-- <v-checkbox v-model="isChecked" color="success"></v-checkbox> -->
-        <v-icon class="iconDelete" color="error" @click="deleteFestivalCarrito()">mdi-delete</v-icon>
+        <v-checkbox v-model="isChecked" color="success"></v-checkbox>
       </div>
       <v-card class="tarjeta" variant="tonal">
         <div class="izquierda">
@@ -58,6 +58,7 @@
                   hide-details
                   single-line
                   type="number"
+                  @input="modificarNumEntradas"
                 />
               </div>
               <div class="vip">
@@ -69,6 +70,7 @@
                   hide-details
                   single-line
                   type="number"
+                  @input="modificarNumEntradas"
                 />
               </div>
             </v-card-actions>
@@ -103,9 +105,29 @@ export default {
     }
   },
   methods: {
+    modificarNumEntradas() {
+      this.numberValue = this.numberValue > 5 ? 5 : this.numberValue < 0 ? 0 : this.numberValue;
+      this.numberValueVip = this.numberValueVip > 5 ? 5 : this.numberValueVip < 0 ? 0 : this.numberValueVip;
+
+      let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+
+      console.log('numEntradas', this.numberValue);
+      console.log('numEntradasVip', this.numberValueVip);
+      console.log('', listaEntradasStorage);
+
+      listaEntradasStorage.forEach(item => {
+        if(item.festival.idFestival == this.festival.idFestival){
+          item.entradas = parseInt(this.numberValue);
+          item.entradasVip = parseInt(this.numberValueVip);
+        }
+      });
+
+      localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+
+    },
     deleteFestivalCarrito() {
       const listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
-      const indiceEntradaBorrar = listaEntradasStorage.findIndex(item => item.idFestival === this.festival.idFestival);
+      const indiceEntradaBorrar = listaEntradasStorage.findIndex(item => item.festival.idFestival === this.festival.idFestival);
 
       if(indiceEntradaBorrar !== -1){
         listaEntradasStorage.splice(indiceEntradaBorrar, 1);
@@ -124,11 +146,6 @@ export default {
     display: flex;
     align-items: center;
 
-    .icons{
-      .iconDelete{
-        margin: 0 10px
-      }
-    }
   }
 
   .titulo {
@@ -137,11 +154,12 @@ export default {
     .v-card__title {
       font-weight: bold;
       white-space: nowrap;
-      width: calc(100% - 88px);
+      width: calc(100% - 52px);
     }
-
-    .v-icon {
-      margin: 0 10px;
+    
+    .iconDelete{
+      margin: 10px;
+      font-size: 32px;
     }
   }
 
