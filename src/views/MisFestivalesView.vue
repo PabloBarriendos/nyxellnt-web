@@ -4,8 +4,10 @@
       <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details class="buscador"
         @input="requestFiltro()"></v-text-field>
 
-      <v-select v-model="mes" class="mesesFilter" label="Ordenar por mes" :items="meses"
-        @change="requestFiltro()"></v-select>
+      <v-select v-model="ordenPrecio" class="fechaFilter" label="Ordenar por precio" item-text="orden" :items="[
+        { value: 'asc', orden: 'Precio ▲' },
+        { value: 'des', orden: 'Precio ▼' },
+      ]" @change="requestFiltro()"></v-select>
       <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
         { value: 'asc', orden: 'Fecha ▲' },
         { value: 'des', orden: 'Fecha ▼' },
@@ -27,8 +29,11 @@
         <!-- <div class="spinner">
           <SpinnerComponent />
         </div> -->
-        <MisFestivalesCardComponent v-for="item in $store.state.showMisFestivalesList"
-          :key="item.operacion.idOperacionEntradas" :operacion="item.operacion" :festival="item.festival" />
+        <div class="cards" v-if="$store.state.showMisFestivalesList.length > 0">
+
+          <MisFestivalesCardComponent v-for="item in $store.state.showMisFestivalesList"
+            :key="item.operacion.idOperacionEntradas" :operacion="item.operacion" :festival="item.festival" />
+        </div>
       </div>
     </div>
   </v-container>
@@ -47,18 +52,20 @@ export default {
   data() {
     return {
       search: "",
+      ordenPrecio: null,
       ordenFecha: null,
     };
   },
   async created() {
-    this.$store.dispatch("getOperacionesUsuario");
+    await this.$store.dispatch("getOperacionesUsuario");
   },
   methods: {
-    async buscar() {
-      this.$store.dispatch("buscarOperacion", this.search);
-    },
     async requestFiltro() {
-      this.$store.dispatch("requestFiltroOperaciones", this.ordenFecha);
+      await this.$store.dispatch("requestFiltroOperaciones", {
+        stringBuscar: this.search,
+        ordenPrecio: this.ordenPrecio,
+        ordenFecha: this.ordenFecha,
+      });
     },
   },
 };
@@ -111,7 +118,7 @@ export default {
       margin-bottom: 20px;
     }
 
-    .mesesFilter {
+    .precioFilter {
       width: calc(50% - 100px);
       margin-right: 20px;
     }
@@ -145,6 +152,10 @@ export default {
         font-size: 24px;
       }
 
+      .cards{
+        width: 100%;
+      }
+
     }
 
 
@@ -159,7 +170,7 @@ export default {
         margin: 0 0 20px 0;
       }
 
-      .mesesFilter {
+      .precioFilter {
         width: 100%;
         margin-right: 0;
       }

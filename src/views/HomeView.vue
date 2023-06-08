@@ -106,11 +106,6 @@ export default {
     showAllEvents: false,
     isLoading: false,
   }),
-
-  // async mounted() {
-  //   this.$store.dispatch("setPaginaHome", true);
-  //   this.$store.dispatch("cargarFestivales");
-  // },
   created() {
     this.$store.dispatch("setPaginaHome", true);
     this.$store.dispatch("cargarFestivales");
@@ -119,9 +114,6 @@ export default {
     this.$store.dispatch("setPaginaHome", false);
   },
   methods: {
-    async buscar() {
-      this.$store.dispatch("buscar", this.search);
-    },
     async requestFiltro() {
       this.$store.dispatch("requestFiltroHome", {
         stringBuscar: this.search,

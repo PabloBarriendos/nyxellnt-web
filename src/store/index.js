@@ -259,6 +259,77 @@ export default new Vuex.Store({
       commit("cambiarShowFestivales", resultados);
       commit("setLoading", false);
     },
+    
+    async requestFiltroOperaciones({ commit }, datos) {
+      commit("setLoading", true);
+      let stringBuscar = datos.stringBuscar;
+      let ordenPrecio = datos.ordenPrecio;
+      let ordenFecha = datos.ordenFecha;
+
+      let operaciones = []
+      let listaFestivales = [];
+
+      let resultados = [];
+
+      if (ordenPrecio != null && ordenFecha == null) {
+        await fetch(link + `/operacionEntradas/usuario/${this.state.user.idUsuario}?ordenarPrecio=${ordenPrecio}`)
+          .then((response) => response.json())
+          .then((data) => {
+            operaciones = data;
+            // commit("setShowMisFestivalesList", data);
+          })
+          .catch((error) => console.error(error));
+      }
+      if (ordenPrecio == null && ordenFecha != null) {
+        await fetch(link + `/operacionEntradas/usuario/${this.state.user.idUsuario}?ordenarFecha=${ordenFecha}`)
+          .then((response) => response.json())
+          .then((data) => {
+            operaciones = data;
+            // commit("setShowMisFestivalesList", data);
+          })
+          .catch((error) => console.error(error));
+      }
+      if (ordenPrecio != null && ordenFecha != null) {
+        await fetch(link + `/operacionEntradas/usuario/${this.state.user.idUsuario}?ordenarPrecio=${ordenPrecio}&ordenarFecha=${ordenFecha}`)
+          .then((response) => response.json())
+          .then((data) => {
+            operaciones = data;
+            commit("setShowMisFestivalesList", data);
+          })
+          .catch((error) => console.error(error));
+      }
+
+
+      await fetch(link + `/festival`)
+          .then((response) => response.json())
+          .then((data) => (listaFestivales = data))
+          .catch((error) => console.error(error));
+
+
+      console.log('RESULTADOS', resultados);
+
+      operaciones.forEach((operacion) => {
+        listaFestivales.forEach((festival) => {
+          if (operacion.idFestival == festival.idFestival) {
+            resultados.push({ operacion, festival });
+          }
+        });
+      });
+
+      console.log('RESULTADOS 2', resultados);
+
+      resultados = resultados.filter((item) => {
+        if (
+          item.festival.nombre.toLowerCase().includes(stringBuscar)
+        ) {
+          return item;
+        }
+      });
+
+      console.log('RESULTADOS 2', resultados);
+      commit("setShowMisFestivalesList", resultados);
+      // commit("setLoading", false);
+    },
     async getOperacionesUsuario(context) {
       await context.dispatch("cargarCookiesUsuario");
 
@@ -276,9 +347,6 @@ export default new Vuex.Store({
           .then((response) => response.json())
           .then((data) => (listaFestivales = data))
           .catch((error) => console.error(error));
-
-
-        console.log('operacionesFestivales', operacionesFestivales);
 
         operacionesFestivales.forEach((operacion) => {
           listaFestivales.forEach((festival) => {
@@ -322,43 +390,43 @@ export default new Vuex.Store({
         commit("setShowMisFestivalesList", resultados);
       }
     },
-    async requestFiltroOperaciones({ commit }, ordenFecha) {
-      console.log(ordenFecha);
-      console.log("Antes: ");
-      console.log(this.state.showMisFestivalesList);
-      console.log(this.state.showMisFestivalesList[0].operacion.fechaCompra);
-      console.log(
-        Date.parse(this.state.showMisFestivalesList[0].operacion.fechaCompra)
-      );
-      if (ordenFecha != null) {
-        if (ordenFecha == true) {
-          this.state.showMisFestivalesList.sort((a, b) => {
-            let dateA = a.operacion.fechaCompra.split("-");
-            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
-            let dateB = b.operacion.fechaCompra.split("-");
-            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
+    // async requestFiltroOperaciones({ commit }, ordenFecha) {
+    //   console.log(ordenFecha);
+    //   console.log("Antes: ");
+    //   console.log(this.state.showMisFestivalesList);
+    //   console.log(this.state.showMisFestivalesList[0].operacion.fechaCompra);
+    //   console.log(
+    //     Date.parse(this.state.showMisFestivalesList[0].operacion.fechaCompra)
+    //   );
+    //   if (ordenFecha != null) {
+    //     if (ordenFecha == true) {
+    //       this.state.showMisFestivalesList.sort((a, b) => {
+    //         let dateA = a.operacion.fechaCompra.split("-");
+    //         let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
+    //         let dateB = b.operacion.fechaCompra.split("-");
+    //         let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
 
-            console.log(finalDateA);
+    //         console.log(finalDateA);
 
-            return finalDateB - finalDateA;
-          });
-        } else {
-          this.state.showMisFestivalesList.sort((a, b) => {
-            let dateA = a.operacion.fechaCompra.split("-");
-            let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
-            let dateB = b.operacion.fechaCompra.split("-");
-            let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
+    //         return finalDateB - finalDateA;
+    //       });
+    //     } else {
+    //       this.state.showMisFestivalesList.sort((a, b) => {
+    //         let dateA = a.operacion.fechaCompra.split("-");
+    //         let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
+    //         let dateB = b.operacion.fechaCompra.split("-");
+    //         let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
 
-            return finalDateA - finalDateB;
-          });
-        }
+    //         return finalDateA - finalDateB;
+    //       });
+    //     }
 
-        console.log("Despues: ");
-        console.log(this.state.showMisFestivalesList);
+    //     console.log("Despues: ");
+    //     console.log(this.state.showMisFestivalesList);
 
-        commit("setDatoInutil", null);
-      }
-    },
+    //     commit("setDatoInutil", null);
+    //   }
+    // },
     async setIdFestivalCompra({ commit }, idFestival) {
       document.cookie = `idFestivalCompra=${idFestival}`;
       commit("setIdFestival", idFestival);
