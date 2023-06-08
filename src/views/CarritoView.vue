@@ -174,13 +174,22 @@ export default {
     finalizarCompra() {
       console.log('compra finalizada', this.notasEntrega);
 
-      // this.listaEntradasCarrito.forEach(item => {
-      //   // TODO
-      //   // this.$store.dispatch("comprarFestival", item.festival, item.entradas, item.entradasVip);
+      this.listaEntradasCarrito = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+
+      this.listaEntradasCarrito.forEach(item => {
+        const datos = {
+          festival: item.festival,
+          entradas: item.entradas,
+          entradasVip: item.entradasVip
+        }
+        // TODO
+        console.log('item', item);
+        this.$store.dispatch("comprarFestival", datos);
         
-      // });
+      });
 
-
+      localStorage.removeItem('listaEntradasCarrito');
+      this.$router.push(`/compraFinalizada`);
     }
   },
 };

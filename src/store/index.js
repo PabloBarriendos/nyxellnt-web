@@ -21,6 +21,7 @@ export default new Vuex.Store({
     misComprasList: [],
     showMisComprasList: [],
     mostrarMensajeDelete: false,
+    errorCompra: false,
   },
   mutations: {
     setDatoInutil(state, datoInutil) {
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     },
     setShowMisComprasList(state, list) {
       state.showMisComprasList = list;
+    },
+    setErrorCompra(state, errorCompra) {
+      state.errorCompra = errorCompra;
     },
     initUsers(state, users) {
       state.userList = users;
@@ -331,25 +335,53 @@ export default new Vuex.Store({
           console.error("Error en la solicitud:", error);
         });
     },
-    async comprarFestival({ commit }, ticket) {
-      console.log(this.state.idFestival);
-      console.log(this.state.user.idUsuario);
-      console.log(ticket);
-      console.log(this.state.festivalCompra.precioEntrada * ticket);
+    async comprarFestival(context, datos) {
+      const festival = datos.festival;
+      const entradas = datos.entradas;
+      const entradasVip = datos.entradasVip;
 
+      let now = new Date();
+      let day = now.getDate();
+      let month = now.getMonth() + 1;
+      let year = now.getFullYear();
+      let fechaActual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+
+      console.log('fecha', fechaActual);
+      console.log('festival', festival);
+      console.log('entradas', entradas);
+      console.log('entradasVip', entradasVip);
+
+      const precioTotal = (entradas * festival.precioEntrada) + (entradasVip * festival.precioEntradaVip);
+      console.log('precioTotal', precioTotal);
+    
       // POST operacion
-      await fetch(link + "/operacion", {
+      await fetch(link + "/operacionEntradas", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          idOperacion: 0,
-          idFestival: this.state.idFestival,
+
+          idOperacionEntradas: 0,
+          idFestival: festival.idFestival,
           idUsuario: this.state.user.idUsuario,
-          numEntradasCompradas: ticket,
-          precioTotal: this.state.festivalCompra.precioEntrada * ticket,
+          numEntradasCompradas: entradas,
+          numEntradasVipCompradas: entradasVip,
+          precioTotalEntradas: precioTotal,
+          fechaCompra: fechaActual
         }),
+      }).then((response) => {
+        if (response.ok) {
+          console.log("Compra realizada correctamente");
+          context.commit("setErrorCompra", false);
+        } else {
+          console.error("No se pudo realizar la compra");
+          context.commit("setErrorCompra", true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud:", error);
+        context.commit("setErrorCompra", true);
       });
 
       // PUT festival
@@ -359,19 +391,23 @@ export default new Vuex.Store({
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          idFestival: this.state.festivalCompra.idFestival,
-          nombre: this.state.festivalCompra.nombre,
-          artistas: this.state.festivalCompra.artistas,
-          descripcion: this.state.festivalCompra.descripcion,
-          localidad: this.state.festivalCompra.localidad,
-          fecha: this.state.festivalCompra.fecha,
-          precioEntrada: this.state.festivalCompra.precioEntrada,
-          stock: this.state.festivalCompra.stock - ticket,
-          mes: this.state.festivalCompra.mes,
+
+          idFestival: festival.idFestival,
+          nombre: festival.nombre,
+          artistas: festival.artistas,
+          descripcion: festival.descripcion,
+          localidad: festival.localidad,
+          fecha: festival.fecha,
+          precioEntrada: festival.precioEntrada,
+          stock: festival.stock - entradas,
+          precioEntradaVip: festival.precioEntradaVip,
+          stockVip: festival.stockVip - entradasVip,
+          mes: festival.mes,
+          imagen: festival.imagen
         }),
       });
 
-      commit("setDatoInutil", null);
+      context.commit("setDatoInutil", null);
     },
     async fetchFestival({ commit, dispatch }) {
       let idFestivalCookie = await dispatch("getCookie", "idFestivalCompra");
