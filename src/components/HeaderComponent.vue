@@ -280,6 +280,13 @@ export default {
     miPerfil() {},
     carrito() {
       this.showUserDropdown = false;
+
+      let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+      if (!listaEntradasStorage) {
+          listaEntradasStorage = [];
+          localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+      }
+
       this.$router.push(`/carrito`);
     },
     misCompras() {
