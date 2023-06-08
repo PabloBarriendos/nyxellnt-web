@@ -2,7 +2,8 @@
   <v-container class="carrito-container">
     <h1>Carrito</h1>
     <div class="btn-comprar">
-      <v-btn color="success" variant="text" v-on:click="openFinalizarCompra()">
+      <v-btn color="success" :disabled="listaEntradasCarrito.length === 0" variant="text"
+        v-on:click="openFinalizarCompra()">
         <v-icon size="40">mdi-cart</v-icon> Finalizar Compra
       </v-btn>
     </div>
@@ -12,8 +13,8 @@
         <v-icon>mdi-information</v-icon>
         <p>No hay festivales añadidos al carrito</p>
       </div>
-      <EntradaCarritoComponent v-for="item in listaEntradasCarrito" :key="item.festival.idFestival" :festival="item.festival"
-        @deletedEntradaCarrito="cargarListaEntradasCarrito" />
+      <EntradaCarritoComponent v-for="item in listaEntradasCarrito" :key="item.festival.idFestival"
+        :festival="item.festival" @deletedEntradaCarrito="cargarListaEntradasCarrito" />
     </div>
     <div class="productos-section">
       <h2>Productos</h2>
@@ -152,7 +153,10 @@ export default {
   }),
   created() {
     this.listaEntradasCarrito = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
-
+    if (!this.listaEntradasCarrito) {
+      this.listaEntradasCarrito = [];
+      localStorage.setItem('listaEntradasCarrito', JSON.stringify(this.listaEntradasCarrito));
+    }
   },
   methods: {
     cargarListaEntradasCarrito() {
@@ -185,7 +189,7 @@ export default {
         // TODO
         console.log('item', item);
         this.$store.dispatch("comprarFestival", datos);
-        
+
       });
 
       localStorage.removeItem('listaEntradasCarrito');
