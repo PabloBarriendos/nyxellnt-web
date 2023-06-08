@@ -1,19 +1,19 @@
 <template>
   <div class="card-component">
-    <!-- <v-card-title>
-      {{ titulo }}
-    </v-card-title> -->
+    <v-card-title>
+      {{ nombreProducto }}
+    </v-card-title>
     <div class="symbol-ok">
-      <v-icon color="green darken-2">mdi-check-circle</v-icon>
+      <v-checkbox v-model="isChecked" color="success"></v-checkbox>
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="top-info">
         <div class="top-image">
-          <img src="" />
+          <img :src="'data:image/png;base64,' + this.imagen" />
         </div>
         <div class="top-description">
           <v-card-text>
-            {{ descripcion }}
+            {{ descripcionProducto }}
           </v-card-text>
         </div>
       </div>
@@ -22,7 +22,7 @@
         <div class="text-info">
           <v-card-text class="text-precio">
             <span>Precio: </span>
-            <span>{{ precio }}€</span>
+            <span>{{ precioProducto }}€</span>
           </v-card-text>
         </div>
 
@@ -79,7 +79,7 @@ export default {
     width: calc(100% - 60px);
     display: flex;
     padding: 20px;
-    background-color: aliceblue;
+    background-color: rgba(200, 200, 200, 0.3);
     align-items: flex-start;
     flex-direction: column;
 

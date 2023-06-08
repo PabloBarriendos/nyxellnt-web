@@ -1,118 +1,173 @@
 <template>
   <div class="card-component">
-    <v-card-title>
-      {{ titulo }}
-    </v-card-title>
-    <div class="symbol-ok">
-      <!-- <v-icon color="success" icon="mdi-airplane"></v-icon>
-      <v-icon>mdi-home</v-icon> -->
-      <v-icon color="green darken-2">mdi-check-circle</v-icon>
+    <div class="titulo">
+      <v-card-title>
+        {{ festival.titulo }}
+      </v-card-title>
+      <v-icon class="iconDelete" color="error" @click="deleteFestivalCarrito()">mdi-delete</v-icon>
     </div>
-    <v-card class="tarjeta" variant="tonal">
-      <div class="izquierda">
-        <img src="" />
+    <div class="card-body">
+      <div class="icons">
+        <v-checkbox v-model="isChecked" color="success"></v-checkbox>
       </div>
-      <div class="derecha">
-        <div class="top-info">
-          <div class="top-image">
-            <img src="" />
-          </div>
-          <div class="top-description">
-            <v-card-subtitle> {{ artistas }} - {{ mes }} </v-card-subtitle>
-            <v-card-text>
-              {{ descripcion }}
-            </v-card-text>
-          </div>
+      <v-card class="tarjeta" variant="tonal">
+        <div class="izquierda">
+          <img :src="festival.imagen" />
         </div>
-
-        <div class="bottom-info">
-          <div class="text-info">
-            <v-card-text>
-              <span>Localidad: </span>
-              <span>{{ localidad }}</span>
-            </v-card-text>
-            <v-card-text>
-              <span>Fecha: </span>
-              <span>{{ fecha }}</span>
-            </v-card-text>
-            <v-card-text class="text-precio">
-              <span>Precio estándar: </span>
-              <span>{{ precio }}€</span>
-            </v-card-text>
-            <v-card-text class="text-precio">
-              <span>Precio VIP: </span>
-              <span>{{ precioVip }}€</span>
-            </v-card-text>
+        <div class="derecha">
+          <div class="top-info">
+            <div class="top-image">
+              <img :src="festival.imagen" />
+            </div>
+            <div class="top-description">
+              <v-card-subtitle> {{ festival.artistas }} - {{ festival.mes }} </v-card-subtitle>
+              <v-card-text>
+                {{ festival.descripcion }}
+              </v-card-text>
+            </div>
           </div>
 
-          <v-card-actions>
-            <v-text-field
-              v-model="numberValue"
-              :persistent-hint="true"
-              hide-details
-              single-line
-              type="number"
-            />
-            <v-text-field
-              v-model="numberValueVip"
-              hide-details
-              single-line
-              type="number"
-            />
-          </v-card-actions>
+          <div class="bottom-info">
+            <div class="text-info">
+              <v-card-text>
+                <span>Localidad: </span>
+                <span>{{ festival.localidad }}</span>
+              </v-card-text>
+              <v-card-text>
+                <span>Fecha: </span>
+                <span>{{ festival.fecha }}</span>
+              </v-card-text>
+              <v-card-text class="text-precio">
+                <span>Precio estándar: </span>
+                <span>{{ festival.precioEntrada }}€</span>
+              </v-card-text>
+              <v-card-text class="text-precio">
+                <span>Precio VIP: </span>
+                <span>{{ festival.precioEntradaVip }}€</span>
+              </v-card-text>
+            </div>
+
+            <v-card-actions>
+              <div class="estandar">
+                <v-text name="precioEstandar">Estándar: </v-text>
+                <v-text-field
+                  v-model="numberValue"
+                  :persistent-hint="true"
+                  :min="0"
+                  :max="maxEntradas"
+                  hide-details
+                  single-line
+                  type="number"
+                  @input="modificarNumEntradas"
+                />
+              </div>
+              <div class="vip">
+                <v-text name="precioVip">VIP: </v-text>
+                <v-text-field
+                  v-model="numberValueVip"
+                  :min="0"
+                  :max="maxEntradasVip"
+                  hide-details
+                  single-line
+                  type="number"
+                  @input="modificarNumEntradas"
+                />
+              </div>
+            </v-card-actions>
+          </div>
         </div>
-      </div>
-    </v-card>
+      </v-card>
+    </div>
   </div>
 </template>
 
 <script>
+import Festival from '@/models/festival-model.js';
+
 export default {
   props: {
-    id: Number,
-    titulo: String,
-    artistas: String,
-    descripcion: String,
-    localidad: String,
-    mes: String,
-    precio: Number,
-    precioVip: Number,
-    fecha: String,
+    festival: Festival
   },
   data: () => ({
+    isChecked: false,
     numberValue: 1,
     numberValueVip: 0,
+
+    maxEntradas: 5,
+    maxEntradasVip: 5,
   }),
+  created(){
+    if(this.festival.stock < 5){
+      this.maxEntradas = this.festival.stock;
+    }
+    if(this.festival.stockVip < 5){
+      this.maxEntradasVip = this.festival.stockVip;
+    }
+  },
   methods: {
+    modificarNumEntradas() {
+      this.numberValue = this.numberValue > 5 ? 5 : this.numberValue < 0 ? 0 : this.numberValue;
+      this.numberValueVip = this.numberValueVip > 5 ? 5 : this.numberValueVip < 0 ? 0 : this.numberValueVip;
+
+      let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+
+      console.log('numEntradas', this.numberValue);
+      console.log('numEntradasVip', this.numberValueVip);
+      console.log('', listaEntradasStorage);
+
+      listaEntradasStorage.forEach(item => {
+        if(item.festival.idFestival == this.festival.idFestival){
+          item.entradas = parseInt(this.numberValue);
+          item.entradasVip = parseInt(this.numberValueVip);
+        }
+      });
+
+      localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+
+    },
+    deleteFestivalCarrito() {
+      const listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+      const indiceEntradaBorrar = listaEntradasStorage.findIndex(item => item.festival.idFestival === this.festival.idFestival);
+
+      if(indiceEntradaBorrar !== -1){
+        listaEntradasStorage.splice(indiceEntradaBorrar, 1);
+      }
+      localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+
+      this.$emit('deletedEntradaCarrito', true);
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .card-component {
-  display: flex;
-  flex-wrap: wrap;
-  
-
-  .v-card__title {
-    width: 100%;
-    font-weight: bold;
-    white-space: nowrap;
-    padding-left: 60px
-  }
-
-  .symbol-ok{
-    width: 60px;
+  .card-body {
     display: flex;
     align-items: center;
-    justify-content: center;
+
+  }
+
+  .titulo {
+    display: flex;
+
+    .v-card__title {
+      font-weight: bold;
+      white-space: nowrap;
+      width: calc(100% - 52px);
+    }
+    
+    .iconDelete{
+      margin: 10px;
+      font-size: 32px;
+    }
   }
 
   .tarjeta {
-    width: calc(100% - 60px);
     display: flex;
     padding: 20px;
-    background-color: aliceblue;
+    width: calc(100% - 44px);
+    background-color: rgba(200, 200, 200, 0.3);
 
     .izquierda {
       display: none;
@@ -165,6 +220,8 @@ export default {
 
             span:nth-of-type(2) {
               width: 100%;
+              // overflow: hidden;
+              // text-overflow: ellipsis;
             }
           }
         }
@@ -174,14 +231,32 @@ export default {
           flex-wrap: wrap;
           width: 100%;
           justify-content: center;
+          padding: 0;
 
-          .v-input {
-            background-color: white;
-            width: 154px;
-            .v-text-field__slot{
-              padding-left: 10px;
+          .estandar, .vip {
+            width: calc(100% / 2);
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.375rem;
+            letter-spacing: 0.0071428571em;
+            padding: 16px;
+
+            v-text {
+              font-weight: bold;
+              white-space: nowrap;
+            }
+            .v-input {
+              width: 100%;
             }
           }
+
+          // .vip {
+          //   width: calc(100% / 2);
+          //   display: flex;
+          //   flex-wrap: wrap;
+          // }
         }
       }
     }
@@ -221,6 +296,9 @@ export default {
 
           .v-card__actions {
             width: 154px;
+            .estandar, .vip{
+              width: 100%;
+            }
           }
         }
       }

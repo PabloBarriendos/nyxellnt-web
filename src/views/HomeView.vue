@@ -69,11 +69,11 @@
 
       <SpinnerComponent v-if="$store.state.loading" />
       <div class="cards-section" v-if="!$store.state.loading">
-        <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
-          :id="festival.idFestival" :titulo="festival.nombre" :artistas="festival.artistas"
-          :descripcion="festival.descripcion" :localidad="festival.localidad" :mes="festival.mes"
-          :precio="festival.precioEntrada" :precioVip="festival.precioEntradaVip" :fecha="festival.fecha"
-          :imagen="festival.imagen" :stock="festival.stock" :stockVip="festival.stockVip" />
+        <CardComponent
+          v-for="festival in $store.state.showFestivalList"
+          :key="festival.idFestival"
+          :festival="festival"
+        />
       </div>
     </div>
     <v-snackbar v-model="$store.state.mostrarMensajeDelete" :timeout="2000" color="success">

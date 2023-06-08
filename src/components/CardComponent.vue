@@ -2,7 +2,7 @@
   <div class="card-component">
     <div class="titulo">
       <v-card-title v-if="!showEditar">
-        {{ titulo }}
+        {{ festival.nombre }}
       </v-card-title>
       <textarea v-if="showEditar" id="editTitulo" v-model="tituloEditar">
       </textarea>
@@ -17,7 +17,7 @@
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
-        <img :src="this.imagen" />
+        <img :src="festival.imagen" />
       </div>
       <div class="derecha">
         <div class="top-info">
@@ -26,7 +26,7 @@
           </div>
           <div class="top-description">
             <v-card-subtitle v-if="!showEditar">
-              {{ artistas }} - {{ mes }}
+              {{ festival.artistas }} - {{ festival.mes }}
             </v-card-subtitle>
             <textarea v-if="showEditar" id="editArtistas" v-model="artistasEditar">
             </textarea>
@@ -36,7 +36,7 @@
             <textarea v-if="showEditar" id="editMes" v-model="mesEditar">
             </textarea>
             <v-card-text v-if="!showEditar">
-              {{ descripcion }}
+              {{ festival.descripcion }}
             </v-card-text>
             <textarea v-if="showEditar" id="editDescripcion" v-model="descripcionEditar">
             </textarea>
@@ -47,25 +47,25 @@
           <div class="text-info">
             <v-card-text>
               <span>Localidad: </span>
-              <span v-if="!showEditar">{{ localidad }}</span>
+              <span v-if="!showEditar">{{ festival.localidad }}</span>
               <textarea v-if="showEditar" id="editLocalidad" v-model="localidadEditar">
               </textarea>
             </v-card-text>
             <v-card-text>
               <span>Fecha: </span>
-              <span v-if="!showEditar">{{ fecha }}</span>
+              <span v-if="!showEditar">{{ festival.fecha }}</span>
               <textarea v-if="showEditar" id="editFecha" v-model="fechaEditar" :rules="fechaRules">
               </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio estándar: </span>
-              <span v-if="!showEditar">{{ precio }}€</span>
+              <span v-if="!showEditar">{{ festival.precioEntrada }}€</span>
               <textarea v-if="showEditar" id="editPrecio" v-model="precioEditar" :rules="rulePrecio">
               </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio VIP: </span>
-              <span v-if="!showEditar">{{ precioVip }}€</span>
+              <span v-if="!showEditar">{{ festival.precioEntradaVip }}€</span>
               <textarea v-if="showEditar" id="editPrecioVip" v-model="precioVipEditar" :rules="rulePrecioVip">
               </textarea>
             </v-card-text>
@@ -98,6 +98,8 @@
 </template>
 
 <script>
+import Festival from '@/models/festival-model.js';
+
 export default {
   data: () => ({
     showDeletePopUp: false,
@@ -131,28 +133,17 @@ export default {
     ]
   }),
   props: {
-    id: Number,
-    titulo: String,
-    artistas: String,
-    descripcion: String,
-    localidad: String,
-    mes: String,
-    precio: Number,
-    precioVip: Number,
-    fecha: String,
-    imagen: String,
-    stock: Number,
-    stockVip: Number
+    festival: Festival
   },
   created() {
-    this.tituloEditar = this.titulo;
-    this.artistasEditar = this.artistas;
-    this.descripcionEditar = this.descripcion;
-    this.localidadEditar = this.localidad;
-    this.mesEditar = this.mes;
-    this.precioEditar = this.precio;
-    this.precioVipEditar = this.precioVip;
-    this.fechaEditar = this.fecha;
+    this.tituloEditar = this.festival.nombre;
+    this.artistasEditar = this.festival.artistas;
+    this.descripcionEditar = this.festival.descripcion;
+    this.localidadEditar = this.festival.localidad;
+    this.mesEditar = this.festival.mes;
+    this.precioEditar = this.festival.precioEntrada;
+    this.precioVipEditar = this.festival.precioEntradaVip;
+    this.fechaEditar = this.festival.fecha;
   },
   methods: {
     openEditar() {
@@ -180,16 +171,38 @@ export default {
     },
     goToCompra() {
       if (this.$store.state.userLogged == false) {
-        // this.$store.dispatch("setLoginPopUp", true);
-        this.$router.push(`/carrito`);
+        this.$store.dispatch("setLoginPopUp", true);
       } else {
-        this.$store.dispatch("setIdFestivalCompra", this.id);
-        // this.$router.push(`/festival`);
+        let yaExiste = false;
+        let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+
+        if (!listaEntradasStorage) {
+          listaEntradasStorage = [];
+        }
+        if(listaEntradasStorage.length > 0){
+          listaEntradasStorage.forEach(item => {
+            if(item.idFestival === this.festival.idFestival){
+              yaExiste = true;
+            }
+          });
+        }
+        if(yaExiste == false){
+          const objetoCarrito = {
+            festival: this.festival,
+            entradas: 1,
+            entradasVip: 0,
+          }
+          listaEntradasStorage.push(objetoCarrito);
+        }
+        localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+      
+        this.$store.dispatch("setIdFestivalCompra", this.festival.idFestival);
+        
         this.$router.push(`/carrito`);
       }
     },
     deleteFestival() {
-      this.$store.dispatch("deleteFestivalCompra", this.id);
+      this.$store.dispatch("deleteFestivalCompra", this.festival.idFestival);
       // this.$store.dispatch("cargarFestivales");
       this.showDeletePopUp = false;
     },
