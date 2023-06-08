@@ -22,7 +22,7 @@
       <div class="derecha">
         <div class="top-info">
           <div class="top-image">
-            <img :src="this.imagen" />
+            <img :src="festival.imagen" />
           </div>
           <div class="top-description">
             <v-card-subtitle v-if="!showEditar">
