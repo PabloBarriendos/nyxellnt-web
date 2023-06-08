@@ -7,6 +7,7 @@ import FestivalView from "../views/FestivalView.vue";
 import MisFestivalesView from "../views/MisFestivalesView.vue";
 import CarritoView from "../views/CarritoView.vue";
 import CompraFinalizadaView from "../views/CompraFinalizadaView.vue";
+import PerfilView from "../views/PerfilView.vue"
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,7 @@ const routes = [
   { path: "/mis-festivales", component: MisFestivalesView },
   { path: "/carrito", component: CarritoView },
   { path: "/compraFinalizada", component: CompraFinalizadaView },
+  { path: "/perfil", component: PerfilView },
 ];
 
 const router = new VueRouter({
