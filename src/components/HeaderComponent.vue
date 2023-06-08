@@ -291,7 +291,8 @@ export default {
     },
     misCompras() {
       this.showUserDropdown = false;
-      this.$router.push(`/mis-festivales?id=${this.usuario.idUsuario}`);
+      // this.$router.push(`/mis-festivales?id=${this.$store.state.user.idUsuario}`);
+      this.$router.push(`/mis-festivales`);
     },
     userDropdown(event) {
       event.stopPropagation();

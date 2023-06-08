@@ -8,22 +8,33 @@ var link = "https://festivalia-api-1.azurewebsites.net/";
 
 export default new Vuex.Store({
   state: {
+    // datos INUTILES
     datoInutil: null,
     idFestival: null,
     festivalCompra: {},
-    user: {},
-    paginaHome: false,
-    showLoginPopUp: false,
-    loading: false,
-    userLogged: false,
     counter: 1,
+    userList: [],
+
+    // global
+    user: {},
+
+    // página Home
+    paginaHome: false,
     festivalList: [],
     showFestivalList: [],
-    userList: [],
-    misComprasList: [],
-    showMisComprasList: [],
+    loading: false,
     mostrarMensajeDelete: false,
+
+    // Header
+    showLoginPopUp: false,
+    userLogged: false,
+
+    // Carrito
     errorCompra: false,
+
+    // Mis compras
+    misFestivalesList: [],
+    showMisFestivalesList: [],
   },
   mutations: {
     setDatoInutil(state, datoInutil) {
@@ -65,11 +76,11 @@ export default new Vuex.Store({
     cambiarShowFestivales(state, festivales) {
       state.showFestivalList = festivales;
     },
-    setMisComprasList(state, list) {
-      state.misComprasList = list;
+    setMisFestivalesList(state, list) {
+      state.misFestivalesList = list;
     },
-    setShowMisComprasList(state, list) {
-      state.showMisComprasList = list;
+    setShowMisFestivalesList(state, list) {
+      state.showMisFestivalesList = list;
     },
     setErrorCompra(state, errorCompra) {
       state.errorCompra = errorCompra;
@@ -105,7 +116,7 @@ export default new Vuex.Store({
     //   // commit("cambiarShowFestivales", resultados);
     // },
     buscarOperacion({ commit }, search) {
-      let resultados = this.state.misComprasList.filter((item) => {
+      let resultados = this.state.misFestivalesList.filter((item) => {
         if (
           item.festival.nombre.toLowerCase().includes(search) ||
           item.festival.artistas.toLowerCase().includes(search)
@@ -113,7 +124,7 @@ export default new Vuex.Store({
           return item;
         }
       });
-      commit("setShowMisComprasList", resultados);
+      commit("setShowMisFestivalesList", resultados);
     },
     async login({ commit }, datos) {
       let email = datos.email;
@@ -248,6 +259,39 @@ export default new Vuex.Store({
       commit("cambiarShowFestivales", resultados);
       commit("setLoading", false);
     },
+    async getOperacionesUsuario(context) {
+      await context.dispatch("cargarCookiesUsuario");
+
+      if (this.state.user.idUsuario) {
+        let operacionesFestivales = [];
+        let listaFestivales = [];
+        let resultados = [];
+
+        await fetch(link + `/operacionEntradas/usuario/${this.state.user.idUsuario}`)
+          .then((response) => response.json())
+          .then((data) => (operacionesFestivales = data))
+          .catch((error) => console.error(error));
+
+        await fetch(link + `/festival`)
+          .then((response) => response.json())
+          .then((data) => (listaFestivales = data))
+          .catch((error) => console.error(error));
+
+
+        console.log('operacionesFestivales', operacionesFestivales);
+
+        operacionesFestivales.forEach((operacion) => {
+          listaFestivales.forEach((festival) => {
+            if (operacion.idFestival == festival.idFestival) {
+              resultados.push({ operacion, festival });
+            }
+          });
+        });
+
+        context.commit("setMisFestivalesList", resultados);
+        context.commit("setShowMisFestivalesList", resultados);
+      }
+    },
     async getOperaciones({ commit, dispatch }) {
       await dispatch("cargarCookiesUsuario");
 
@@ -274,21 +318,21 @@ export default new Vuex.Store({
           });
         });
 
-        commit("setMisComprasList", resultados);
-        commit("setShowMisComprasList", resultados);
+        commit("setMisFestivalesList", resultados);
+        commit("setShowMisFestivalesList", resultados);
       }
     },
     async requestFiltroOperaciones({ commit }, ordenFecha) {
       console.log(ordenFecha);
       console.log("Antes: ");
-      console.log(this.state.showMisComprasList);
-      console.log(this.state.showMisComprasList[0].operacion.fechaCompra);
+      console.log(this.state.showMisFestivalesList);
+      console.log(this.state.showMisFestivalesList[0].operacion.fechaCompra);
       console.log(
-        Date.parse(this.state.showMisComprasList[0].operacion.fechaCompra)
+        Date.parse(this.state.showMisFestivalesList[0].operacion.fechaCompra)
       );
       if (ordenFecha != null) {
         if (ordenFecha == true) {
-          this.state.showMisComprasList.sort((a, b) => {
+          this.state.showMisFestivalesList.sort((a, b) => {
             let dateA = a.operacion.fechaCompra.split("-");
             let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
             let dateB = b.operacion.fechaCompra.split("-");
@@ -299,7 +343,7 @@ export default new Vuex.Store({
             return finalDateB - finalDateA;
           });
         } else {
-          this.state.showMisComprasList.sort((a, b) => {
+          this.state.showMisFestivalesList.sort((a, b) => {
             let dateA = a.operacion.fechaCompra.split("-");
             let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
             let dateB = b.operacion.fechaCompra.split("-");
@@ -310,7 +354,7 @@ export default new Vuex.Store({
         }
 
         console.log("Despues: ");
-        console.log(this.state.showMisComprasList);
+        console.log(this.state.showMisFestivalesList);
 
         commit("setDatoInutil", null);
       }
@@ -378,7 +422,7 @@ export default new Vuex.Store({
 
       const precioTotal = (entradas * festival.precioEntrada) + (entradasVip * festival.precioEntradaVip);
       console.log('precioTotal', precioTotal);
-    
+
       // POST operacion
       await fetch(link + "/operacionEntradas", {
         method: "POST",
@@ -404,10 +448,10 @@ export default new Vuex.Store({
           context.commit("setErrorCompra", true);
         }
       })
-      .catch((error) => {
-        console.error("Error en la solicitud:", error);
-        context.commit("setErrorCompra", true);
-      });
+        .catch((error) => {
+          console.error("Error en la solicitud:", error);
+          context.commit("setErrorCompra", true);
+        });
 
       // PUT festival
       await fetch(link + `/festival/${this.state.festivalCompra.idFestival}`, {

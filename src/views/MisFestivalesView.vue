@@ -1,61 +1,47 @@
 <template>
-  <v-container class="home-container">
-    <v-card class="filtros">
-      <v-card-title>
-        Filtros
-        <div class="buscador-container">
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Buscar"
-            single-line
-            hide-details
-            class="buscador"
-          ></v-text-field>
-          <v-card-actions v-on:click="buscar" class="btn-buscar">
-            <v-btn>Buscar</v-btn>
-          </v-card-actions>
-        </div>
-        <v-select
-          v-model="ordenFecha"
-          class="fechaFilter"
-          label="Ordenar por fecha"
-          item-text="orden"
-          :items="[
-            { value: true, orden: 'Fecha más reciente' },
-            { value: false, orden: 'Fecha más antigua' },
-          ]"
-        ></v-select>
-      </v-card-title>
-      <v-card-actions class="btn-filtrar" v-on:click="requestFiltro">
-        <v-btn>Filtrar</v-btn>
-      </v-card-actions>
-    </v-card>
+  <v-container class="operaciones-container">
+    <div class="filtro-section">
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details class="buscador"
+        @input="requestFiltro()"></v-text-field>
 
-    <MisFestivalesCardComponent
-      v-for="item in $store.state.showMisComprasList"
-      :key="item.operacion.idOperacion"
-      :id="item.operacion.idOperacion"
-      :titulo="item.festival.nombre"
-      :artistas="item.festival.artistas"
-      :descripcion="item.festival.descripcion"
-      :localidad="item.festival.localidad"
-      :mes="item.festival.mes"
-      :precioEntrada="item.festival.precioEntrada"
-      :fecha="item.festival.fecha"
-      :fechaCompra="item.operacion.fechaCompra"
-      :precioTotal="item.operacion.precioTotal"
-      :numEntradas="item.operacion.numEntradasCompradas"
-    />
+      <v-select v-model="mes" class="mesesFilter" label="Ordenar por mes" :items="meses"
+        @change="requestFiltro()"></v-select>
+      <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
+        { value: 'asc', orden: 'Fecha ▲' },
+        { value: 'des', orden: 'Fecha ▼' },
+      ]" @change="requestFiltro()"></v-select>
+
+      <v-btn @click="resetearFiltro()" class="white--text" color="black"> Resetear </v-btn>
+    </div>
+
+    <div class="operaciones-section">
+
+      <div class="entradas-section">
+        <h3>Mis festivales</h3>
+
+        <div class="noData" v-if="$store.state.showMisFestivalesList.length < 1">
+          <v-icon>mdi-information</v-icon>
+          <p>No has realizado ninguna compra</p>
+        </div>
+
+        <!-- <div class="spinner">
+          <SpinnerComponent />
+        </div> -->
+        <MisFestivalesCardComponent v-for="item in $store.state.showMisFestivalesList"
+          :key="item.operacion.idOperacionEntradas" :operacion="item.operacion" :festival="item.festival" />
+      </div>
+    </div>
   </v-container>
 </template>
   
 <script>
+// import SpinnerComponent from "../components/shared/SpinnerComponent.vue";
 import MisFestivalesCardComponent from "../components/MisFestivalesCardComponent.vue";
 
 export default {
   name: "MisFestivalesComponent",
   components: {
+    // SpinnerComponent,
     MisFestivalesCardComponent,
   },
   data() {
@@ -65,7 +51,7 @@ export default {
     };
   },
   async created() {
-    this.$store.dispatch("getOperaciones");
+    this.$store.dispatch("getOperacionesUsuario");
   },
   methods: {
     async buscar() {
@@ -79,33 +65,113 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-.home-container {
+.spinner {
+  width: 100%;
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 60px 0;
+  padding: 0 40px;
+
+  .v-icon {
+    margin-right: 12px;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 22px;
+    color: gray;
+  }
+}
+
+.operaciones-container {
   margin: 0;
   padding: 0;
   max-width: 100%;
 
-  .filtros {
-    height: 250px;
-    margin-bottom: 60px;
-    .buscador-container {
-      width: 100%;
-      display: flex;
-      margin-bottom: 10px;
+  .filtro-section {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 120px;
+    border-bottom: 1px solid grey;
+    padding: 0px 10% 30px;
+    justify-content: center;
 
-      .buscador {
-        width: 100%;
-        margin-right: 20px;
-      }
+    .buscador {
+      width: 70%;
+      margin: 0 5%;
+      margin-bottom: 20px;
+    }
+
+    .mesesFilter {
+      width: calc(50% - 100px);
+      margin-right: 20px;
     }
 
     .fechaFilter {
-      width: 200px;
-      margin-right: 40px;
+      width: calc(50% - 100px);
+      margin-right: 20px;
+    }
+
+    .v-btn {
+      width: 110px;
+      margin-top: 12px;
+      // margin-left: 20px;
     }
   }
 
-  .tarjeta {
-    margin: 40px;
+  .operaciones-section {
+    // height: 100%;
+    padding: 20px;
+
+
+    .entradas-section {
+      padding: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      h3 {
+        width: 100%;
+        margin: 20px 0;
+        font-size: 24px;
+      }
+
+    }
+
+
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .operaciones-container {
+    .filtro-section {
+      .buscador {
+        width: 100%;
+        margin: 0 0 20px 0;
+      }
+
+      .mesesFilter {
+        width: 100%;
+        margin-right: 0;
+      }
+
+      .fechaFilter {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+    }
+
   }
 }
 </style>

@@ -4,7 +4,7 @@
       <div class="banner-text">
         <v-text>¡ Las mejores ofertas en productos y entradas <br />
           solo disponibles aquí y para ti !</v-text>
-        <v-btn @click="scrollToSection('festival-section')" >¡Compra Ya!</v-btn>
+        <v-btn @click="scrollToSection('festival-section')">¡Compra Ya!</v-btn>
       </div>
       <img id="imgBanner1" src="../assets/banner.jpg" />
       <img id="imgBanner2" src="../assets/banner2.jpg" />
@@ -33,8 +33,7 @@
             webs!
           </p>
           <p>No lo pienses y consíguelos antes de que se agoten.</p>
-          <v-btn class="white--text"
-        color="black"> Ver tienda </v-btn>
+          <v-btn class="white--text" color="black"> Ver tienda </v-btn>
           <p>¡Stock limitado!</p>
         </div>
       </div>
@@ -63,17 +62,15 @@
           { value: 'des', orden: 'Fecha ▼' },
         ]" @change="requestFiltro()"></v-select>
 
-        <v-btn @click="resetearFiltro()" class="white--text"
-        color="black"> Resetear </v-btn>
+        <v-btn @click="resetearFiltro()" class="white--text" color="black"> Resetear </v-btn>
       </div>
 
-      <SpinnerComponent v-if="$store.state.loading" />
+      <div class="spinner" v-if="$store.state.loading">
+        <SpinnerComponent />
+      </div>
       <div class="cards-section" v-if="!$store.state.loading">
-        <CardComponent
-          v-for="festival in $store.state.showFestivalList"
-          :key="festival.idFestival"
-          :festival="festival"
-        />
+        <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
+          :festival="festival" />
       </div>
     </div>
     <v-snackbar v-model="$store.state.mostrarMensajeDelete" :timeout="2000" color="success">
@@ -143,7 +140,7 @@ export default {
       this.ordenFecha = null;
       this.requestFiltro();
     },
-    goGrafica(){
+    goGrafica() {
       this.$router.push(`/grafica`);
     }
   },
@@ -151,6 +148,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.spinner {
+  width: 100%;
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
 .home-container {
   margin: 0;
   padding: 0;
@@ -300,6 +304,7 @@ export default {
       width: 100%;
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       padding: 0px 10%;
 
       .buscador {
@@ -313,15 +318,14 @@ export default {
         margin-right: 20px;
       }
 
-      .precioFilter {
+      .fechaFilter {
         width: calc(50% - 100px);
-        margin-left: 20px;
+        margin-right: 20px;
       }
 
       .v-btn {
         width: 110px;
         margin-top: 12px;
-        margin-left: 40px;
       }
     }
 
@@ -375,38 +379,62 @@ export default {
 }
 
 @media only screen and (max-width: 600px) {
-  .banner {
-    .banner-text {
-      margin-top: 84px;
+  .home-container {
+    .banner {
+      .banner-text {
+        margin-top: 84px;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
 
-    img {
-      width: 100%;
-      height: 100%;
+    #festival-section {
+      .filtro-section {
+        .buscador {
+          width: 100%;
+          margin: 0 0 20px 0;
+        }
+        .mesesFilter {
+          width: 100%;
+          margin-right: 0;
+        }
+
+        .fechaFilter {
+          width: 100%;
+          margin-right: 0;
+        }
+
+      }
     }
+
   }
 }
 
 @media only screen and (max-width: 480px) {
-  .banner {
-    .banner-text {
-      v-text {
-        font-size: 25px !important;
-      }
+  .home-container {
+    .banner {
+      .banner-text {
+        v-text {
+          font-size: 25px !important;
+        }
 
-      .v-btn {
-        margin-top: 60px;
-        padding: 28px;
+        .v-btn {
+          margin-top: 60px;
+          padding: 28px;
 
-        span {
-          font-size: 20px;
+          span {
+            font-size: 20px;
+          }
         }
       }
-    }
 
-    img {
-      width: 100%;
-      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
