@@ -6,7 +6,7 @@
 
     <v-col cols="12" md="4" class="icons-section">
       <v-row class="icons" justify="center">
-        <v-col v-for="icon in icons" :key="icon" cols="auto">
+        <v-col v-for="icon in icons" :key="icons.indexOf(icon)" cols="auto">
           <v-btn :icon="true" variant="plain" size="small" color="black">
             <v-icon color="white">{{ icon }}</v-icon>
           </v-btn>
@@ -20,7 +20,7 @@
 
     <v-col cols="12" md="4" class="link-section">
       <v-row class="links" justify="center">
-        <v-col cols="auto" v-for="link in links" :key="link">
+        <v-col cols="auto" v-for="link in links" :key="links.indexOf(link)">
           <v-btn color="white" @click="goTo(link.link)" text>{{ link.texto }}</v-btn>
         </v-col>
       </v-row>
