@@ -1,9 +1,10 @@
 <template>
     <div class="card-component">
         <div class="titulo">
-            <textarea placeholder="Nombre del festival" id="editTitulo" v-model="festival.nombre" @change="checkAdd">
+            <textarea placeholder="Nombre del festival" id="editTitulo" v-model="festival.nombre" @change="checkAdd" :rules="tituloRules">
                     </textarea>
-            <v-btn :disabled="addDisabled" class="white--text" color="success" v-on:click="addFestival" elevation="2" rounded>
+            <v-btn :disabled="addDisabled" class="white--text" color="success" v-on:click="addFestival" elevation="2"
+                rounded>
                 Guardar
             </v-btn>
             <v-btn color="error" class="white--text" v-on:click="closeCard" elevation="2" rounded>
@@ -12,7 +13,7 @@
         </div>
         <v-card class="tarjeta" variant="tonal">
             <div class="izquierda">
-                <textarea placeholder="Url de la imagen" id="editImagen" v-model="festival.imagen" @change="checkAdd">
+                <textarea placeholder="Url de la imagen" id="editImagen" v-model="festival.imagen" @change="checkAdd" :rules="imagenRules">
                           </textarea>
             </div>
             <div class="derecha">
@@ -21,14 +22,15 @@
                         <img :src="festival.imagen" />
                     </div>
                     <div class="top-description">
-                        <textarea placeholder="Artistas" id="editArtistas" v-model="festival.artistas" @change="checkAdd">
+                        <textarea placeholder="Artistas" id="editArtistas" v-model="festival.artistas" @change="checkAdd" :rules="artistasRules">
                           </textarea>
                         <v-card-subtitle class="separadorEdit">
                             -
                         </v-card-subtitle>
-                        <textarea placeholder="Mes" id="editMes" v-model="festival.mes" @change="checkAdd">
+                        <textarea placeholder="Mes" id="editMes" v-model="festival.mes" @change="checkAdd" :rules="mesRules">
                           </textarea>
-                        <textarea placeholder="Descripción" id="editDescripcion" v-model="festival.descripcion" @change="checkAdd">
+                        <textarea placeholder="Descripción" id="editDescripcion" v-model="festival.descripcion"
+                            @change="checkAdd" :rules="descripcionRules">
                           </textarea>
                     </div>
                 </div>
@@ -37,12 +39,14 @@
                     <div class="text-info">
                         <v-card-text>
                             <span>Localidad: </span>
-                            <textarea placeholder="Localidad" id="editLocalidad" v-model="festival.localidad" @change="checkAdd">
+                            <textarea placeholder="Localidad" id="editLocalidad" v-model="festival.localidad"
+                                @change="checkAdd" :rules="localidadRules">
                             </textarea>
                         </v-card-text>
                         <v-card-text>
                             <span>Fecha: </span>
-                            <textarea placeholder="dd/mm/yyyy" id="editFecha" v-model="festival.fecha" :rules="fechaRules" @change="checkAdd">
+                            <textarea placeholder="dd/mm/yyyy" id="editFecha" v-model="festival.fecha" :rules="fechaRules"
+                                @change="checkAdd">
                             </textarea>
                         </v-card-text>
                         <v-card-text class="text-precio">
@@ -60,13 +64,13 @@
                         <v-card-text>
                             <span>Stock estándar: </span>
                             <textarea placeholder="Precio estándar" id="editStock" v-model="festival.stock"
-                                @change="checkAdd">
+                                @change="checkAdd" :rules="stockRule">
                             </textarea>
                         </v-card-text>
                         <v-card-text>
                             <span>Stock VIP: </span>
                             <textarea placeholder="Precio VIP" id="editStockVip" v-model="festival.stockVip"
-                                @change="checkAdd">
+                                @change="checkAdd" :rules="stockRule">
                             </textarea>
                         </v-card-text>
                     </div>
@@ -124,7 +128,7 @@ export default {
                 this.festival.stockVip &&
                 this.festival.mes &&
                 this.festival.imagen
-            ){
+            ) {
                 console.log('EY')
                 this.addDisabled = false;
             }
@@ -198,6 +202,7 @@ textarea {
 
 .card-component {
     margin-top: 100px;
+
     .titulo {
         display: flex;
         align-items: center;
@@ -389,6 +394,5 @@ textarea {
             }
         }
     }
-}
-</style>
+}</style>
   
