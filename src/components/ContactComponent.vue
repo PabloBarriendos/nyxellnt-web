@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
+      <h1>Carrito</h1>
       <v-col cols="12" md="8" lg="6">
         <v-form ref="formulario">
           <v-row>
@@ -56,22 +57,21 @@ export default {
     mostrarMensaje: false,
     emailRules: [
       (value) => {
-        if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+        if (/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$/.test(value)) return true;
         return "Debe ser un Email valido.";
       }
     ],
     firstNameRules: [
       (value) => {
-        if (value?.length > 2) return true;
+        if (value?.length > 2 && /^[a-zA-Z]+$/.test(value)) return true;
 
-        return "El nombre debe contener al menos 3 carácteres.";
+        return "El nombre debe contener al menos 3 carácteres y no contener números ni simbolos.";
       },
     ],
     lastNameRules: [
       (value) => {
-        if (/[^0-9]/.test(value)) return true;
-
-        return "El apellido no puede contener digitos.";
+        if (/^[a-zA-Z]+$/.test(value)) return true;
+        return "El apellido solo puede contener letras.";
       },
     ],
     postalCodeRules: [

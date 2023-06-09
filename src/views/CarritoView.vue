@@ -92,14 +92,13 @@
                   :rules="dniRules"></v-text-field>
               </v-col>
 
-
               <!-- ENTREGA -->
               <v-card-subtitle class="subtitle">
                 <span>Datos de entrega</span>
               </v-card-subtitle>
               <v-col cols="12" sm="8" md="8">
-                <v-text-field v-model="direccion" id="direccion" label="Dirección" @change="checkCompraValida" required
-                  :rules="direccionRules"></v-text-field>
+                <v-text-field v-model="direccion" id="direccion" label="Dirección" @change="checkCompraValida"
+                  required></v-text-field>
               </v-col>
               <v-col cols="12" sm="4" md="4">
                 <v-text-field v-model="codigoPostal" id="codigoPostal" label="Código postal" @change="checkCompraValida"
@@ -136,7 +135,6 @@ export default {
     listaEntradasCarrito: [],
     listaProductosCarrito: [],
     showCompraPopUp: false,
-
     //datos Formulario  // CAMBIAR BOOLEAN
     compraInvalida: false,
     tarjetaCredito: '',
@@ -149,7 +147,65 @@ export default {
     dni: '',
     direccion: '',
     codigoPostal: '',
-    notasEntrega: ''
+    notasEntrega: '',
+    tarjetaCreditoRules: [
+      (value) => {
+        // Eliminar espacios en blanco y guiones de la cadena de entrada
+        const cleanedValue = value.replace(/\s/g, '').replace(/-/g, '');
+        // Verificar que solo contenga dígitos
+        if (!/^\d+$/.test(cleanedValue)) {
+          return "La tarjeta de crédito solo puede contener dígitos.";
+        }
+        // Verificar longitud de la tarjeta de crédito
+        if (cleanedValue.length !== 16) {
+          return "La tarjeta de crédito debe tener 16 dígitos.";
+        }
+        return true; // La tarjeta de crédito es válida
+      },
+    ],
+    fechaCaducidadRules: [
+      (value) => {
+        if (/^(0[1-9]|1[0-2])\/\d{2}$/.test(value)) return true;
+        return "El formato de fecha debe ser MM/AA (mes y año).";
+      },
+    ],
+    nombreTitularRules: [
+      (value) => {
+        if (/^[a-zA-Z]+$/.test(value)) return true;
+        return "Solo puede contener letras.";
+      },
+    ],
+    nombreRules: [
+      (value) => {
+        if (value?.length > 2 && /^[a-zA-Z]+$/.test(value)) return true;
+
+        return "El nombre debe contener al menos 3 carácteres y no contener números ni simbolos.";
+      },
+    ],
+    apellidosRulesRules: [
+      (value) => {
+        if (/^[a-zA-Z]+$/.test(value)) return true;
+        return "El apellido solo puede contener letras.";
+      },
+    ],
+    correoRulesRules: [
+      (value) => {
+        if (/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$/.test(value)) return true;
+        return "Debe ser un Email valido.";
+      }
+    ],
+    dniRules: [
+      (value) => {
+        if (/^\d{8}$/.test(value)) return true;
+        return "El número de DNI debe tener 8 dígitos.";
+      },
+    ],
+    codigoPostalRules: [
+      (value) => {
+        if (/^\d{5}$/.test(value)) return true;
+        return "El código postal debe contener exactamente 5 dígitos numéricos.";
+      },
+    ]
   }),
   created() {
     this.listaEntradasCarrito = JSON.parse(localStorage.getItem('listaEntradasCarrito'));

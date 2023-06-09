@@ -1,12 +1,8 @@
 <template>
-  <v-container :class="{ showFondo: showFondo || !this.$store.state.paginaHome}" class="header-container">
+  <v-container :class="{ showFondo: showFondo || !this.$store.state.paginaHome }" class="header-container">
     <v-app-bar app color="transparent" dark>
       <v-row>
-        <v-dialog
-          v-model="this.$store.state.showLoginPopUp"
-          persistent
-          width="1024"
-        >
+        <v-dialog v-model="this.$store.state.showLoginPopUp" persistent width="1024">
           <v-card>
             <v-card-title>
               <span class="text-h5">Iniciar sesión</span>
@@ -15,41 +11,22 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field
-                      id="emailLogin"
-                      label="Email*"
-                      required
-                      :rules="emailRules"
-                    ></v-text-field>
+                    <v-text-field id="emailLogin" label="Email*" required :rules="emailRules"></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="passwordLogin"
-                      label="Contraseña*"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="error" variant="text" v-on:click="cerrarLoginPopUp"
-                >Cerrar</v-btn
-              >
-              <v-btn color="success" variant="text" @click="login"
-                >Iniciar sesión</v-btn
-              >
+              <v-btn color="error" variant="text" v-on:click="cerrarLoginPopUp">Cerrar</v-btn>
+              <v-btn color="success" variant="text" @click="login">Iniciar sesión</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog
-          v-model="showRegisterPopUp"
-          persistent
-          width="1024"
-          content-class="registerClass"
-        >
+        <v-dialog v-model="showRegisterPopUp" persistent width="1024" content-class="registerClass">
           <v-card class="customClass">
             <v-card-title>
               <span class="text-h5">Registrarse</span>
@@ -58,85 +35,46 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      id="nombre"
-                      label="Nombre*"
-                      @change="checkRegister"
-                      required
-                      :rules="firstNameRules"
-                    ></v-text-field>
+                    <v-text-field id="nombre" label="Nombre*" @change="checkRegister" required
+                      :rules="firstNameRules"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      id="apellido"
-                      label="Apellido*"
-                      @change="checkRegister"
-                      required
-                      :rules="lastNameRules"
-                    ></v-text-field>
+                    <v-text-field id="apellido" label="Apellido*" @change="checkRegister" required
+                      :rules="lastNameRules"></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="email"
-                      label="Email*"
-                      @change="checkRegister"
-                      required
-                      :rules="emailRules"
-                    ></v-text-field>
+                    <v-text-field id="email" label="Email*" @change="checkRegister" required
+                      :rules="emailRules"></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="password"
-                      label="Contraseña*"
-                      @change="checkRegister"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="password" label="Contraseña*" @change="checkRegister" type="password"
+                      required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      id="password2"
-                      label="Repetir contraseña*"
-                      @change="checkRegister"
-                      type="password"
-                      required
-                    ></v-text-field>
+                    <v-text-field id="password2" label="Repetir contraseña*" @change="checkRegister" type="password"
+                      required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="error"
-                variant="text"
-                @click="() => (showRegisterPopUp = false)"
-                >Cerrar</v-btn
-              >
-              <v-btn
-                color="success"
-                variant="text"
-                @click="register"
-                :disabled="registerDisabled"
-                >Registrarse</v-btn
-              >
+              <v-btn color="error" variant="text" @click="() => (showRegisterPopUp = false)">Cerrar</v-btn>
+              <v-btn color="success" variant="text" @click="register" :disabled="registerDisabled">Registrarse</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-row>
 
       <div class="text-h4 title">
-        <router-link class="router-link" to="/"
-          ><img src="../assets/logo.png" />
+        <router-link class="router-link" to="/"><img src="../assets/logo.png" />
           <p>Festivalia</p>
         </router-link>
       </div>
 
       <div class="btn-container" v-if="!$store.state.userLogged">
         <v-btn href target="_blank" v-on:click="loginPopUp" text>
-          <span class="mr-2"
-            >Iniciar sesión{{ $store.state.user.userLogged }}</span
-          >
+          <span class="mr-2">Iniciar sesión{{ $store.state.user.userLogged }}</span>
         </v-btn>
         <v-btn href target="_blank" v-on:click="registerPopUp" text>
           <span class="mr-2">Registrarse</span>
@@ -191,24 +129,23 @@ export default {
     showUserDropdown: false,
     emailRules: [
       (value) => {
-        if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+        if (/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$/.test(value)) return true;
         return "Debe ser un Email valido.";
       }
     ],
     firstNameRules: [
       (value) => {
-        if (value?.length > 2) return true;
+        if (value?.length > 2 && /^[a-zA-Z]+$/.test(value)) return true;
 
-        return "El nombre debe contener al menos 3 carácteres.";
+        return "El nombre debe contener al menos 3 carácteres y no contener números ni simbolos.";
       },
     ],
     lastNameRules: [
       (value) => {
-        if (/[^0-9]/.test(value)) return true;
-
-        return "El apellido no puede contener digitos.";
+        if (/^[a-zA-Z]+$/.test(value)) return true;
+        return "El apellido solo puede contener letras.";
       },
-    ]
+    ],
   }),
   created() {
     window.addEventListener("scroll", this.handleScroll);
@@ -223,7 +160,7 @@ export default {
     handleScroll() {
       // Si la posición del desplazamiento es mayor a 0, ocultar el encabezado
       this.showUserDropdown = false;
-      if(this.$store.state.paginaHome){
+      if (this.$store.state.paginaHome) {
         if (window.scrollY > 515) {
           this.showFondo = true;
         } else {
@@ -239,7 +176,7 @@ export default {
         document.getElementById("email")?.value &&
         document.getElementById("password")?.value &&
         document.getElementById("password")?.value ==
-          document.getElementById("password2")?.value
+        document.getElementById("password2")?.value
       ) {
         this.registerDisabled = false;
       } else {
@@ -277,14 +214,14 @@ export default {
       this.showUserDropdown = false;
       this.$router.push(`/`);
     },
-    miPerfil() {},
+    miPerfil() { },
     carrito() {
       this.showUserDropdown = false;
 
       let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
       if (!listaEntradasStorage) {
-          listaEntradasStorage = [];
-          localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+        listaEntradasStorage = [];
+        localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
       }
 
       this.$router.push(`/carrito`);
@@ -309,6 +246,7 @@ export default {
 .registerClass {
   margin-top: 100px;
 }
+
 .header-container {
   height: 84px;
   position: absolute;
@@ -320,12 +258,14 @@ export default {
 
   &.showFondo {
     position: fixed;
+
     .v-app-bar {
       position: fixed;
       background-color: white !important;
       box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
         0px 4px 5px 0px rgba(0, 0, 0, 0.14),
         0px 1px 10px 0px rgba(0, 0, 0, 0.12) !important;
+
       .user-dropdown {
         box-shadow: -2px 3px 4px -1px rgba(0, 0, 0, 0.5);
         background-color: white;
@@ -336,20 +276,24 @@ export default {
         div {
           &:hover {
             background-color: rgba(200, 200, 200, 0.5);
+
             p {
               font-weight: bold;
             }
           }
+
           .v-icon {
             color: black;
           }
         }
       }
     }
+
     p,
     span {
       color: black;
     }
+
     .menu-icon {
       color: black;
     }
@@ -383,6 +327,7 @@ export default {
       position: fixed;
       right: 10px;
       height: 36px;
+
       button {
         span {
           font-size: 18px;
@@ -505,16 +450,19 @@ header {
 
       .avatar-container {
         justify-content: center;
+
         .v-avatar {
           display: none;
         }
       }
     }
   }
+
   .title {
     img {
       width: 66px;
     }
+
     p {
       display: none;
     }

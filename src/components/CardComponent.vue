@@ -33,7 +33,7 @@
             <v-card-subtitle class="separadorEdit" v-if="showEditar">
               -
             </v-card-subtitle>
-            <textarea v-if="showEditar" id="editMes" v-model="mesEditar">
+            <textarea v-if="showEditar" id="editMes" v-model="mesEditar" :rules="mesRules">
             </textarea>
             <v-card-text v-if="!showEditar">
               {{ festival.descripcion }}
@@ -48,7 +48,7 @@
             <v-card-text>
               <span>Localidad: </span>
               <span v-if="!showEditar">{{ festival.localidad }}</span>
-              <textarea v-if="showEditar" id="editLocalidad" v-model="localidadEditar">
+              <textarea v-if="showEditar" id="editLocalidad" v-model="localidadEditar" :rules="localidadRules">
               </textarea>
             </v-card-text>
             <v-card-text>
@@ -112,6 +112,32 @@ export default {
     precioEditar: Number,
     precioVipEditar: Number,
     fechaEditar: String,
+    mesRulesRules: [
+      (value) => {
+        const meses = [
+          "enero", "febrero", "marzo", "abril", "mayo", "junio",
+          "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+        ];
+
+        v => !!v || 'El campo es requerido'
+        if (meses.includes(value.toLowerCase())) return true;
+        return "Debe ingresar un mes válido en español.";
+      },
+    ],
+    localidadRules: [
+      (value) => {
+        v => !!v || 'El campo es requerido'
+        if (/^[A-Za-z]+$/.test(value)) return true;
+        return "El campo solo puede contener letras.";
+      },
+    ],
+    fechaRules: [
+      (value) => {
+        v => !!v || 'El campo es requerido'
+        if (/^\d{2}\/\d{2}\/\d{2}$/.test(value)) return true;
+        return "El formato de fecha debe ser dd/mm/aa.";
+      },
+    ],
     rulePrecio: [
       v => !!v || 'El campo es requerido',
       v => /^\d+$/.test(v) || 'Ingresa solo números'
@@ -120,17 +146,6 @@ export default {
       v => !!v || 'El campo es requerido',
       v => /^\d+$/.test(v) || 'Ingresa solo números'
     ],
-    fechaRules: [
-      v => !!v || 'El campo es requerido', 
-      v => /^\d{2}\/\d{2}\/\d{2}$/.test(v) || 'Ingresa una fecha válida (dd/mm/aa)', 
-      v => {
-        const parts = v.split('/');
-        const day = parseInt(parts[0]);
-        const month = parseInt(parts[1]);
-        const year = parseInt(parts[2]);
-        return this.isValidDate(day, month, year) || 'Ingresa una fecha válida (dd/mm/aa)'; 
-      }
-    ]
   }),
   props: {
     festival: Festival
@@ -179,14 +194,14 @@ export default {
         if (!listaEntradasStorage) {
           listaEntradasStorage = [];
         }
-        if(listaEntradasStorage.length > 0){
+        if (listaEntradasStorage.length > 0) {
           listaEntradasStorage.forEach(item => {
-            if(item.idFestival === this.festival.idFestival){
+            if (item.idFestival === this.festival.idFestival) {
               yaExiste = true;
             }
           });
         }
-        if(yaExiste == false){
+        if (yaExiste == false) {
           const objetoCarrito = {
             festival: this.festival,
             entradas: 1,
@@ -195,9 +210,9 @@ export default {
           listaEntradasStorage.push(objetoCarrito);
         }
         localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
-      
+
         this.$store.dispatch("setIdFestivalCompra", this.festival.idFestival);
-        
+
         this.$router.push(`/carrito`);
       }
     },
