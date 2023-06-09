@@ -208,7 +208,7 @@ export default new Vuex.Store({
     },
     async requestFiltroHome({ commit }, datos) {
       commit("setLoading", true);
-      let stringBuscar = datos.stringBuscar;
+      let stringBuscar = datos.stringBuscar.toLowerCase();
       let mes = datos.mes;
       let ordenFecha = datos.ordenFecha;
 
@@ -262,7 +262,7 @@ export default new Vuex.Store({
     
     async requestFiltroOperaciones({ commit }, datos) {
       commit("setLoading", true);
-      let stringBuscar = datos.stringBuscar;
+      let stringBuscar = datos.stringBuscar.toLowerCase();
       let ordenPrecio = datos.ordenPrecio;
       let ordenFecha = datos.ordenFecha;
 
@@ -270,13 +270,20 @@ export default new Vuex.Store({
       let listaFestivales = [];
 
       let resultados = [];
-
+      if (ordenPrecio == null && ordenFecha == null) {
+        await fetch(link + `/operacionEntradas/usuario/${this.state.user.idUsuario}`)
+          .then((response) => response.json())
+          .then((data) => {
+            operaciones = data;
+            console.log()
+          })
+          .catch((error) => console.error(error));
+      }
       if (ordenPrecio != null && ordenFecha == null) {
         await fetch(link + `/operacionEntradas/usuario/${this.state.user.idUsuario}?ordenarPrecio=${ordenPrecio}`)
           .then((response) => response.json())
           .then((data) => {
             operaciones = data;
-            // commit("setShowMisFestivalesList", data);
           })
           .catch((error) => console.error(error));
       }
@@ -285,7 +292,6 @@ export default new Vuex.Store({
           .then((response) => response.json())
           .then((data) => {
             operaciones = data;
-            // commit("setShowMisFestivalesList", data);
           })
           .catch((error) => console.error(error));
       }
@@ -299,14 +305,10 @@ export default new Vuex.Store({
           .catch((error) => console.error(error));
       }
 
-
       await fetch(link + `/festival`)
           .then((response) => response.json())
           .then((data) => (listaFestivales = data))
           .catch((error) => console.error(error));
-
-
-      console.log('RESULTADOS', resultados);
 
       operaciones.forEach((operacion) => {
         listaFestivales.forEach((festival) => {
@@ -316,7 +318,6 @@ export default new Vuex.Store({
         });
       });
 
-      console.log('RESULTADOS 2', resultados);
 
       resultados = resultados.filter((item) => {
         if (
@@ -326,7 +327,6 @@ export default new Vuex.Store({
         }
       });
 
-      console.log('RESULTADOS 2', resultados);
       commit("setShowMisFestivalesList", resultados);
       // commit("setLoading", false);
     },
