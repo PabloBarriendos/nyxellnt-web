@@ -431,18 +431,19 @@ export default new Vuex.Store({
       document.cookie = `idFestivalCompra=${idFestival}`;
       commit("setIdFestival", idFestival);
     },
-    async editFestivalCompra(context, datos) {
+    async editFestivalCompra(context, festivalEditar) {
       context.commit("setLoading", true);
-      console.log('datos', datos);
-      fetch(link + "/festival/" + datos.idFestival, {
+      console.log('datos', festivalEditar);
+      fetch(link + "/festival/" + festivalEditar.idFestival, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(datos)
+        body: JSON.stringify(festivalEditar)
       })
         .then((response) => {
           if (response.ok) {
+            console.log('ooookeeeey');
             context.dispatch("cargarFestivales");
           } else {
             console.error("No se ha podido editar el festival");
