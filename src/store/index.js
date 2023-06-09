@@ -148,6 +148,31 @@ export default new Vuex.Store({
         })
         .catch((error) => console.error(error));
     },
+    async addFestival(context, festival) {
+
+      await fetch(link + "/festival", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          idFestival: 0,
+          nombre: festival.nombre,
+          artistas: festival.artistas,
+          descripcion: festival.descripcion,
+          localidad: festival.localidad,
+          fecha: festival.fecha,
+          precioEntrada: parseInt(festival.precioEntrada),
+          stock: parseInt(festival.stock),
+          precioEntradaVip: parseInt(festival.precioEntradaVip),
+          stockVip: parseInt(festival.stockVip),
+          mes: festival.mes,
+          imagen: festival.imagen
+        }),
+      });
+
+      context.commit('setDatoInutil', true);
+    },
     async register({ commit }, datos) {
       let nombre = datos.nombre;
       let apellido = datos.apellido;

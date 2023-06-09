@@ -65,12 +65,26 @@
         <v-btn @click="resetearFiltro()" class="white--text" color="black"> Resetear </v-btn>
       </div>
 
+      <div class="newFestival-section" v-if="this.$store.state.user.rol == 'admin'">
+        <v-btn @click="addFestivalPopUp()" class="white--text" color="black"> Añadir festival </v-btn>
+        <v-dialog
+          v-model="festivalPopUp"
+          persistent
+          width="1024"
+        >
+        <NewCardComponent
+          :festival="newFestival"
+          @closePopUp="closeAddFestival"
+          />
+        </v-dialog>
+      </div>
+
       <div class="spinner" v-if="$store.state.loading">
         <SpinnerComponent />
       </div>
       <div class="cards-section" v-if="!$store.state.loading">
         <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
-          :festival="festival" />
+          :festival="festival"/>
       </div>
     </div>
     <v-snackbar v-model="$store.state.mostrarMensajeDelete" :timeout="2000" color="success">
@@ -80,13 +94,16 @@
 </template>
 
 <script>
+import Festival from '@/models/festival-model';
 import CardComponent from "../components/CardComponent.vue";
+import NewCardComponent from "../components/NewCardComponent.vue";
 import SpinnerComponent from "../components/shared/SpinnerComponent.vue";
 
 export default {
   name: "HomeComponent",
   components: {
     CardComponent,
+    NewCardComponent,
     SpinnerComponent,
   },
   data: () => ({
@@ -105,6 +122,9 @@ export default {
     ordenFecha: null,
     showAllEvents: false,
     isLoading: false,
+    festivalPopUp: false,
+
+    newFestival: new Festival(0, '', '', '', '', '', '', '', '', '', '', ''),
   }),
   created() {
     this.$store.dispatch("setPaginaHome", true);
@@ -114,6 +134,12 @@ export default {
     this.$store.dispatch("setPaginaHome", false);
   },
   methods: {
+    addFestivalPopUp(){
+      this.festivalPopUp = true;
+    },
+    closeAddFestival(){
+      this.festivalPopUp = false;
+    },
     async requestFiltro() {
       this.$store.dispatch("requestFiltroHome", {
         stringBuscar: this.search,
@@ -319,6 +345,13 @@ export default {
         width: 110px;
         margin-top: 12px;
       }
+    }
+
+    .newFestival-section{
+      width: 100%;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
     }
 
     .cards-section {
