@@ -65,7 +65,7 @@
         <v-btn @click="resetearFiltro()" class="white--text" color="black"> Resetear </v-btn>
       </div>
 
-      <div class="newFestival-section">
+      <div class="newFestival-section" v-if="this.$store.state.user.rol == 'admin'">
         <v-btn @click="addFestivalPopUp()" class="white--text" color="black"> Añadir festival </v-btn>
         <v-dialog
           v-model="festivalPopUp"

@@ -132,6 +132,8 @@ export default {
         addFestival() {
             console.log('festival', this.festival);
             this.$store.dispatch("addFestival", this.festival);
+
+            this.closeCard();
         },
         isValidDate(day, month, year) {
             const date = new Date(year, month - 1, day);
