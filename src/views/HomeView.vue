@@ -66,7 +66,7 @@
       </div>
 
       <div class="newFestival-section" v-if="this.$store.state.user.rol == 'admin'">
-        <v-btn @click="addFestivalPopUp()" class="white--text" color="black"> Añadir festival </v-btn>
+        <v-btn @click="addFestivalPopUp()" class="white--text" color="blue"> Añadir festival </v-btn>
         <v-dialog
           v-model="festivalPopUp"
           persistent
