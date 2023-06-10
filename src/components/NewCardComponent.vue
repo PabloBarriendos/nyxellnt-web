@@ -13,13 +13,14 @@
         </div>
         <v-card class="tarjeta" variant="tonal">
             <div class="izquierda">
-                <textarea placeholder="Url de la imagen" id="editImagen" v-model="festival.imagen" @change="checkAdd" :rules="imagenRules">
+                <textarea placeholder="Url de la imagen" id="editImagenLeft" v-model="festival.imagen" @change="checkAdd" :rules="imagenRulesLeft">
                           </textarea>
             </div>
             <div class="derecha">
                 <div class="top-info">
                     <div class="top-image">
-                        <img :src="festival.imagen" />
+                        <textarea placeholder="Url de la imagen" id="editImagenTop" v-model="festival.imagen" @change="checkAdd" :rules="imagenRulesTop">
+                        </textarea>
                     </div>
                     <div class="top-description">
                         <textarea placeholder="Artistas" id="editArtistas" v-model="festival.artistas" @change="checkAdd" :rules="artistasRules">
@@ -168,11 +169,15 @@ textarea {
     line-height: 1.375rem;
     letter-spacing: 0.0071428571em;
 
-    &#editImagen {
+    &#editImagenLeft {
         width: 100%;
         height: calc(100% - 30px);
-        margin: 16px 0 0 0;
-        font-weight: bold;
+        margin: 15px 0;
+    }
+    &#editImagenTop {
+        width: calc(100% - 32px);
+        height: 100px;
+        margin: 0 16px;
     }
 
     &#editTitulo {
@@ -182,7 +187,7 @@ textarea {
     }
 
     &#editArtistas {
-        width: calc(100% - 152px);
+        width: calc(100% - 32px);
         margin: 16px;
         margin-bottom: 0;
         font-weight: bold;
@@ -209,10 +214,11 @@ textarea {
         display: flex;
         align-items: center;
         background-color: white;
+        padding: 20px;
 
         .v-card__title {
             font-weight: bold;
-            white-space: nowrap;
+            word-break: break-word;
             width: calc(100% - 88px);
         }
 
@@ -280,7 +286,7 @@ textarea {
                         flex-wrap: wrap;
 
                         span {
-                            white-space: nowrap;
+                            word-break: break-word;
                         }
 
                         span:first-of-type {
@@ -396,5 +402,22 @@ textarea {
             }
         }
     }
-}</style>
+}
+
+
+@media only screen and (max-width: 540px) {
+    .card-component {
+        .titulo {
+            flex-wrap: wrap-reverse;
+
+            .v-btn{
+                margin-left: 20px;
+                margin-bottom: 8px;
+            }
+        }
+    }
+}
+
+
+</style>
   

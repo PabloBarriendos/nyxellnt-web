@@ -39,14 +39,16 @@
       </div>
     </div>
 
-    <v-card class="top-events-card">
-      <v-card-title class="top-events-title">
-        ¡ Consulta los 5 eventos más vendidos aquí !
-      </v-card-title>
-      <v-card-actions>
-        <v-btn color="black" @click="goGrafica()" class="white--text">Aquí</v-btn>
-      </v-card-actions>
-    </v-card>
+    <div class="top-events">
+      <v-card class="top-events-card">
+        <v-card-title class="top-events-title">
+          ¡ Consulta los 5 eventos más vendidos aquí !
+        </v-card-title>
+        <v-card-actions>
+          <v-btn color="black" @click="goGrafica()" class="white--text">Aquí</v-btn>
+        </v-card-actions>
+      </v-card>
+    </div>
 
     <div id="festival-section">
       <h3>Festivales</h3>
@@ -67,15 +69,8 @@
 
       <div class="newFestival-section" v-if="this.$store.state.user.rol == 'admin'">
         <v-btn @click="addFestivalPopUp()" class="white--text" color="black"> Añadir festival </v-btn>
-        <v-dialog
-          v-model="festivalPopUp"
-          persistent
-          width="1024"
-        >
-        <NewCardComponent
-          :festival="newFestival"
-          @closePopUp="closeAddFestival"
-          />
+        <v-dialog v-model="festivalPopUp" persistent width="1024">
+          <NewCardComponent :festival="newFestival" @closePopUp="closeAddFestival" />
         </v-dialog>
       </div>
 
@@ -84,7 +79,7 @@
       </div>
       <div class="cards-section" v-if="!$store.state.loading">
         <CardComponent v-for="festival in $store.state.showFestivalList" :key="festival.idFestival"
-          :festival="festival"/>
+          :festival="festival" />
       </div>
     </div>
     <v-snackbar v-model="$store.state.mostrarMensajeDelete" :timeout="2000" color="success">
@@ -134,10 +129,10 @@ export default {
     this.$store.dispatch("setPaginaHome", false);
   },
   methods: {
-    addFestivalPopUp(){
+    addFestivalPopUp() {
       this.festivalPopUp = true;
     },
-    closeAddFestival(){
+    closeAddFestival() {
       this.festivalPopUp = false;
     },
     async requestFiltro() {
@@ -178,22 +173,31 @@ export default {
   padding: 0;
   max-width: 100%;
 
-  .top-events-card {
-    margin: 100px auto;
-    max-width: 850px;
-    padding: 20px;
+  .top-events{
+    width: 100%;
     display: flex;
-    align-items: center;
-    flex-direction: column;
-    background-color: rgba(156, 156, 156, 0.281);
-    border-radius: 20px;
+    justify-content: center;
+    .top-events-card {
+      margin: 100px 20px 40px 20px;
+      max-width: 850px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      border-radius: 20px;
+      background-image: url('../assets/fondoTopEvent.jpg');
+      background-size: cover;
+  
+      .top-events-title {
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 16px;
+        word-break: break-word;
+        color: white;
+      }
+    }
   }
 
-  .top-events-title {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
 
   .banner {
     width: 100vw;
@@ -347,7 +351,7 @@ export default {
       }
     }
 
-    .newFestival-section{
+    .newFestival-section {
       width: 100%;
       padding: 40px;
       display: flex;
@@ -416,12 +420,19 @@ export default {
       }
     }
 
+    .top-events-card {
+      .top-events-title {
+        font-size: 24px;
+      }
+    }
+
     #festival-section {
       .filtro-section {
         .buscador {
           width: 100%;
           margin: 0 0 20px 0;
         }
+
         .mesesFilter {
           width: 100%;
           margin-right: 0;
@@ -461,6 +472,16 @@ export default {
         height: 100%;
       }
     }
+
+    #festival-section {
+      .cards-section {
+        .card-component {
+          margin: 40px 10px 40px 10px;
+          width: calc(100% - 20px);
+        }
+      }
+    }
+
   }
 }
 

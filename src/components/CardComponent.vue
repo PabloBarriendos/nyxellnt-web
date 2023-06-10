@@ -12,8 +12,8 @@
       <v-btn v-if="showEditar" color="error" class="white--text" v-on:click="closeEditar" elevation="2" rounded>
         Descartar
       </v-btn>
-      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="primary" @click="openEditar()">mdi-pencil</v-icon>
-      <v-icon v-if="this.$store.state.user.rol == 'admin'" color="red" @click="deletePopUp()">mdi-delete</v-icon>
+      <v-icon v-if="this.$store.state.user.rol == 'admin' && !showEditar" color="primary" @click="openEditar()">mdi-pencil</v-icon>
+      <v-icon v-if="this.$store.state.user.rol == 'admin' && !showEditar" color="red" @click="deletePopUp()">mdi-delete</v-icon>
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
@@ -262,7 +262,7 @@ textarea {
   }
 
   &#editArtistas {
-    width: calc(100% - 152px);
+    width: calc(100% - 32px);
     margin: 16px;
     margin-bottom: 0;
     font-weight: bold;
@@ -289,7 +289,7 @@ textarea {
 
     .v-card__title {
       font-weight: bold;
-      white-space: nowrap;
+      word-break: break-word;
       width: calc(100% - 88px);
     }
 
@@ -356,7 +356,7 @@ textarea {
             flex-wrap: wrap;
 
             span {
-              white-space: nowrap;
+              word-break: break-word;
             }
 
             span:first-of-type {
@@ -472,5 +472,18 @@ textarea {
       }
     }
   }
+}
+
+@media only screen and (max-width: 540px) {
+    .card-component {
+        .titulo {
+            flex-wrap: wrap-reverse;
+
+            .v-btn{
+                margin-left: 20px;
+                margin-bottom: 8px;
+            }
+        }
+    }
 }
 </style>
