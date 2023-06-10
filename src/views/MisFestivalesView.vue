@@ -7,11 +7,11 @@
       <v-select v-model="ordenPrecio" class="fechaFilter" label="Ordenar por precio" item-text="orden" :items="[
         { value: 'asc', orden: 'Precio ▲' },
         { value: 'des', orden: 'Precio ▼' },
-      ]" @change="requestFiltro()"></v-select>
+      ]" @change="requestFiltroPrecio()"></v-select>
       <v-select v-model="ordenFecha" class="fechaFilter" label="Ordenar por fecha" item-text="orden" :items="[
         { value: 'asc', orden: 'Fecha ▲' },
         { value: 'des', orden: 'Fecha ▼' },
-      ]" @change="requestFiltro()"></v-select>
+      ]" @change="requestFiltroFecha()"></v-select>
 
       <v-btn @click="resetearFiltro()" class="white--text" color="black"> Resetear </v-btn>
     </div>
@@ -66,6 +66,20 @@ export default {
         ordenPrecio: this.ordenPrecio,
         ordenFecha: this.ordenFecha,
       });
+    },
+    requestFiltroPrecio(){
+      this.ordenFecha = null;
+      this.requestFiltro();
+    },
+    requestFiltroFecha(){
+      this.ordenPrecio = null;
+      this.requestFiltro();
+    },
+    resetearFiltro() {
+      this.search = "";
+      this.ordenPrecio = null;
+      this.ordenFecha = null;
+      this.requestFiltro();
     },
   },
 };
