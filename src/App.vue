@@ -22,6 +22,9 @@ export default {
   },
   methods: {
   },
+  created(){
+    this.$store.dispatch("cargarFestivales");
+  }
 
 };
 </script>

@@ -228,7 +228,6 @@ export default new Vuex.Store({
       await fetch(link + "/festival")
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           commit("initFestivales", data);
           commit("cambiarShowFestivales", data);
         });

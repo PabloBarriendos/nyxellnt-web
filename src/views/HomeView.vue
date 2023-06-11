@@ -123,7 +123,6 @@ export default {
   }),
   created() {
     this.$store.dispatch("setPaginaHome", true);
-    this.$store.dispatch("cargarFestivales");
   },
   destroyed() {
     this.$store.dispatch("setPaginaHome", false);
