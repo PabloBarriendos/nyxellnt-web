@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Carrito</h1>
+    <h1>Contáctanos</h1>
     <v-row justify="center">
       <v-col cols="12" md="8" lg="6">
         <v-form ref="formulario">

@@ -50,28 +50,13 @@
             <v-card-actions>
               <div class="estandar">
                 <v-text name="precioEstandar">Estándar: </v-text>
-                <v-text-field
-                  v-model="numberValue"
-                  :persistent-hint="true"
-                  :min="0"
-                  :max="maxEntradas"
-                  hide-details
-                  single-line
-                  type="number"
-                  @input="modificarNumEntradas"
-                />
+                <v-text-field v-model="numberValue" :persistent-hint="true" :min="0" :max="maxEntradas" hide-details
+                  single-line type="number" @input="modificarNumEntradas" />
               </div>
               <div class="vip">
                 <v-text name="precioVip">VIP: </v-text>
-                <v-text-field
-                  v-model="numberValueVip"
-                  :min="0"
-                  :max="maxEntradasVip"
-                  hide-details
-                  single-line
-                  type="number"
-                  @input="modificarNumEntradas"
-                />
+                <v-text-field v-model="numberValueVip" :min="0" :max="maxEntradasVip" hide-details single-line
+                  type="number" @input="modificarNumEntradas" />
               </div>
             </v-card-actions>
           </div>
@@ -96,13 +81,21 @@ export default {
     maxEntradas: 5,
     maxEntradasVip: 5,
   }),
-  created(){
-    if(this.festival.stock < 5){
+  created() {
+    if (this.festival.stock < 5) {
       this.maxEntradas = this.festival.stock;
     }
-    if(this.festival.stockVip < 5){
+    if (this.festival.stockVip < 5) {
       this.maxEntradasVip = this.festival.stockVip;
     }
+
+    this.listaEntradasCarrito = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+    this.listaEntradasCarrito.forEach(item => {
+      if(item.festival.idFestival == this.festival.idFestival){
+        this.numberValue = item.entradas;
+        this.numberValueVip = item.entradasVip;
+      }
+    });
   },
   methods: {
     modificarNumEntradas() {
@@ -116,7 +109,7 @@ export default {
       console.log('', listaEntradasStorage);
 
       listaEntradasStorage.forEach(item => {
-        if(item.festival.idFestival == this.festival.idFestival){
+        if (item.festival.idFestival == this.festival.idFestival) {
           item.entradas = parseInt(this.numberValue);
           item.entradasVip = parseInt(this.numberValueVip);
         }
@@ -131,7 +124,7 @@ export default {
       const listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
       const indiceEntradaBorrar = listaEntradasStorage.findIndex(item => item.festival.idFestival === this.festival.idFestival);
 
-      if(indiceEntradaBorrar !== -1){
+      if (indiceEntradaBorrar !== -1) {
         listaEntradasStorage.splice(indiceEntradaBorrar, 1);
       }
       localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
@@ -158,8 +151,8 @@ export default {
       white-space: nowrap;
       width: calc(100% - 52px);
     }
-    
-    .iconDelete{
+
+    .iconDelete {
       margin: 10px;
       font-size: 32px;
     }
@@ -185,11 +178,13 @@ export default {
         .top-image {
           // display: none;
           display: block;
+
           img {
             width: 100%;
             border-radius: 4px;
           }
         }
+
         .v-card__subtitle {
           font-weight: bold;
         }
@@ -206,7 +201,7 @@ export default {
           display: flex;
           flex-wrap: wrap;
 
-          > .v-card__text {
+          >.v-card__text {
             width: calc(100% / 2);
             display: flex;
             flex-wrap: wrap;
@@ -235,7 +230,8 @@ export default {
           justify-content: center;
           padding: 0;
 
-          .estandar, .vip {
+          .estandar,
+          .vip {
             width: calc(100% / 2);
             display: flex;
             flex-wrap: wrap;
@@ -249,6 +245,7 @@ export default {
               font-weight: bold;
               white-space: nowrap;
             }
+
             .v-input {
               width: 100%;
             }
@@ -281,6 +278,7 @@ export default {
 
       .derecha {
         width: 100%;
+
         .top-info {
           .top-image {
             display: none;
@@ -291,14 +289,16 @@ export default {
           .text-info {
             width: calc(100% - 184px);
 
-            > .v-card__text {
+            >.v-card__text {
               width: calc(100% / 2);
             }
           }
 
           .v-card__actions {
             width: 154px;
-            .estandar, .vip{
+
+            .estandar,
+            .vip {
               width: 100%;
             }
           }
@@ -323,6 +323,7 @@ export default {
 
       .derecha {
         width: 100%;
+
         .top-info {
           .top-image {
             display: none;
@@ -333,7 +334,7 @@ export default {
           .text-info {
             width: calc(100% - 184px);
 
-            > .v-card__text {
+            >.v-card__text {
               width: calc(100% / 2);
             }
           }
