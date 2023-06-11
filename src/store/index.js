@@ -141,6 +141,7 @@ export default new Vuex.Store({
               commit("setUser", element);
               commit("setUserLogged", true);
               document.cookie = `userId=${element.idUsuario}`;
+              document.cookie = `userImage=${element.imagen}`;
               document.cookie = `userNombre=${element.nombre}`;
               document.cookie = `userApellido=${element.apellido}`;
               document.cookie = `userEmail=${element.email}`;
@@ -219,6 +220,7 @@ export default new Vuex.Store({
       document.cookie = `userApellido=`;
       document.cookie = `userEmail=`;
       document.cookie = `userPassword=`;
+      document.cookie = `userImage=`;
       document.cookie = `userRol=`;
       commit("setUser", {});
       commit("setUserLogged", false);
@@ -443,6 +445,24 @@ export default new Vuex.Store({
           console.error("Error en la solicitud:", error);
         });
     },
+    async deleteCuenta(context, idUsuario) {
+      fetch(link + "/usuario/" + idUsuario, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            context.dispatch("cargarFestivales");
+          } else {
+            console.error("No se pudo eliminar la cuenta");
+          }
+        })
+        .catch((error) => {
+          console.error("Error en la solicitud:", error);
+        });
+    },
     async deleteFestivalCompra(context, idFestival) {
       context.commit("setLoading", true);
       fetch(link + "/festival/" + idFestival, {
@@ -540,6 +560,24 @@ export default new Vuex.Store({
 
       context.commit("setDatoInutil", null);
     },
+    async editarPerfil(context, user){
+      // PUT Usuario
+      await fetch(link + `/usuario/${user.idUsuario}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          idUsuario: user.idUsuario,
+          nombre: user.nombre,
+          apellido: user.apellido,
+          email: user.email,
+          password: user.password,
+          rol: user.rol,
+          imagen: user.imagen
+        }),
+      });
+    },
     async fetchFestival({ commit, dispatch }) {
       let idFestivalCookie = await dispatch("getCookie", "idFestivalCompra");
       if (idFestivalCookie) {
@@ -578,6 +616,7 @@ export default new Vuex.Store({
       let apellido = await dispatch("getCookie", "userApellido");
       let email = await dispatch("getCookie", "userEmail");
       let password = await dispatch("getCookie", "userPassword");
+      let imagen = await dispatch("getCookie", "userImage");
       let rol = await dispatch("getCookie", "userRol");
 
       if (idUsuario && nombre && apellido && email && password) {
@@ -586,6 +625,7 @@ export default new Vuex.Store({
           nombre: nombre,
           apellido: apellido,
           email: email,
+          imagen: imagen,
           password: password,
           rol: rol,
         });
