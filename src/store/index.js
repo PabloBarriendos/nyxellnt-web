@@ -93,6 +93,9 @@ export default new Vuex.Store({
     setUser(context, user) {
       context.commit("setUser", user);
     },
+    setErrorCompra(context, errorCompra) {
+      context.commit("setErrorCompra", errorCompra);
+    },
     setPaginaHome(context, paginaHome) {
       context.commit("setPaginaHome", paginaHome);
     },
@@ -415,43 +418,6 @@ export default new Vuex.Store({
         commit("setShowMisFestivalesList", resultados);
       }
     },
-    // async requestFiltroOperaciones({ commit }, ordenFecha) {
-    //   console.log(ordenFecha);
-    //   console.log("Antes: ");
-    //   console.log(this.state.showMisFestivalesList);
-    //   console.log(this.state.showMisFestivalesList[0].operacion.fechaCompra);
-    //   console.log(
-    //     Date.parse(this.state.showMisFestivalesList[0].operacion.fechaCompra)
-    //   );
-    //   if (ordenFecha != null) {
-    //     if (ordenFecha == true) {
-    //       this.state.showMisFestivalesList.sort((a, b) => {
-    //         let dateA = a.operacion.fechaCompra.split("-");
-    //         let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
-    //         let dateB = b.operacion.fechaCompra.split("-");
-    //         let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
-
-    //         console.log(finalDateA);
-
-    //         return finalDateB - finalDateA;
-    //       });
-    //     } else {
-    //       this.state.showMisFestivalesList.sort((a, b) => {
-    //         let dateA = a.operacion.fechaCompra.split("-");
-    //         let finalDateA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
-    //         let dateB = b.operacion.fechaCompra.split("-");
-    //         let finalDateB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
-
-    //         return finalDateA - finalDateB;
-    //       });
-    //     }
-
-    //     console.log("Despues: ");
-    //     console.log(this.state.showMisFestivalesList);
-
-    //     commit("setDatoInutil", null);
-    //   }
-    // },
     async setIdFestivalCompra({ commit }, idFestival) {
       document.cookie = `idFestivalCompra=${idFestival}`;
       commit("setIdFestival", idFestival);
@@ -537,14 +503,17 @@ export default new Vuex.Store({
         if (response.ok) {
           console.log("Compra realizada correctamente");
           context.commit("setErrorCompra", false);
+          localStorage.setItem('errorCompra', JSON.stringify(false));
         } else {
           console.error("No se pudo realizar la compra");
           context.commit("setErrorCompra", true);
+          localStorage.setItem('errorCompra', JSON.stringify(true));
         }
       })
         .catch((error) => {
           console.error("Error en la solicitud:", error);
           context.commit("setErrorCompra", true);
+          localStorage.setItem('errorCompra', JSON.stringify(true));
         });
 
       // PUT festival

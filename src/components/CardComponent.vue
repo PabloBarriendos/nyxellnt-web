@@ -184,7 +184,7 @@ export default {
         }
         if (listaEntradasStorage.length > 0) {
           listaEntradasStorage.forEach(item => {
-            if (item.idFestival === this.festival.idFestival) {
+            if (item.festival.idFestival == this.festival.idFestival) {
               yaExiste = true;
             }
           });

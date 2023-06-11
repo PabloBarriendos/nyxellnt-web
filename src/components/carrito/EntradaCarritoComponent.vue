@@ -124,6 +124,8 @@ export default {
 
       localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
 
+      this.$emit('changedEntradas', true);
+
     },
     deleteFestivalCarrito() {
       const listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));

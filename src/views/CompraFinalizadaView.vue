@@ -16,7 +16,7 @@
         </v-card>
         <v-card class="card-container" v-if="$store.state.errorCompra">
             <div class="card-imagen">
-                <img src="../assets/compraSuccess.png" alt="">
+                <img src="../assets/compraError.png" alt="">
             </div>
             <div class="card-texto">
                 <v-card-title>
@@ -38,10 +38,13 @@
 export default {
     name: "CompraFinalizadaComponent",
     data: () => ({
-        compraValida: false,
+        errorCompra: false,
     }),
     created() {
-        console.log('EYYY',this.$store.state.errorCompra);
+        this.errorCompra = JSON.parse(localStorage.getItem('errorCompra'));
+        if(this.errorCompra){
+            this.$store.dispatch("setErrorCompra", true);
+        }
     },
     destroyed(){
 
@@ -64,19 +67,6 @@ export default {
     padding: 100px 0;
     height: 100%;
     margin-top: 84px;
-
-    // /* Establecer la imagen de fondo */
-    // background-image: url('ruta/a/la/imagen.jpg');
-    
-    // /* Ajustar el tamaño de la imagen de fondo */
-    // background-size: cover;
-    
-    // /* Fijar la posición de la imagen de fondo */
-    // background-attachment: fixed;
-    
-    // /* Establecer el fondo como fijo para el cuerpo de la página también */
-    // /* Esto asegurará que la imagen de fondo se mantenga fija incluso si se desplaza la página */
-    // background: fixed;
 
     .card-container{
         padding: 20px;

@@ -2,6 +2,9 @@
   <v-container class="carrito-container">
     <h1>Carrito</h1>
     <div class="btn-comprar">
+      <div class="precioTotal">
+        <span>Precio Total:</span><span>{{ precioTotal }} €</span>
+      </div>
       <v-btn color="success" :disabled="listaEntradasCarrito.length === 0" variant="text"
         v-on:click="openFinalizarCompra()">
         <v-icon size="40">mdi-cart</v-icon> Finalizar Compra
@@ -14,7 +17,8 @@
         <p>No hay festivales añadidos al carrito</p>
       </div>
       <EntradaCarritoComponent v-for="item in listaEntradasCarrito" :key="item.festival.idFestival"
-        :festival="item.festival" @deletedEntradaCarrito="cargarListaEntradasCarrito" />
+        :festival="item.festival" @changedEntradas="recalcularPrecio"
+        @deletedEntradaCarrito="cargarListaEntradasCarrito" />
     </div>
     <div class="productos-section">
       <h2>Productos</h2>
@@ -135,6 +139,7 @@ export default {
     listaEntradasCarrito: [],
     listaProductosCarrito: [],
     showCompraPopUp: false,
+    precioTotal: 0,
     //datos Formulario  // CAMBIAR BOOLEAN
     compraInvalida: false,
     tarjetaCredito: '',
@@ -212,14 +217,28 @@ export default {
     if (!this.listaEntradasCarrito) {
       this.listaEntradasCarrito = [];
       localStorage.setItem('listaEntradasCarrito', JSON.stringify(this.listaEntradasCarrito));
+    } else {
+      this.listaEntradasCarrito.forEach(item => {
+        this.precioTotal = this.precioTotal + (item.entradas * item.festival.precioEntrada + item.entradasVip * item.festival.precioEntradaVip);
+      });
     }
   },
   methods: {
     cargarListaEntradasCarrito() {
       this.listaEntradasCarrito = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+      this.recalcularPrecio();
     },
     cargarListaProductosCarrito() {
       this.listaProductosCarrito = JSON.parse(localStorage.getItem('listaProductosCarrito'));
+    },
+    recalcularPrecio() {
+      this.precioTotal = 0;
+      this.listaEntradasCarrito = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+      if (this.listaEntradasCarrito) {
+        this.listaEntradasCarrito.forEach(item => {
+          this.precioTotal = this.precioTotal + (item.entradas * item.festival.precioEntrada + item.entradasVip * item.festival.precioEntradaVip);
+        });
+      }
     },
     openFinalizarCompra() {
       this.showCompraPopUp = true;
@@ -294,6 +313,21 @@ export default {
     justify-content: center;
     margin: 40px 0;
 
+    .precioTotal {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+
+      span {
+        font-size: 24px;
+        font-weight: bold;
+
+        &:first-of-type {
+          margin-right: 8px;
+        }
+      }
+    }
+
     .v-btn {
       padding: 24px;
 
@@ -358,7 +392,16 @@ export default {
   }
 }
 
-@media only screen and (min-width: 1024px) {
-  .carrito-container {}
+@media only screen and (max-width: 500px) {
+  .carrito-container {
+    .btn-comprar {
+      flex-wrap: wrap-reverse;
+
+      .precioTotal {
+        margin-right: 0;
+        margin: 20px;
+      }
+    }
+  }
 }
 </style>
