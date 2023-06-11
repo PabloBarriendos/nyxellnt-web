@@ -89,7 +89,7 @@
             <v-btn class="white--text" v-on:click="goToCompra" elevation="2" x-large rounded>
               Comprar
             </v-btn>
-            <v-btn class="white--text" elevation="2" x-large rounded :disabled="true">
+            <v-btn class="white--text" elevation="2" x-large rounded  @click="goMerchan()">
               Merchandising
             </v-btn>
           </v-card-actions>
@@ -218,6 +218,9 @@ export default {
     isValidDate(day, month, year) {
       const date = new Date(year, month - 1, day);
       return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
+    },
+    goMerchan() {
+      this.$router.push(`/merchandising`);
     }
   },
 };

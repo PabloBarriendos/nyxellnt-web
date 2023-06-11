@@ -33,7 +33,7 @@
             webs!
           </p>
           <p>No lo pienses y consíguelos antes de que se agoten.</p>
-          <v-btn class="white--text" color="black" :disabled="true"> Ver tienda </v-btn>
+          <v-btn class="white--text" color="black" @click="goMerchan()" > Ver tienda </v-btn>
           <p>¡Stock limitado!</p>
         </div>
       </div>
@@ -154,6 +154,9 @@ export default {
     },
     goGrafica() {
       this.$router.push(`/grafica`);
+    },
+    goMerchan() {
+      this.$router.push(`/merchandising`);
     }
   },
 };
