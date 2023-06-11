@@ -122,7 +122,7 @@ export default {
     listaProductosCarrito: [],
     showCompraPopUp: false,
     precioTotal: 0,
-    compraInvalida: false,
+    compraInvalida: true,
     tarjetaCredito: '',
     fechaCaducidad: '',
     nombreTitular: '',
@@ -179,8 +179,8 @@ export default {
     ],
     dniRules: [
       (value) => {
-        if (/^\d{8}$/.test(value)) return true;
-        return "El número de DNI debe tener 8 dígitos.";
+        if (/^\d{8}[A-Za-z]$/.test(value)) return true;
+        return "El número debe tener formato DNI.";
       },
     ],
     codigoPostalRules: [
@@ -231,7 +231,7 @@ export default {
       if (this.tarjetaCredito && this.fechaCaducidad && this.nombreTitular && this.cvv && this.nombre && this.apellidos && this.correo && this.dni && this.direccion && this.codigoPostal) {
         this.compraInvalida = false;
       } else {
-        this.compraInvalida = false;
+        this.compraInvalida = true;
       }
     },
     finalizarCompra() {

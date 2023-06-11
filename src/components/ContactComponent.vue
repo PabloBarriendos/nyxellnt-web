@@ -6,33 +6,33 @@
         <v-form ref="formulario">
           <v-row>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="nombre" label="Nombre" :rules="firstNameRules"></v-text-field>
+              <v-text-field v-model="nombre" label="Nombre" @change="checkFormulario" :rules="firstNameRules"></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="cuidad" label="Ciudad" :rules="ciudadRules"></v-text-field>
+              <v-text-field v-model="cuidad" label="Ciudad" @change="checkFormulario" :rules="ciudadRules"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="apellidos" label="Apellidos" :rules="lastNameRules"></v-text-field>
+              <v-text-field v-model="apellidos" label="Apellidos" @change="checkFormulario" :rules="lastNameRules"></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="codigoPostal" label="Código Postal" :rules="postalCodeRules"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field v-model="correoElectronico" label="Correo Electrónico" :rules="emailRules"></v-text-field>
+              <v-text-field v-model="codigoPostal" label="Código Postal" @change="checkFormulario" :rules="postalCodeRules"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-textarea v-model="mensaje" label="Mensaje"></v-textarea>
+              <v-text-field v-model="correoElectronico" label="Correo Electrónico" @change="checkFormulario" :rules="emailRules"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-textarea v-model="mensaje" label="Mensaje" @change="checkFormulario"></v-textarea>
             </v-col>
           </v-row>
         </v-form>
         <v-row justify="center" class="buttons">
-          <v-btn color="primary" @click="enviarFormulario">Aceptar</v-btn>
+          <v-btn color="primary" @click="enviarFormulario" :disabled="btnDisabled">Aceptar</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="error" @click="limpiarCampos">Vaciar Campos</v-btn>
         </v-row>
@@ -48,6 +48,7 @@
 export default {
 
   data: () => ({
+    btnDisabled: true,
     nombre: '',
     apellidos: '',
     ciudad: '',
@@ -88,6 +89,13 @@ export default {
     ],
   }),
   methods: {
+    checkFormulario(){
+      if(this.nombre && this.apellidos && this.ciudad && this.codigoPostal && this.correoElectronico && this.mensaje){
+        this.btnDisabled = false;
+      }else{
+        this.btnDisabled = true;
+      }
+    },
     enviarFormulario() {
       if (this.$refs.formulario.validate()) {
         setTimeout(() => {

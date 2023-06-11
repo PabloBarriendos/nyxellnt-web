@@ -11,10 +11,10 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field id="emailLogin" label="Email*" required :rules="emailRules"></v-text-field>
+                    <v-text-field id="emailLogin" label="Email*" @change="checkLogin" required :rules="emailRules"></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" required></v-text-field>
+                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" @change="checkLogin" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -22,7 +22,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="error" variant="text" v-on:click="cerrarLoginPopUp">Cerrar</v-btn>
-              <v-btn color="success" variant="text" @click="login">Iniciar sesión</v-btn>
+              <v-btn color="success" variant="text" :disabled="loginDisabled" @click="login">Iniciar sesión</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -119,6 +119,7 @@ export default {
   name: "HeaderComponent",
   components: {},
   data: () => ({
+    loginDisabled: true,
     registerDisabled: true,
     showFondo: false,
     usuario: {
@@ -171,6 +172,14 @@ export default {
           this.showFondo = false;
         }
       }
+    },
+    checkLogin(){
+      if(document.getElementById("emailLogin")?.value &&
+        document.getElementById("passwordLogin")?.value ){
+          this.loginDisabled = false;
+        }else{
+          this.loginDisabled = true;
+        }
     },
     checkRegister() {
       if (
