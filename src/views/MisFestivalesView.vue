@@ -122,8 +122,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     margin-top: 120px;
-    border-bottom: 1px solid grey;
-    padding: 0px 10% 30px;
+    padding: 0px 10% 0px;
     justify-content: center;
 
     .buscador {

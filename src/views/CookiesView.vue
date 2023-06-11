@@ -108,3 +108,9 @@
             producido alguna modificación. Última actualización de la política [05/2023]</p>
     </v-container>
 </template>
+
+<style scoped>
+    .container{
+        margin-top: 100px;
+    }
+</style>

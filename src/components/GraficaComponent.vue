@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="title">Número de eventos al mes</h1>
+    <v-text>Número de eventos al mes</v-text>
     <Bar v-if="dataLoaded" :data="chartdata" :options="chartoptions"></Bar>
   </v-container>
 </template>
@@ -107,7 +107,17 @@ export default {
 </script>
 
 <style scoped>
-.title{
-  padding: 50px;
+v-text {
+  font-size: xx-large;
+  text-align: center;
+  display: block;
+}
+
+.container {
+  margin-top: 100px;
+}
+
+canvas {
+  margin-top: 30px;
 }
 </style>

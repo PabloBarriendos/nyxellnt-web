@@ -33,7 +33,7 @@
             webs!
           </p>
           <p>No lo pienses y consíguelos antes de que se agoten.</p>
-          <v-btn class="white--text" color="black"> Ver tienda </v-btn>
+          <v-btn class="white--text" color="black" @click="goMerchan()" > Ver tienda </v-btn>
           <p>¡Stock limitado!</p>
         </div>
       </div>
@@ -42,7 +42,7 @@
     <div class="top-events">
       <v-card class="top-events-card">
         <v-card-title class="top-events-title">
-          ¡ Consulta los 5 eventos más vendidos aquí !
+          ¡ Consulta los meses con más festivales aquí !
         </v-card-title>
         <v-card-actions>
           <v-btn color="black" @click="goGrafica()" class="white--text">Aquí</v-btn>
@@ -68,7 +68,7 @@
       </div>
 
       <div class="newFestival-section" v-if="this.$store.state.user.rol == 'admin'">
-        <v-btn @click="addFestivalPopUp()" class="white--text" color="black"> Añadir festival </v-btn>
+        <v-btn @click="addFestivalPopUp()" class="white--text" color="blue"> Añadir festival </v-btn>
         <v-dialog v-model="festivalPopUp" persistent width="1024">
           <NewCardComponent :festival="newFestival" @closePopUp="closeAddFestival" />
         </v-dialog>
@@ -154,6 +154,9 @@ export default {
     },
     goGrafica() {
       this.$router.push(`/grafica`);
+    },
+    goMerchan() {
+      this.$router.push(`/merchandising`);
     }
   },
 };

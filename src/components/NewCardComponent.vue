@@ -1,7 +1,7 @@
 <template>
     <div class="card-component">
         <div class="titulo">
-            <textarea placeholder="Nombre del festival" id="editTitulo" v-model="festival.nombre" @change="checkAdd" :rules="tituloRules">
+            <textarea placeholder="Nombre del festival" id="editTitulo" v-model="festival.nombre" @change="checkAdd">
                     </textarea>
             <v-btn :disabled="addDisabled" class="white--text" color="success" v-on:click="addFestival" elevation="2"
                 rounded>
@@ -13,25 +13,26 @@
         </div>
         <v-card class="tarjeta" variant="tonal">
             <div class="izquierda">
-                <textarea placeholder="Url de la imagen" id="editImagenLeft" v-model="festival.imagen" @change="checkAdd" :rules="imagenRulesLeft">
+                <textarea placeholder="Url de la imagen" id="editImagenLeft" v-model="festival.imagen" @change="checkAdd">
                           </textarea>
             </div>
             <div class="derecha">
                 <div class="top-info">
                     <div class="top-image">
-                        <textarea placeholder="Url de la imagen" id="editImagenTop" v-model="festival.imagen" @change="checkAdd" :rules="imagenRulesTop">
+                        <textarea placeholder="Url de la imagen" id="editImagenTop" v-model="festival.imagen"
+                            @change="checkAdd">
                         </textarea>
                     </div>
                     <div class="top-description">
-                        <textarea placeholder="Artistas" id="editArtistas" v-model="festival.artistas" @change="checkAdd" :rules="artistasRules">
+                        <textarea placeholder="Artistas" id="editArtistas" v-model="festival.artistas" @change="checkAdd">
                           </textarea>
                         <v-card-subtitle class="separadorEdit">
                             -
                         </v-card-subtitle>
-                        <textarea placeholder="Mes" id="editMes" v-model="festival.mes" @change="checkAdd" :rules="mesRules">
+                        <textarea placeholder="Mes" id="editMes" v-model="festival.mes" @change="checkAdd">
                           </textarea>
                         <textarea placeholder="Descripción" id="editDescripcion" v-model="festival.descripcion"
-                            @change="checkAdd" :rules="descripcionRules">
+                            @change="checkAdd">
                           </textarea>
                     </div>
                 </div>
@@ -41,37 +42,36 @@
                         <v-card-text>
                             <span>Localidad: </span>
                             <textarea placeholder="Localidad" id="editLocalidad" v-model="festival.localidad"
-                                @change="checkAdd" :rules="localidadRules">
+                                @change="checkAdd">
                             </textarea>
                         </v-card-text>
                         <v-card-text>
                             <span>Fecha: </span>
-                            <textarea placeholder="dd/mm/yyyy" id="editFecha" v-model="festival.fecha" :rules="fechaRules"
-                                @change="checkAdd">
+                            <textarea placeholder="dd/mm/yyyy" id="editFecha" v-model="festival.fecha" @change="checkAdd">
                             </textarea>
                         </v-card-text>
                         <v-card-text class="text-precio">
                             <span>Precio estándar: </span>
                             <textarea placeholder="Precio estándar" id="editPrecio" v-model="festival.precioEntrada"
-                                :rules="rulePrecio" @change="checkAdd">
+                                @change="checkAdd">
                             </textarea>
                         </v-card-text>
                         <v-card-text class="text-precio">
                             <span>Precio VIP: </span>
                             <textarea placeholder="Precio VIP" id="editPrecioVip" v-model="festival.precioEntradaVip"
-                                :rules="rulePrecioVip" @change="checkAdd">
+                                @change="checkAdd">
                             </textarea>
                         </v-card-text>
                         <v-card-text>
                             <span>Stock estándar: </span>
                             <textarea placeholder="Precio estándar" id="editStock" v-model="festival.stock"
-                                @change="checkAdd" :rules="stockRule">
+                                @change="checkAdd">
                             </textarea>
                         </v-card-text>
                         <v-card-text>
                             <span>Stock VIP: </span>
                             <textarea placeholder="Precio VIP" id="editStockVip" v-model="festival.stockVip"
-                                @change="checkAdd" :rules="stockRule">
+                                @change="checkAdd">
                             </textarea>
                         </v-card-text>
                     </div>
@@ -88,26 +88,6 @@ export default {
     data: () => ({
         festival: new Festival(0, '', '', '', '', '', '', '', '', '', '', ''),
         addDisabled: true,
-
-        rulePrecio: [
-            v => !!v || 'El campo es requerido',
-            v => /^\d+$/.test(v) || 'Ingresa solo números'
-        ],
-        rulePrecioVip: [
-            v => !!v || 'El campo es requerido',
-            v => /^\d+$/.test(v) || 'Ingresa solo números'
-        ],
-        fechaRules: [
-            v => !!v || 'El campo es requerido',
-            v => /^\d{2}\/\d{2}\/\d{2}$/.test(v) || 'Ingresa una fecha válida (dd/mm/aa)',
-            v => {
-                const parts = v.split('/');
-                const day = parseInt(parts[0]);
-                const month = parseInt(parts[1]);
-                const year = parseInt(parts[2]);
-                return this.isValidDate(day, month, year) || 'Ingresa una fecha válida (dd/mm/aa)';
-            }
-        ]
     }),
     created() {
     },
@@ -174,6 +154,7 @@ textarea {
         height: calc(100% - 30px);
         margin: 15px 0;
     }
+
     &#editImagenTop {
         width: calc(100% - 32px);
         height: 100px;
@@ -409,14 +390,12 @@ textarea {
         .titulo {
             flex-wrap: wrap-reverse;
 
-            .v-btn{
+            .v-btn {
                 margin-left: 20px;
                 margin-bottom: 8px;
             }
         }
     }
 }
-
-
 </style>
   
