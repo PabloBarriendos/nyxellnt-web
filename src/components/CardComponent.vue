@@ -89,7 +89,7 @@
             <v-btn class="white--text" v-on:click="goToCompra" elevation="2" x-large rounded>
               Comprar
             </v-btn>
-            <v-btn class="white--text" v-on:click="goToCompra" elevation="2" x-large rounded>
+            <v-btn class="white--text" elevation="2" x-large rounded :disabled="true">
               Merchandising
             </v-btn>
           </v-card-actions>
