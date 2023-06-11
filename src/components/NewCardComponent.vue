@@ -208,7 +208,6 @@ textarea {
 }
 
 .card-component {
-    margin-top: 100px;
 
     .titulo {
         display: flex;

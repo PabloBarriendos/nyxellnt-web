@@ -26,8 +26,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .v-main {
   padding: 0 !important;
+}
+
+.v-dialog{
+  margin-top: 90px;
+  max-width: 90%;
+  max-height: 80% !important;
 }
 </style>

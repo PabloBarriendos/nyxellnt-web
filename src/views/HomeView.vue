@@ -419,6 +419,9 @@ export default {
         height: 100%;
       }
     }
+    .merchandising-section{
+      padding: 60px 40px 10px;
+    }
 
     .top-events-card {
       .top-events-title {
