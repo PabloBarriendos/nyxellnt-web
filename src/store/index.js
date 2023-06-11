@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-var link = "https://festivalia-api-1.azurewebsites.net/";
+var link = "https://festivalia-api.azurewebsites.net/";
 // https://nyxellnt-api-2.azurewebsites.net/
 // http://localhost:80
 
