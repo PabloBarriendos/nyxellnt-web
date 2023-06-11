@@ -91,7 +91,7 @@
 
   .container{
     display: flex;
-    margin-top: 50px;
+    margin-top: 100px;
     flex-direction: column;
     align-items: center;
   }
