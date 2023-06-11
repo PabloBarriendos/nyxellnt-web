@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-text>Número de eventos al mes</v-text>
+    <v-text>Número de festivales al mes</v-text>
     <Bar v-if="dataLoaded" :data="chartdata" :options="chartoptions"></Bar>
   </v-container>
 </template>

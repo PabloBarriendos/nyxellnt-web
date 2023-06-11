@@ -154,7 +154,7 @@ export default {
     ],
     nombreTitularRules: [
       (value) => {
-        if (/^[a-zA-Z]+$/.test(value)) return true;
+        if (/^[a-zA-Z\s]+$/.test(value)) return true;
         return "Solo puede contener letras.";
       },
     ],
@@ -167,7 +167,7 @@ export default {
     ],
     apellidosRules: [
       (value) => {
-        if (/^[a-zA-Z]+$/.test(value)) return true;
+        if (/^[a-zA-Z\s]+$/.test(value)) return true;
         return "El apellido solo puede contener letras.";
       },
     ],
@@ -202,6 +202,7 @@ export default {
       this.listaEntradasCarrito = [];
       localStorage.setItem('listaEntradasCarrito', JSON.stringify(this.listaEntradasCarrito));
     } else {
+      console.log('EY', this.listaEntradasCarrito);
       this.listaEntradasCarrito.forEach(item => {
         this.precioTotal = this.precioTotal + (item.entradas * item.festival.precioEntrada + item.entradasVip * item.festival.precioEntradaVip);
       });
