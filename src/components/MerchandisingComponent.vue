@@ -3,7 +3,7 @@
         <h1>Página en desarrollo</h1>
         <v-text>Tiempo restante para su creación: </v-text>
         <body>
-            <svg width="500" height="500" viewBox="0 0 200 200">
+            <svg width="300" height="300" viewBox="0 0 200 200">
                 <circle cx="100" cy="100" r="90" fill="none" stroke="black" stroke-width="4" />
                 <g>
                     <line id="hora" x1="100" y1="110" x2="100" y2="70" stroke="blue" stroke-width="3" />
