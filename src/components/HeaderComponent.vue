@@ -82,8 +82,11 @@
       </div>
 
       <div class="avatar-container" v-if="$store.state.userLogged">
-        <v-avatar color="info">
-          <v-icon size="x-large">mdi-account</v-icon>
+        <v-avatar>
+          <img class="usuarioImg" v-if="$store.state.user.imagen" :src="$store.state.user.imagen"/>
+          <img src="../assets/usuario.png" alt="Profile"/>
+          <!-- <img class="avatarUser" v-if="$store.state.user.imagen" :src="$store.state.user.imagen"/>
+          <img src="../assets/usuario.png" alt="Profile" /> -->
         </v-avatar>
         <p>{{ this.$store.state.user.nombre }}</p>
         <v-icon class="menu-icon" v-on:click="userDropdown">mdi-menu</v-icon>
@@ -257,6 +260,19 @@ export default {
   width: 100%;
   z-index: 9999;
 
+  .v-avatar {
+    img {
+      width: 48px;
+      height: 48px;
+
+      &.usuarioImg {
+        position: absolute;
+        border-radius: 50%
+      }
+    }
+  }
+
+
   &.showFondo {
     position: fixed;
 
@@ -349,6 +365,8 @@ export default {
         font-size: 18px;
         margin-bottom: 0;
         margin-left: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
