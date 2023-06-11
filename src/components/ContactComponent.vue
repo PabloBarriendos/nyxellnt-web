@@ -1,7 +1,7 @@
 <template>
   <v-container>
+    <h1>Carrito</h1>
     <v-row justify="center">
-      <h1>Carrito</h1>
       <v-col cols="12" md="8" lg="6">
         <v-form ref="formulario">
           <v-row>
@@ -86,35 +86,35 @@ export default {
         return "La ciudad solo puede contener letras.";
       },
     ],
-}),
-methods: {
-  enviarFormulario() {
-    if (this.$refs.formulario.validate()) {
-      setTimeout(() => {
-        this.mostrarMensaje = true;
-        this.limpiarCampos();
-      }, 200);
+  }),
+  methods: {
+    enviarFormulario() {
+      if (this.$refs.formulario.validate()) {
+        setTimeout(() => {
+          this.mostrarMensaje = true;
+          this.limpiarCampos();
+        }, 200);
+      }
+    },
+    limpiarCampos() {
+      this.nombre = '';
+      this.apellidos = '';
+      this.ciudad = '';
+      this.codigoPostal = '';
+      this.correoElectronico = '';
+      this.mensaje = '';
+      this.$refs.formulario.resetValidation();
     }
-  },
-  limpiarCampos() {
-    this.nombre = '';
-    this.apellidos = '';
-    this.ciudad = '';
-    this.codigoPostal = '';
-    this.correoElectronico = '';
-    this.mensaje = '';
-    this.$refs.formulario.resetValidation();
   }
-}
 };
 </script>
   
 <style scoped lang="scss">
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+
+  margin-top: 100px;
+  flex-wrap: wrap;
 }
 
 .buttons {
@@ -125,6 +125,12 @@ methods: {
 
 .buttons>* {
   margin-right: 10px;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 @media only screen and (max-width: 600px) {
