@@ -3,8 +3,8 @@
         <div class="profile-form">
             <h2 class="mb-3">Editar Perfil</h2>
             <div class="profile-picture">
-                <img class="usuarioImg" v-if="usuario.imagen" :src="usuario.imagen"/>
-                <img src="../assets/usuario.png" alt="Profile"/>
+                <img class="usuarioImg" v-if="usuario.imagen" :src="usuario.imagen" />
+                <img src="../assets/usuario.png" alt="Profile" />
                 <v-text-field v-model="usuario.imagen" label="Url de imagen" @change="checkPerfil"></v-text-field>
             </div>
             <v-form>
@@ -101,10 +101,12 @@ export default {
         cerrarDeletePopUp() {
             this.showDeletePopUp = false;
         },
-        async deleteCuenta(){
+        async deleteCuenta() {
             await this.$store.dispatch("deleteCuenta", this.$store.state.user.idUsuario);
             await this.$store.dispatch("logout");
-            this.$router.push("/");
+            this.$router.push("/").then(() => {
+                window.scrollTo(0, 0);
+            });
         },
         checkPerfil() {
             if (this.usuario.nombre && this.usuario.apellido && this.usuario.email && this.usuario.password) {
@@ -129,11 +131,12 @@ export default {
   
 <style lang="scss">
 .popupDelete {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 .profile-edit {
     display: flex;
     flex-direction: column;
@@ -149,16 +152,18 @@ export default {
         padding: 20px;
 
         .profile-picture {
-            img{
+            img {
                 width: 150px;
                 height: 150px;
                 border-radius: 50%;
                 margin-bottom: 10px;
-                &.usuarioImg{
+
+                &.usuarioImg {
                     position: absolute;
                 }
             }
-            .v-input{
+
+            .v-input {
                 margin: 20px 0;
             }
         }
@@ -181,11 +186,11 @@ export default {
 
         .botones {
             padding: 50px;
-            .v-btn{
+
+            .v-btn {
                 margin: 10px;
             }
         }
     }
-}
-</style>
+}</style>
   

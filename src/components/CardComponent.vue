@@ -5,45 +5,48 @@
         {{ festival.nombre }}
       </v-card-title>
       <textarea v-if="showEditar" placeholder="Nombre del festival" id="editTitulo" v-model="festivalEditar.nombre">
-      </textarea>
+            </textarea>
       <v-btn v-if="showEditar" class="white--text" color="success" v-on:click="editarFestival" elevation="2" rounded>
         Guardar
       </v-btn>
       <v-btn v-if="showEditar" color="error" class="white--text" v-on:click="closeEditar" elevation="2" rounded>
         Descartar
       </v-btn>
-      <v-icon v-if="this.$store.state.user.rol == 'admin' && !showEditar" color="primary" @click="openEditar()">mdi-pencil</v-icon>
-      <v-icon v-if="this.$store.state.user.rol == 'admin' && !showEditar" color="red" @click="deletePopUp()">mdi-delete</v-icon>
+      <v-icon v-if="this.$store.state.user.rol == 'admin' && !showEditar" color="primary"
+        @click="openEditar()">mdi-pencil</v-icon>
+      <v-icon v-if="this.$store.state.user.rol == 'admin' && !showEditar" color="red"
+        @click="deletePopUp()">mdi-delete</v-icon>
     </div>
     <v-card class="tarjeta" variant="tonal">
       <div class="izquierda">
         <img v-if="!showEditar" :src="festival.imagen" />
         <textarea v-if="showEditar" placeholder="Url de la imagen" id="editImagenLeft" v-model="festivalEditar.imagen">
-        </textarea>
+              </textarea>
       </div>
       <div class="derecha">
         <div class="top-info">
           <div class="top-image">
             <img v-if="!showEditar" :src="festival.imagen" />
             <textarea v-if="showEditar" placeholder="Url de la imagen" id="editImagenTop" v-model="festivalEditar.imagen">
-            </textarea>
+                  </textarea>
           </div>
           <div class="top-description">
             <v-card-subtitle v-if="!showEditar">
               {{ festival.artistas }} - {{ festival.mes }}
             </v-card-subtitle>
             <textarea v-if="showEditar" placeholder="Artistas" id="editArtistas" v-model="festivalEditar.artistas">
-            </textarea>
+                  </textarea>
             <v-card-subtitle class="separadorEdit" v-if="showEditar">
               -
             </v-card-subtitle>
             <textarea v-if="showEditar" placeholder="Mes" id="editMes" v-model="festivalEditar.mes" :rules="mesRules">
-            </textarea>
+                  </textarea>
             <v-card-text v-if="!showEditar">
               {{ festival.descripcion }}
             </v-card-text>
-            <textarea v-if="showEditar" placeholder="Descripción" id="editDescripcion" v-model="festivalEditar.descripcion">
-            </textarea>
+            <textarea v-if="showEditar" placeholder="Descripción" id="editDescripcion"
+              v-model="festivalEditar.descripcion">
+                  </textarea>
           </div>
         </div>
 
@@ -52,36 +55,40 @@
             <v-card-text>
               <span>Localidad: </span>
               <span v-if="!showEditar">{{ festival.localidad }}</span>
-              <textarea v-if="showEditar" placeholder="Localidad" id="editLocalidad" v-model="festivalEditar.localidad" :rules="localidadRules">
-              </textarea>
+              <textarea v-if="showEditar" placeholder="Localidad" id="editLocalidad" v-model="festivalEditar.localidad"
+                :rules="localidadRules">
+                    </textarea>
             </v-card-text>
             <v-card-text>
               <span>Fecha: </span>
               <span v-if="!showEditar">{{ festival.fecha }}</span>
-              <textarea v-if="showEditar" placeholder="dd/mm/yyyy" id="editFecha" v-model="festivalEditar.fecha" :rules="fechaRules">
-              </textarea>
+              <textarea v-if="showEditar" placeholder="dd/mm/yyyy" id="editFecha" v-model="festivalEditar.fecha"
+                :rules="fechaRules">
+                    </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio estándar: </span>
               <span v-if="!showEditar">{{ festival.precioEntrada }}€</span>
-              <textarea v-if="showEditar" placeholder="Precio estándar" id="editPrecio" v-model="festivalEditar.precioEntrada" :rules="rulePrecio">
-              </textarea>
+              <textarea v-if="showEditar" placeholder="Precio estándar" id="editPrecio"
+                v-model="festivalEditar.precioEntrada" :rules="rulePrecio">
+                    </textarea>
             </v-card-text>
             <v-card-text class="text-precio">
               <span>Precio VIP: </span>
               <span v-if="!showEditar">{{ festival.precioEntradaVip }}€</span>
-              <textarea v-if="showEditar" placeholder="Precio VIP" id="editPrecioVip" v-model="festivalEditar.precioEntradaVip" :rules="rulePrecioVip">
-              </textarea>
+              <textarea v-if="showEditar" placeholder="Precio VIP" id="editPrecioVip"
+                v-model="festivalEditar.precioEntradaVip" :rules="rulePrecioVip">
+                    </textarea>
             </v-card-text>
             <v-card-text v-if="showEditar">
               <span>Stock estándar: </span>
               <textarea placeholder="Stock estándar" id="editStock" v-model="festivalEditar.stock">
-              </textarea>
+                    </textarea>
             </v-card-text>
             <v-card-text v-if="showEditar">
               <span>Stock VIP: </span>
               <textarea placeholder="Stock VIP" id="editStockVip" v-model="festivalEditar.stockVip">
-              </textarea>
+                    </textarea>
             </v-card-text>
           </div>
 
@@ -89,7 +96,7 @@
             <v-btn class="white--text" v-on:click="goToCompra" elevation="2" x-large rounded>
               Comprar
             </v-btn>
-            <v-btn class="white--text" elevation="2" x-large rounded  @click="goMerchan()">
+            <v-btn class="white--text" elevation="2" x-large rounded @click="goMerchan()">
               Merchandising
             </v-btn>
           </v-card-actions>
@@ -158,12 +165,12 @@ export default {
     festival: Festival
   },
   created() {
-    this.festivalEditar = {...this.festival};
+    this.festivalEditar = { ...this.festival };
   },
   methods: {
     openEditar() {
       this.showEditar = true;
-      this.festivalEditar = {...this.festival};
+      this.festivalEditar = { ...this.festival };
     },
     closeEditar() {
       this.showEditar = false;
@@ -173,36 +180,34 @@ export default {
       this.$store.dispatch("editFestivalCompra", this.festivalEditar);
     },
     goToCompra() {
-      if (this.$store.state.userLogged == false) {
-        this.$store.dispatch("setLoginPopUp", true);
-      } else {
-        let yaExiste = false;
-        let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
+      let yaExiste = false;
+      let listaEntradasStorage = JSON.parse(localStorage.getItem('listaEntradasCarrito'));
 
-        if (!listaEntradasStorage) {
-          listaEntradasStorage = [];
-        }
-        if (listaEntradasStorage.length > 0) {
-          listaEntradasStorage.forEach(item => {
-            if (item.festival.idFestival == this.festival.idFestival) {
-              yaExiste = true;
-            }
-          });
-        }
-        if (yaExiste == false) {
-          const objetoCarrito = {
-            festival: this.festival,
-            entradas: 1,
-            entradasVip: 0,
-          }
-          listaEntradasStorage.push(objetoCarrito);
-        }
-        localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
-
-        this.$store.dispatch("setIdFestivalCompra", this.festival.idFestival);
-
-        this.$router.push(`/carrito`);
+      if (!listaEntradasStorage) {
+        listaEntradasStorage = [];
       }
+      if (listaEntradasStorage.length > 0) {
+        listaEntradasStorage.forEach(item => {
+          if (item.festival.idFestival == this.festival.idFestival) {
+            yaExiste = true;
+          }
+        });
+      }
+      if (yaExiste == false) {
+        const objetoCarrito = {
+          festival: this.festival,
+          entradas: 1,
+          entradasVip: 0,
+        }
+        listaEntradasStorage.push(objetoCarrito);
+      }
+      localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
+
+      this.$store.dispatch("setIdFestivalCompra", this.festival.idFestival);
+
+      this.$router.push(`/carrito`).then(() => {
+        window.scrollTo(0, 0);
+      });
     },
     deleteFestival() {
       this.$store.dispatch("deleteFestivalCompra", this.festival.idFestival);
@@ -220,7 +225,9 @@ export default {
       return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
     },
     goMerchan() {
-      this.$router.push(`/merchandising`);
+      this.$router.push(`/merchandising`).then(() => {
+        window.scrollTo(0, 0);
+      });
     }
   },
 };
@@ -258,6 +265,7 @@ textarea {
     height: calc(100% - 30px);
     margin: 15px 0;
   }
+
   &#editImagenTop {
     width: calc(100% - 32px);
     height: 100px;
@@ -478,15 +486,15 @@ textarea {
 }
 
 @media only screen and (max-width: 540px) {
-    .card-component {
-        .titulo {
-            flex-wrap: wrap-reverse;
+  .card-component {
+    .titulo {
+      flex-wrap: wrap-reverse;
 
-            .v-btn{
-                margin-left: 20px;
-                margin-bottom: 8px;
-            }
-        }
+      .v-btn {
+        margin-left: 20px;
+        margin-bottom: 8px;
+      }
     }
+  }
 }
 </style>

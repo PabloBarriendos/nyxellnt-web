@@ -57,7 +57,13 @@ export default {
     };
   },
   async created() {
-    await this.$store.dispatch("getOperacionesUsuario");
+    if (this.$store.state.userLogged == false) {
+      this.$router.push(`/`).then(() => {
+        window.scrollTo(0, 0);
+      });
+    } else {
+      await this.$store.dispatch("getOperacionesUsuario");
+    }
   },
   methods: {
     async requestFiltro() {
@@ -67,11 +73,11 @@ export default {
         ordenFecha: this.ordenFecha,
       });
     },
-    requestFiltroPrecio(){
+    requestFiltroPrecio() {
       this.ordenFecha = null;
       this.requestFiltro();
     },
-    requestFiltroFecha(){
+    requestFiltroFecha() {
       this.ordenPrecio = null;
       this.requestFiltro();
     },
@@ -165,7 +171,7 @@ export default {
         font-size: 24px;
       }
 
-      .cards{
+      .cards {
         width: 100%;
       }
 

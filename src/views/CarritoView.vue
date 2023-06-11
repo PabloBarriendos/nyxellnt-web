@@ -143,7 +143,7 @@ export default {
         if (cleanedValue.length !== 16) {
           return "La tarjeta de crédito debe tener 16 dígitos.";
         }
-        return true; 
+        return true;
       },
     ],
     fechaCaducidadRules: [
@@ -190,7 +190,7 @@ export default {
       },
     ],
     cvvRules: [
-    (value) => {
+      (value) => {
         if (/^\d{3}$/.test(value)) return true;
         return "El código postal debe contener exactamente 3 dígitos numéricos.";
       },
@@ -225,7 +225,11 @@ export default {
       }
     },
     openFinalizarCompra() {
-      this.showCompraPopUp = true;
+      if (this.$store.state.userLogged == false) {
+        this.$store.dispatch("setLoginPopUp", true);
+      } else {
+        this.showCompraPopUp = true;
+      }
     },
     checkCompraValida() {
       if (this.tarjetaCredito && this.fechaCaducidad && this.nombreTitular && this.cvv && this.nombre && this.apellidos && this.correo && this.dni && this.direccion && this.codigoPostal) {
@@ -252,7 +256,9 @@ export default {
       });
 
       localStorage.removeItem('listaEntradasCarrito');
-      this.$router.push(`/compraFinalizada`);
+      this.$router.push(`/compraFinalizada`).then(() => {
+        window.scrollTo(0, 0);
+      });
     }
   },
 };

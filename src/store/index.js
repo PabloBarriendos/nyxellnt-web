@@ -178,41 +178,57 @@ export default new Vuex.Store({
       context.commit('setDatoInutil', true);
     },
     async register({ commit }, datos) {
+      let yaExiste = false;
+
       let nombre = datos.nombre;
       let apellido = datos.apellido;
       let email = datos.email;
       let password = datos.password;
       let rol = datos.rol;
 
-      await fetch(link + "/usuario", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          id: 0,
-          nombre: nombre,
-          apellido: apellido,
-          email: email,
-          password: password,
-          rol: rol,
-        }),
-      });
-
       await fetch(link + "/usuario")
         .then((response) => response.json())
         .then((data) => {
           data.forEach((element) => {
-            if (element.email == email && element.password == password) {
-              commit("setUser", element);
-              commit("setUserLogged", true);
-              document.cookie = `user=${element}`;
-            } else {
-              commit("setUserLogged", false);
+            if (element.email == email) {
+              yaExiste = true;
             }
           });
         })
         .catch((error) => console.error(error));
+
+        if(!yaExiste){
+          await fetch(link + "/usuario", {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+              id: 0,
+              nombre: nombre,
+              apellido: apellido,
+              email: email,
+              password: password,
+              imagen: '',
+              rol: rol,
+            }),
+          });
+    
+          await fetch(link + "/usuario")
+            .then((response) => response.json())
+            .then((data) => {
+              data.forEach((element) => {
+                if (element.email == email && element.password == password) {
+                  commit("setUser", element);
+                  commit("setUserLogged", true);
+                  document.cookie = `user=${element}`;
+                } else {
+                  commit("setUserLogged", false);
+                }
+              });
+            })
+            .catch((error) => console.error(error));
+        }
     },
     logout({ commit }) {
       document.cookie = `userId=`;

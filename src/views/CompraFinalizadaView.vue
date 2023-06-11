@@ -41,17 +41,25 @@ export default {
         errorCompra: false,
     }),
     created() {
-        this.errorCompra = JSON.parse(localStorage.getItem('errorCompra'));
-        if(this.errorCompra){
-            this.$store.dispatch("setErrorCompra", true);
+        if (this.$store.state.userLogged == false) {
+            this.$router.push(`/`).then(() => {
+                window.scrollTo(0, 0);
+            });
+        } else{
+            this.errorCompra = JSON.parse(localStorage.getItem('errorCompra'));
+            if (this.errorCompra) {
+                this.$store.dispatch("setErrorCompra", true);
+            }
         }
     },
-    destroyed(){
+    destroyed() {
 
     },
     methods: {
         goToHome() {
-            this.$router.push(`/`);
+            this.$router.push(`/`).then(() => {
+                window.scrollTo(0, 0);
+            });
         },
     },
 };
@@ -67,35 +75,41 @@ export default {
     padding: 100px 0;
     height: 100%;
     margin-top: 84px;
+    background-color: aliceblue;
 
-    .card-container{
+    .card-container {
         padding: 20px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
 
-        .card-imagen{
+        .card-imagen {
             width: 100%;
             display: flex;
             justify-content: center;
-            img{
+
+            img {
                 width: 130px;
             }
         }
-        .card-texto{
+
+        .card-texto {
             width: 100%;
 
-            .v-card__title, .v-card__text{
+            .v-card__title,
+            .v-card__text {
                 margin: 20px 0;
                 display: flex;
                 justify-content: center;
                 word-break: break-word;
                 text-align: center;
             }
-            .v-card__text{
+
+            .v-card__text {
                 font-size: 16px;
             }
-            .v-card__actions{
+
+            .v-card__actions {
                 display: flex;
                 justify-content: center;
             }

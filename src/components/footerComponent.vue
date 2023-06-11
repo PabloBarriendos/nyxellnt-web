@@ -34,15 +34,19 @@ export default {
 
   data: () => ({
     icons: ["mdi-instagram", "mdi-twitter", "mdi-facebook"],
-    links: [{texto: "Contactanos", link: "contacto"}, {texto: "Cookies", link: "cookies"}, {texto: "Estadísticas", link: "grafica"}],
+    links: [{ texto: "Contactanos", link: "contacto" }, { texto: "Cookies", link: "cookies" }, { texto: "Estadísticas", link: "grafica" }],
   }),
   methods: {
     goHome() {
-      this.$router.push("/");
+      this.$router.push("/").then(() => {
+        window.scrollTo(0, 0);
+      });
       document.documentElement.scrollTop = 0;
     },
     goTo(route) {
-      this.$router.push(`/${route.toLowerCase()}`);
+      this.$router.push(`/${route.toLowerCase()}`).then(() => {
+        window.scrollTo(0, 0);
+      });
     }
   },
 };
@@ -61,14 +65,15 @@ export default {
     justify-content: center;
   }
 
-  .title-section{
+  .title-section {
     img {
       width: 130px;
-      &:hover{
+
+      &:hover {
         cursor: pointer;
       }
     }
-    
+
   }
 
   .icons-section {
@@ -77,6 +82,7 @@ export default {
     .date-section {
       margin-top: 10px;
       justify-content: center;
+
       a {
         color: white;
         text-decoration: none;
@@ -107,6 +113,7 @@ export default {
 
 @media only screen and (min-width: 600px) {
   .v-footer {
+
     .title-section,
     .icons-section,
     .link-section {

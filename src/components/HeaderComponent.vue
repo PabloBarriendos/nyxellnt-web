@@ -11,10 +11,12 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field id="emailLogin" label="Email*" @change="checkLogin" required :rules="emailRules"></v-text-field>
+                    <v-text-field id="emailLogin" label="Email*" @change="checkLogin" required
+                      :rules="emailRules"></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" @change="checkLogin" required></v-text-field>
+                    <v-text-field id="passwordLogin" label="Contraseña*" type="password" @change="checkLogin"
+                      required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -67,7 +69,7 @@
       </v-row>
 
       <div class="text-h4 title">
-        <router-link class="router-link" to="/"><img src="../assets/logo.png" />
+        <router-link class="router-link" to="/" ><img @click="goToHome" src="../assets/logo.png" />
           <p>Festivalia</p>
         </router-link>
       </div>
@@ -83,10 +85,8 @@
 
       <div class="avatar-container" v-if="$store.state.userLogged">
         <v-avatar>
-          <img class="usuarioImg" v-if="$store.state.user.imagen" :src="$store.state.user.imagen"/>
-          <img src="../assets/usuario.png" alt="Profile"/>
-          <!-- <img class="avatarUser" v-if="$store.state.user.imagen" :src="$store.state.user.imagen"/>
-          <img src="../assets/usuario.png" alt="Profile" /> -->
+          <img class="usuarioImg" v-if="$store.state.user.imagen" :src="$store.state.user.imagen" />
+          <img src="../assets/usuario.png" alt="Profile" />
         </v-avatar>
         <p>{{ this.$store.state.user.nombre }}</p>
         <v-icon class="menu-icon" v-on:click="userDropdown">mdi-menu</v-icon>
@@ -173,13 +173,13 @@ export default {
         }
       }
     },
-    checkLogin(){
-      if(document.getElementById("emailLogin")?.value &&
-        document.getElementById("passwordLogin")?.value ){
-          this.loginDisabled = false;
-        }else{
-          this.loginDisabled = true;
-        }
+    checkLogin() {
+      if (document.getElementById("emailLogin")?.value &&
+        document.getElementById("passwordLogin")?.value) {
+        this.loginDisabled = false;
+      } else {
+        this.loginDisabled = true;
+      }
     },
     checkRegister() {
       if (
@@ -221,13 +221,22 @@ export default {
       });
       this.showRegisterPopUp = false;
     },
+    goToHome() {
+      this.$router.push(`/`).then(() => {
+        window.scrollTo(0, 0);
+      });
+    },
     logout() {
       this.$store.dispatch("logout");
       this.showUserDropdown = false;
-      this.$router.push(`/`);
+      this.$router.push(`/`).then(() => {
+        window.scrollTo(0, 0);
+      });
     },
     miPerfil() {
-      this.$router.push(`/perfil`);
+      this.$router.push(`/perfil`).then(() => {
+        window.scrollTo(0, 0);
+      });
     },
     carrito() {
       this.showUserDropdown = false;
@@ -238,11 +247,15 @@ export default {
         localStorage.setItem('listaEntradasCarrito', JSON.stringify(listaEntradasStorage));
       }
 
-      this.$router.push(`/carrito`);
+      this.$router.push(`/carrito`).then(() => {
+        window.scrollTo(0, 0);
+      });
     },
     misCompras() {
       this.showUserDropdown = false;
-      this.$router.push(`/mis-festivales`);
+      this.$router.push(`/mis-festivales`).then(() => {
+        window.scrollTo(0, 0);
+      });
     },
     userDropdown(event) {
       event.stopPropagation();

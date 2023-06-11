@@ -33,7 +33,7 @@
             webs!
           </p>
           <p>No lo pienses y consíguelos antes de que se agoten.</p>
-          <v-btn class="white--text" color="black" @click="goMerchan()" > Ver tienda </v-btn>
+          <v-btn class="white--text" color="black" @click="goMerchan()"> Ver tienda </v-btn>
           <p>¡Stock limitado!</p>
         </div>
       </div>
@@ -153,10 +153,14 @@ export default {
       this.requestFiltro();
     },
     goGrafica() {
-      this.$router.push(`/grafica`);
+      this.$router.push(`/grafica`).then(() => {
+        window.scrollTo(0, 0);
+      });
     },
     goMerchan() {
-      this.$router.push(`/merchandising`);
+      this.$router.push(`/merchandising`).then(() => {
+        window.scrollTo(0, 0);
+      });
     }
   },
 };
@@ -175,10 +179,11 @@ export default {
   padding: 0;
   max-width: 100%;
 
-  .top-events{
+  .top-events {
     width: 100%;
     display: flex;
     justify-content: center;
+
     .top-events-card {
       margin: 100px 20px 40px 20px;
       max-width: 850px;
@@ -189,7 +194,7 @@ export default {
       border-radius: 20px;
       background-image: url('../assets/fondoTopEvent.jpg');
       background-size: cover;
-  
+
       .top-events-title {
         font-size: 30px;
         font-weight: bold;
@@ -421,7 +426,8 @@ export default {
         height: 100%;
       }
     }
-    .merchandising-section{
+
+    .merchandising-section {
       padding: 60px 40px 10px;
     }
 
