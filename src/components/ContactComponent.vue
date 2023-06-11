@@ -9,12 +9,12 @@
               <v-text-field v-model="nombre" label="Nombre" :rules="firstNameRules"></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="apellidos" label="Ciudad"></v-text-field>
+              <v-text-field v-model="cuidad" label="Ciudad" :rules="ciudadRules"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="ciudad" label="Apellidos" :rules="lastNameRules"></v-text-field>
+              <v-text-field v-model="apellidos" label="Apellidos" :rules="lastNameRules"></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
               <v-text-field v-model="codigoPostal" label="Código Postal" :rules="postalCodeRules"></v-text-field>
@@ -79,27 +79,33 @@ export default {
         if (/^\d{5}$/.test(value)) return true;
         return "El código postal debe contener exactamente 5 dígitos numéricos.";
       },
-    ]
-  }),
-  methods: {
-    enviarFormulario() {
-      if (this.$refs.formulario.validate()) {
-        setTimeout(() => {
-          this.mostrarMensaje = true;
-          this.limpiarCampos();
-        }, 200);
-      }
-    },
-    limpiarCampos() {
-      this.nombre = '';
-      this.apellidos = '';
-      this.ciudad = '';
-      this.codigoPostal = '';
-      this.correoElectronico = '';
-      this.mensaje = '';
-      this.$refs.formulario.resetValidation();
+    ],
+    ciudadRules: [
+      (value) => {
+        if (/^[a-zA-Z]+$/.test(value)) return true;
+        return "La ciudad solo puede contener letras.";
+      },
+    ],
+}),
+methods: {
+  enviarFormulario() {
+    if (this.$refs.formulario.validate()) {
+      setTimeout(() => {
+        this.mostrarMensaje = true;
+        this.limpiarCampos();
+      }, 200);
     }
+  },
+  limpiarCampos() {
+    this.nombre = '';
+    this.apellidos = '';
+    this.ciudad = '';
+    this.codigoPostal = '';
+    this.correoElectronico = '';
+    this.mensaje = '';
+    this.$refs.formulario.resetValidation();
   }
+}
 };
 </script>
   

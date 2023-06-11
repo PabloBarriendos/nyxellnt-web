@@ -48,7 +48,7 @@
   updateClock();
 </script>
 
-<style>
+<style scoped>
   @keyframes girarSegundos {
     from {
       transform: rotate(var(--segundos));

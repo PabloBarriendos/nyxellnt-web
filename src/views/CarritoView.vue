@@ -26,22 +26,6 @@
         <v-icon>mdi-information</v-icon>
         <p>No hay productos añadidos al carrito</p>
       </div>
-      <!-- <ProductoCarritoComponent
-        v-for="festival in $store.state.showFestivalList"
-        :key="festival.idFestival"
-        :id="festival.idFestival"
-        :titulo="festival.nombre"
-        :descripcion="festival.descripcion"
-        :precio="festival.precioEntrada"
-      /> -->
-      <!-- <ProductoCarritoComponent
-        :key="$store.state.showFestivalList[1].idFestival"
-        :id="$store.state.showFestivalList[1].idFestival"
-        :titulo="$store.state.showFestivalList[1].nombre"
-        :descripcion="$store.state.showFestivalList[1].descripcion"
-        :precio="$store.state.showFestivalList[1].precioEntrada"
-        :imagen="$store.state.showFestivalList[1].imagen"
-      /> -->
     </div>
 
     <!-- POPUP DE COMPRA -->
@@ -127,20 +111,17 @@
 
 <script>
 import EntradaCarritoComponent from "../components/carrito/EntradaCarritoComponent.vue";
-// import ProductoCarritoComponent from "../components/carrito/ProductoCarritoComponent.vue";
 
 export default {
   name: "CarritoComponent",
   components: {
     EntradaCarritoComponent,
-    // ProductoCarritoComponent,
   },
   data: () => ({
     listaEntradasCarrito: [],
     listaProductosCarrito: [],
     showCompraPopUp: false,
     precioTotal: 0,
-    //datos Formulario  // CAMBIAR BOOLEAN
     compraInvalida: false,
     tarjetaCredito: '',
     fechaCaducidad: '',
@@ -155,17 +136,14 @@ export default {
     notasEntrega: '',
     tarjetaCreditoRules: [
       (value) => {
-        // Eliminar espacios en blanco y guiones de la cadena de entrada
         const cleanedValue = value.replace(/\s/g, '').replace(/-/g, '');
-        // Verificar que solo contenga dígitos
         if (!/^\d+$/.test(cleanedValue)) {
           return "La tarjeta de crédito solo puede contener dígitos.";
         }
-        // Verificar longitud de la tarjeta de crédito
         if (cleanedValue.length !== 16) {
           return "La tarjeta de crédito debe tener 16 dígitos.";
         }
-        return true; // La tarjeta de crédito es válida
+        return true; 
       },
     ],
     fechaCaducidadRules: [
@@ -187,13 +165,13 @@ export default {
         return "El nombre debe contener al menos 3 carácteres y no contener números ni simbolos.";
       },
     ],
-    apellidosRulesRules: [
+    apellidosRules: [
       (value) => {
         if (/^[a-zA-Z]+$/.test(value)) return true;
         return "El apellido solo puede contener letras.";
       },
     ],
-    correoRulesRules: [
+    correoRules: [
       (value) => {
         if (/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$/.test(value)) return true;
         return "Debe ser un Email valido.";
@@ -209,6 +187,12 @@ export default {
       (value) => {
         if (/^\d{5}$/.test(value)) return true;
         return "El código postal debe contener exactamente 5 dígitos numéricos.";
+      },
+    ],
+    cvvRules: [
+    (value) => {
+        if (/^\d{3}$/.test(value)) return true;
+        return "El código postal debe contener exactamente 3 dígitos numéricos.";
       },
     ]
   }),
