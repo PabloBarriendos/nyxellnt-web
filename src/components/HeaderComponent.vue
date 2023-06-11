@@ -214,7 +214,13 @@ export default {
       this.showUserDropdown = false;
       this.$router.push(`/`);
     },
+<<<<<<< HEAD
     miPerfil() { },
+=======
+    miPerfil() {
+      this.$router.push(`/perfil`);
+    },
+>>>>>>> feature/perfil
     carrito() {
       this.showUserDropdown = false;
 
