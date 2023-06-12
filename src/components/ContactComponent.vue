@@ -9,7 +9,7 @@
               <v-text-field v-model="nombre" label="Nombre" @change="checkFormulario" :rules="firstNameRules"></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="cuidad" label="Ciudad" @change="checkFormulario" :rules="ciudadRules"></v-text-field>
+              <v-text-field v-model="ciudad" label="Ciudad" @change="checkFormulario" :rules="ciudadRules"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
